@@ -8,3 +8,11 @@ dist/
 .self-review/
 .verify/
 reports/
+
+# Third-party source documents — read, analysed, and cited, but not redistributed.
+# SI 5568 carries an explicit copyright reservation to the Standards Institution
+# of Israel; "free for public use" is not a licence to republish. The manifest
+# below records every document with its URL, hash and authority tier, which is
+# what a reader actually needs.
+docs/external-resources/*
+!docs/external-resources/README.md
