@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!--
+  Compliant counterpart to fixtures/broken/index.html.
+
+  Its job is to prove the engine does not just fail everything: a page that
+  actually complies must produce PASS rows, not "unverified" ones. A checker
+  that only ever reports failures is as useless as one that never does.
+
+  Every construct here is the correct form of a defect in the broken fixture.
+-->
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>השירותים שלנו | אתר הדוגמה</title>
+  <style>
+    :root { --ink: #16191d; --line: #767c85; --accent: #0b5cd5; }
+    body {
+      margin: 0; padding: 1.5rem;
+      font-family: "Segoe UI", "Noto Sans Hebrew", Arial, sans-serif;
+      line-height: 1.6; color: var(--ink); background: #fff;
+    }
+    .skip-link { position: absolute; inset-inline-start: -9999px; top: 0; padding: .75rem 1.25rem; background: var(--ink); color: #fff; }
+    .skip-link:focus { inset-inline-start: 0; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    main:focus { outline: none; }
+    h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.25rem; }
+    a { color: #0847a6; text-decoration: underline; }
+    table { border-collapse: collapse; }
+    th, td { border: 1px solid var(--line); padding: .5rem .75rem; text-align: start; }
+    caption { text-align: start; padding-block-end: .5rem; font-weight: 600; }
+    label { display: block; font-weight: 600; margin-block-start: .75rem; }
+    input, select { padding: .375rem .5rem; border: 1px solid var(--line); }
+    .hint { font-size: .875rem; color: #4a5058; margin: .125rem 0 0; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">דלג לתוכן הראשי</a>
+
+  <header>
+    <nav aria-label="ניווט ראשי">
+      <ul>
+        <li><a href="/">דף הבית</a></li>
+        <li><a href="/about">אודות החברה</a></li>
+        <li><a href="/contact">יצירת קשר</a></li>
+        <li><a href="/sitemap">מפת האתר</a></li>
+      </ul>
+    </nav>
+    <form role="search" action="/search" method="get">
+      <label for="q">חיפוש באתר</label>
+      <input id="q" name="q" type="search">
+      <button type="submit">חפש</button>
+    </form>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <h1>השירותים שלנו</h1>
+
+    <p>
+      אנחנו מספקים שירותים מגוונים ללקוחות פרטיים ועסקיים בכל רחבי הארץ,
+      בליווי מקצועי ואישי לאורך כל הדרך.
+    </p>
+
+    <h2>תחומי הפעילות</h2>
+    <ul>
+      <li>ייעוץ עסקי</li>
+      <li>ליווי פיננסי</li>
+      <li>הכשרות והדרכה</li>
+    </ul>
+
+    <h2>הצוות</h2>
+    <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='600'%20height='300'%3E%3Crect%20width='600'%20height='300'%20fill='%23cfd8e3'/%3E%3C/svg%3E"
+         width="600" height="300"
+         alt="צוות החברה עומד בכניסה למשרד הראשי בתל אביב">
+
+    <h2>אנשי הקשר</h2>
+    <table>
+      <caption>אנשי קשר לפי תחום</caption>
+      <thead>
+        <tr>
+          <th scope="col">שם</th>
+          <th scope="col">תפקיד</th>
+          <th scope="col">טלפון</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">ישראל ישראלי</th>
+          <td>מנהל הייעוץ העסקי</td>
+          <td><a href="tel:+972521111111" dir="ltr">052-1111111</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>יצירת קשר</h2>
+    <p>
+      לפרטים נוספים אפשר לעיין ב<a href="/services">פירוט השירותים המלא</a>
+      או ב<a href="/pricing">מחירון השירותים</a>.
+    </p>
+    <p>
+      ניתן ליצור קשר בטלפון <span dir="ltr">03-1234567</span>
+      או בדוא"ל <a href="mailto:info@example.co.il" dir="ltr">info@example.co.il</a>.
+    </p>
+
+    <h2>השארת פרטים</h2>
+    <form action="/contact" method="post" novalidate>
+      <label for="full-name">שם מלא <span>(שדה חובה)</span></label>
+      <input id="full-name" name="fullName" type="text" autocomplete="name"
+             required aria-required="true" aria-describedby="name-hint">
+      <p id="name-hint" class="hint">שם פרטי ושם משפחה</p>
+
+      <label for="email">כתובת דוא"ל <span>(שדה חובה)</span></label>
+      <input id="email" name="email" type="email" dir="ltr" autocomplete="email"
+             required aria-required="true" aria-describedby="email-hint">
+      <p id="email-hint" class="hint">לדוגמה: <span dir="ltr">name@example.co.il</span></p>
+
+      <label for="topic">נושא הפנייה</label>
+      <select id="topic" name="topic">
+        <option value="">בחרו נושא</option>
+        <option value="consulting">ייעוץ עסקי</option>
+        <option value="finance">ליווי פיננסי</option>
+      </select>
+
+      <p role="alert" id="form-error" hidden></p>
+      <p><button type="submit">שליחת הפנייה</button></p>
+    </form>
+  </main>
+
+  <footer>
+    <p>כל הזכויות שמורות לאתר הדוגמה בע"מ</p>
+    <p><a href="/good/accessibility/">הצהרת נגישות</a></p>
+  </footer>
+</body>
+</html>

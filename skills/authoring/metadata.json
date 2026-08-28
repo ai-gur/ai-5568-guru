@@ -1,0 +1,59 @@
+{
+  "author": "skills-il",
+  "version": "1.0.0",
+  "category": "localization",
+  "tags": {
+    "he": [
+      "נגישות",
+      "תקן-5568",
+      "יצירת-תוכן",
+      "מסמכים-נגישים",
+      "RTL",
+      "ישראל",
+      "WCAG",
+      "PDF-נגיש"
+    ],
+    "en": [
+      "accessibility",
+      "is-5568",
+      "authoring",
+      "documents",
+      "rtl",
+      "israel",
+      "wcag",
+      "tagged-pdf"
+    ]
+  },
+  "display_name": {
+    "he": "AI Guru - IS-5568-Accessibility: Authoring",
+    "en": "AI Guru - IS-5568-Accessibility: Authoring"
+  },
+  "display_description": {
+    "he": "AI Guru - IS-5568-Accessibility: Authoring. יוצרים תוכן דיגיטלי שעומד בתקן הישראלי ת\"י 5568 כבר בשלב הכתיבה. לביקורת תוכן קיים השתמשו בסקיל ai-guru-is-5568-accessibility-auditor.",
+    "en": "AI Guru - IS-5568-Accessibility: Authoring. Produce Israeli Standard IS 5568 content while creating it. For an audit of existing content, use ai-guru-is-5568-accessibility-auditor."
+  },
+  "supported_agents": [
+    "claude-code",
+    "cursor",
+    "github-copilot",
+    "windsurf",
+    "opencode",
+    "codex",
+    "antigravity",
+    "gemini-cli"
+  ],
+  "related_skills": [
+    "israeli-accessibility-compliance",
+    "hebrew-rtl-best-practices",
+    "hebrew-document-generator"
+  ],
+  "generated_files": [
+    "references/criteria-part1-web.md",
+    "references/criteria-part2-documents.md"
+  ],
+  "generated_by": "is5568-auditor/packages/criteria/src/emit-skill-references.ts",
+  "standard_source": {
+    "part1_form": "sitedocs_internet_accessibility_form.xlsx — sheet \"בדיקת נגישות לאינטרנט\"",
+    "part2": "SI 5568 part 2, May 2020"
+  }
+}

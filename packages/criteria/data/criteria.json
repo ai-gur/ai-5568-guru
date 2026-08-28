@@ -1,0 +1,2189 @@
+{
+  "source": {
+    "file": "sitedocs_internet_accessibility_form.xlsx",
+    "sheet": "בדיקת נגישות לאינטרנט",
+    "importedAt": "2026-07-29T06:22:35.172Z",
+    "rowCount": 42
+  },
+  "items": [
+    {
+      "id": "R04",
+      "form": {
+        "sourceRow": 4,
+        "guidelineHe": "הנחיה 1.1 חלופה טקסטואלית",
+        "guidelineFullHe": "הנחיה 1.1 חלופה טקסטואלית: יש לספק חלופות טקסטואליות עבור תכנים שאינם טקסטואליים, כך שניתן יהיה להמירן לצורות אחרות להן זקוקים אנשים, כמו אותיות גדולות, ברייל, דיבור, סמלים או שפה פשוטה יותר.",
+        "criterionNo": "1.1.1",
+        "criterionNameHe": "תכנים שאינם טקסטואליים",
+        "descriptionHe": "א. לתמונות יש טקסט אלטרנטיבי באמצעות המאפיין alt, המתאר את מהות התמונה (כולל תמונות של כפתורים בטפסים ותמונות של hot spots ב image map.)\nב. לתמונות המהוות קישור יש טקסט החלופי מגדיר את מטרת הקישור תמונות\nג. לתמונות שאינן מעבירות מידע, כלומר משמשות לדקורציה בלבד, או תמונות שאינן מהוות קישור הכוללת מידע שקיים כבר בטקסט, יש טקסט חלופי ריק \"\"=alt או שהן מיושמות כרקע ב CSS\nד. חלופות שווה ערך לתמונות מורכבות מסופקות בהקשר או בדף הנפרד (צמוד ו / או הפניה באמצעות longdesc).",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/WAI/WCAG20/quickref/"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "לכל תמונה נדרש טקסט חלופי המתאר את מהותה, ולתמונה המשמשת כקישור — טקסט המגדיר את מטרת הקישור. תמונות דקורטיביות יסומנו ב-alt ריק או יוצגו כרקע ב-CSS, ולתמונות מורכבות תסופק חלופה שוות ערך.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "image-alt",
+          "input-image-alt",
+          "area-alt",
+          "role-img-alt",
+          "svg-img-alt",
+          "object-alt",
+          "server-side-image-map"
+        ],
+        "customRules": [
+          "hebrew-alt-text"
+        ],
+        "applicability": "hasImages",
+        "evidenceSlice": "images",
+        "rubricHe": "בדוק כל תמונה: (1) האם קיים alt; (2) האם ה-alt מתאר בפועל את המידע שהתמונה מעבירה, ולא שם קובץ, \"תמונה\", מחרוזת ריקה בתמונה אינפורמטיבית, או תיאור גנרי; (3) בתמונה שהיא קישור — האם ה-alt מתאר את יעד/מטרת הקישור ולא את מראה התמונה; (4) בתמונה דקורטיבית — האם alt ריק (alt=\"\"), ולא תיאור מיותר. תמונה אינפורמטיבית עם alt ריק היא כשל. alt שהוא שם קובץ הוא כשל.",
+        "remediation": {
+          "goalHe": "לכל תמונה טקסט חלופי שמעביר את אותו מידע שהתמונה מעבירה, בעברית.",
+          "instruction": "Add a Hebrew `alt` to every content image describing the information it carries, not its appearance. For an image inside a link, describe the link destination. For a purely decorative image use `alt=\"\"` (and `role=\"presentation\"` where the element is not an `<img>`), or move it to a CSS background. For a chart or diagram, add `alt` with the headline finding plus a longer description adjacent in the page or behind a visible link.",
+          "hebrewStrings": {
+            "decorative": "",
+            "logoPattern": "לוגו {{שם החברה}}",
+            "chartPattern": "תרשים {{נושא}} — {{הממצא המרכזי}}. תיאור מלא בהמשך העמוד."
+          },
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R05",
+      "form": {
+        "sourceRow": 5,
+        "guidelineHe": "הנחיה 1.1 חלופה טקסטואלית",
+        "guidelineFullHe": "הנחיה 1.1 חלופה טקסטואלית: יש לספק חלופות טקסטואליות עבור תכנים שאינם טקסטואליים, כך שניתן יהיה להמירן לצורות אחרות להן זקוקים אנשים, כמו אותיות גדולות, ברייל, דיבור, סמלים או שפה פשוטה יותר.",
+        "criterionNo": "1.1.1",
+        "criterionNameHe": "תכנים שאינם טקסטואליים",
+        "descriptionHe": "מולטימדיה משובצת - embedded - מזוהה באמצעות טקסט חלופי",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/WAI/WCAG20/quickref/"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "מולטימדיה משובצת (embedded) מזוהה באמצעות טקסט חלופי.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "object-alt",
+          "frame-title"
+        ],
+        "customRules": [
+          "embedded-media-name"
+        ],
+        "applicability": "hasEmbeddedMedia",
+        "evidenceSlice": "media",
+        "rubricHe": "עבור כל רכיב מולטימדיה משובץ (object, embed, iframe של נגן, video, audio): האם קיים שם נגיש (title, aria-label, alt) שמזהה מה הרכיב מכיל? שם ריק, \"video\", או כתובת URL אינם מזהים את התוכן ולכן הם כשל.",
+        "remediation": {
+          "goalHe": "לכל רכיב מדיה משובץ שם נגיש שמזהה את תוכנו.",
+          "instruction": "Give every embedded media element an accessible name in Hebrew that says what it contains: `title` on `<iframe>`, `aria-label` on `<video>`/`<audio>`, fallback content inside `<object>`. The name must identify the specific content (\"הרצאה על זכויות עובדים\"), not the medium (\"וידאו\").",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R06",
+      "form": {
+        "sourceRow": 6,
+        "guidelineHe": "הנחיה 1.1 חלופה טקסטואלית",
+        "guidelineFullHe": "הנחיה 1.1 חלופה טקסטואלית: יש לספק חלופות טקסטואליות עבור תכנים שאינם טקסטואליים, כך שניתן יהיה להמירן לצורות אחרות להן זקוקים אנשים, כמו אותיות גדולות, ברייל, דיבור, סמלים או שפה פשוטה יותר.",
+        "criterionNo": "1.1.1",
+        "criterionNameHe": "תכנים שאינם טקסטואליים",
+        "descriptionHe": "למדיה מבוססת זמן (וידאו, אודיו, אנימציה), למבחן (שחלופה מלאה תפגע באפקטיביות שלו) ולתוכן שאינו טקסטואלי המהווה חוויה חושית - יש חלופה טקסטואלית, שלכל הפחות, מזהה אותו ומתארת את תוכנו.",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/WAI/WCAG20/quickref/"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "למדיה מבוססת-זמן, למבחן שחלופה מלאה תפגע באפקטיביותו ולתוכן המהווה חוויה חושית — נדרשת חלופה טקסטואלית. החלופה תזהה את התוכן ותתאר אותו לכל הפחות.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [],
+        "applicability": "hasTimeBasedMedia",
+        "evidenceSlice": "media",
+        "rubricHe": "עבור כל פריט מדיה מבוססת-זמן, מבחן או חוויה חושית: האם קיים בדף טקסט נגיש שמזהה את הפריט ומתאר את תוכנו? נוכחות של כותרת בלבד ליד נגן אינה מספיקה אם היא אינה מתארת את התוכן.",
+        "remediation": {
+          "goalHe": "לכל מדיה מבוססת-זמן חלופה טקסטואלית שמזהה ומתארת את התוכן.",
+          "instruction": "Add a text alternative adjacent to each time-based media item that identifies and describes it. This is the descriptive-identification requirement, separate from captions (row 1.2.2) and transcripts (row 1.2.1).",
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R07",
+      "form": {
+        "sourceRow": 7,
+        "guidelineHe": "הנחיה 1.1 חלופה טקסטואלית",
+        "guidelineFullHe": "הנחיה 1.1 חלופה טקסטואלית: יש לספק חלופות טקסטואליות עבור תכנים שאינם טקסטואליים, כך שניתן יהיה להמירן לצורות אחרות להן זקוקים אנשים, כמו אותיות גדולות, ברייל, דיבור, סמלים או שפה פשוטה יותר.",
+        "criterionNo": "1.1.1",
+        "criterionNameHe": "תכנים שאינם טקסטואליים",
+        "descriptionHe": "קיימת CHAPTCHA נגישה או חלופה ל CHAPTCHA - אם מטרתו של תוכן שאינו טקסט לוודא שהניגש לתוכן הוא אדם ולא מחשב, יש לספק חלופה טקסטואלית שתזהה את התוכן ותתאר את תכליתו, בנוסף לצורות חלופיות של CAPTCHA המכוונות לתפיסה בחושים אחרים, ומתאימות למוגבלויות שונות.",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/WAI/WCAG20/quickref/"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "ל-CAPTCHA נדרשת חלופה טקסטואלית שמזהה ומתארת את תכליתו. בנוסף נדרשות צורות חלופיות המכוונות לחושים אחרים ומתאימות למוגבלויות שונות.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [
+          "captcha-detect"
+        ],
+        "applicability": "hasCaptcha",
+        "evidenceSlice": "forms",
+        "rubricHe": "אם קיים CAPTCHA: האם יש טקסט חלופי המסביר את תכליתו, והאם קיימת לפחות חלופה אחת המכוונת לחוש אחר (אודיו מול חזותי)? CAPTCHA חזותי בלבד הוא כשל.",
+        "remediation": {
+          "goalHe": "ל-CAPTCHA תיאור טקסטואלי וחלופה בחוש אחר.",
+          "instruction": "Provide a text alternative describing the CAPTCHA's purpose, plus at least one alternative form targeting a different sense (audio alternative to a visual challenge). Prefer replacing the CAPTCHA with a non-interactive method (honeypot, token-based, risk scoring), which removes the barrier instead of working around it.",
+          "effort": "high"
+        }
+      }
+    },
+    {
+      "id": "R08",
+      "form": {
+        "sourceRow": 8,
+        "guidelineHe": "הנחיה 1.2 מדיה מבוססת-זמן",
+        "guidelineFullHe": "הנחיה 1.2 מדיה מבוססת-זמן: יש להמציא חלופות עבור מדיה מבוססת-זמן.",
+        "criterionNo": "1.2.1",
+        "criterionNameHe": "אודיו-בלבד ווידאו-בלבד (הקלטה מראש)",
+        "descriptionHe": "לאודיו בלבד (מוקלט מראש למשל web cast) - יש תסריט המכיל את כל המידע האודיטורי הרלוונטי להבנת התוכן (הנ\"ל יסופק במועד מוקדם ככל האפשר).",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-av-only-alt.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "לאודיו בלבד המוקלט מראש נדרש תסריט טקסטואלי המכיל את כל המידע האודיטורי הרלוונטי להבנת התוכן. התסריט יסופק במועד מוקדם ככל האפשר.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [],
+        "applicability": "hasAudioOnly",
+        "evidenceSlice": "media",
+        "rubricHe": "עבור כל רכיב אודיו-בלבד מוקלט מראש: האם קיים בדף תמלול טקסטואלי נגיש, או קישור מפורש אליו? קישור שכותרתו אינה מבהירה שמדובר בתמלול אינו מספיק.",
+        "remediation": {
+          "goalHe": "לכל אודיו מוקלט תמלול טקסטואלי מלא בעמוד או בקישור מסומן.",
+          "instruction": "Publish a full Hebrew transcript for every prerecorded audio-only item, either inline (collapsible region) or behind a link whose text says it is a transcript (\"תמלול ההקלטה\").",
+          "hebrewStrings": {
+            "transcriptLink": "תמלול ההקלטה",
+            "transcriptHeading": "תמלול"
+          },
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R09",
+      "form": {
+        "sourceRow": 9,
+        "guidelineHe": "הנחיה 1.2 מדיה מבוססת-זמן",
+        "guidelineFullHe": "הנחיה 1.2 מדיה מבוססת-זמן: יש להמציא חלופות עבור מדיה מבוססת-זמן.",
+        "criterionNo": "1.2.1",
+        "criterionNameHe": "אודיו-בלבד ווידאו-בלבד (הקלטה מראש)",
+        "descriptionHe": "לוידיאו בלבד (מוקלט מראש) - יש תסריט טקסטואלי או ערוץ אודיו המתאר את הערוץ הוויזואלי. (הנ\"ל יסופק במועד מוקדם ככל האפשר).",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-av-only-alt.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "לווידאו בלבד המוקלט מראש נדרש תסריט טקסטואלי או ערוץ אודיו המתאר את הערוץ הוויזואלי. יסופק במועד מוקדם ככל האפשר.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [],
+        "applicability": "hasVideoOnly",
+        "evidenceSlice": "media",
+        "rubricHe": "עבור כל וידאו ללא פס-קול: האם קיים תיאור טקסטואלי של המתרחש, או ערוץ אודיו מתאר? היעדר שניהם הוא כשל.",
+        "remediation": {
+          "goalHe": "לכל וידאו ללא קול תיאור טקסטואלי או אודיו של הערוץ החזותי.",
+          "instruction": "Add either a text description of everything shown, or a descriptive audio track. Silent looping decorative video that carries no information is out of scope — mark it `aria-hidden=\"true\"` so this row becomes genuinely Not Applicable.",
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R10",
+      "form": {
+        "sourceRow": 10,
+        "guidelineHe": "הנחיה 1.2 מדיה מבוססת-זמן",
+        "guidelineFullHe": "הנחיה 1.2 מדיה מבוססת-זמן: יש להמציא חלופות עבור מדיה מבוססת-זמן.",
+        "criterionNo": "1.2.2",
+        "criterionNameHe": "כתוביות",
+        "descriptionHe": "בוידאו הכולל סאונד (קבצי וידאו, סרטוני YouTube וכדומה) יופיעו כתוביות מסונכרנות וחלופה טקסטואלית. (הנ\"ל יסופק במועד מוקדם ככל האפשר).",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-real-time-captions.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "בווידאו הכולל סאונד יופיעו כתוביות מסונכרנות וחלופה טקסטואלית. יסופקו במועד מוקדם ככל האפשר.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "video-caption"
+        ],
+        "customRules": [
+          "caption-track-present"
+        ],
+        "applicability": "hasVideoWithAudio",
+        "evidenceSlice": "media",
+        "rubricHe": "עבור כל וידאו עם פס-קול: האם קיים <track kind=\"captions\"> או כתוביות מוטמעות בפלטפורמה החיצונית? כתוביות אוטומטיות בלבד אינן עומדות בדרישה כאשר איכותן נמוכה. בנוסף — האם קיימת חלופה טקסטואלית בדף?",
+        "remediation": {
+          "goalHe": "לכל וידאו עם קול כתוביות מסונכרנות בעברית וחלופה טקסטואלית.",
+          "instruction": "Add `<track kind=\"captions\" srclang=\"he\" label=\"עברית\">` with a reviewed caption file (auto-generated Hebrew captions need a human pass), and publish a transcript alongside. For YouTube/Vimeo embeds, upload a caption track to the platform — an embed with no caption track fails.",
+          "hebrewStrings": {
+            "trackLabel": "עברית",
+            "transcriptHeading": "תמלול הסרטון"
+          },
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R11",
+      "form": {
+        "sourceRow": 11,
+        "guidelineHe": "הנחיה 1.2 מדיה מבוססת-זמן",
+        "guidelineFullHe": "הנחיה 1.2 מדיה מבוססת-זמן: יש להמציא חלופות עבור מדיה מבוססת-זמן.",
+        "criterionNo": "1.2.3",
+        "criterionNameHe": "תיאורי אודיו או חלופה טקסטואלית למדיה (מוקלטת מראש)",
+        "descriptionHe": "תיאורי אודיו - טקסט (תסריט הכולל תיאורי אודיו) או תיאורי אודיו מלווים את הסרט הוידיאו ומתארים את כל ההתרחשויות הויזואליות שלא ניתן להם תיאור באודיו בסרט עצמו. (לדוגמא להוסיף את המילים \"הקהל צוחק\" לכתוביות). (הנ\"ל יסופק במועד מוקדם ככל האפשר).",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-audio-desc.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "תיאורי אודיו או תסריט הכולל תיאורי אודיו מלווים את הווידאו ומתארים התרחשויות חזותיות שאינן מתוארות בפס-הקול. יסופקו במועד מוקדם ככל האפשר.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [],
+        "applicability": "hasVideoWithAudio",
+        "evidenceSlice": "media",
+        "rubricHe": "עבור כל וידאו עם פס-קול: האם קיים תסריט מלא הכולל תיאור של ההתרחשויות החזותיות, או רצועת תיאור אודיו? תמלול הדיבור בלבד אינו מספיק לקריטריון זה.",
+        "remediation": {
+          "goalHe": "לכל וידאו תיאור של המתרחש חזותית — ברצועת אודיו או בתסריט מלא.",
+          "instruction": "Provide a full script that includes visual events (\"הקהל מוחא כפיים\", \"על המסך מוצג גרף עולה\"), or an audio-description track. A speech-only transcript does not satisfy this row.",
+          "effort": "high"
+        }
+      }
+    },
+    {
+      "id": "R12",
+      "form": {
+        "sourceRow": 12,
+        "guidelineHe": "הנחיה 1.2 מדיה מבוססת-זמן",
+        "guidelineFullHe": "הנחיה 1.2 מדיה מבוססת-זמן: יש להמציא חלופות עבור מדיה מבוססת-זמן.",
+        "criterionNo": "1.2.5",
+        "criterionNameHe": "תיאורי אודיו למדיה (מוקלטת מראש)",
+        "descriptionHe": "תיאורי אודיו מלווים את הסרט הוידיאו ומתארים את כל ההתרחשויות הויזואליות שלא ניתן להם תיאור באודיו בסרט עצמו. (הנ\"ל יסופק במועד מוקדם ככל האפשר).",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-audio-desc-only.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "תיאורי אודיו מלווים את הווידאו ומתארים את כל ההתרחשויות החזותיות שאינן מתוארות באודיו שבסרט. יסופקו במועד מוקדם ככל האפשר.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [],
+        "applicability": "hasVideoWithAudio",
+        "evidenceSlice": "media",
+        "rubricHe": "עבור כל וידאו עם פס-קול: האם קיימת רצועת תיאור אודיו ממשית (audio description track) הניתנת להפעלה? קריטריון זה תובעני יותר מ-1.2.3 — כאן נדרשת רצועת אודיו, לא תסריט.",
+        "remediation": {
+          "goalHe": "לכל וידאו רצועת תיאור אודיו ניתנת להפעלה.",
+          "instruction": "Add a selectable audio-description track (`<track kind=\"descriptions\">` where the player supports it, or a separate described version of the video linked next to the original).",
+          "effort": "high"
+        }
+      }
+    },
+    {
+      "id": "R13",
+      "form": {
+        "sourceRow": 13,
+        "guidelineHe": "הנחיה 1.3 ניתן להתאמה",
+        "guidelineFullHe": "הנחיה 1.3 ניתן להתאמה: יש לבנות תכנים הניתנים להצגה בדרכים שונות (למשל מתווה פשוט יותר) ללא איבוד מידע או מבנה.",
+        "criterionNo": "1.3.1",
+        "criterionNameHe": "מידע וקשרים - מידע, מבנה, והקשרים הסמנטיים בין חלקי העמוד המועברים באמצעים ויזואליים (כגון גודל פונט, מסגרות, רקעים וכד') ניתנים להבנה גם באמצעות הקוד:",
+        "descriptionHe": "כתיבת קוד סמנטי:\nא. כותרות: שימוש <h1> to <h6> לזהות כותרות\nב. רשימות: שימוש <ul>, <ol>, and <dl>לרשימות או קבוצות של קישורים (כולל תפריטים)\nג. טקסטים מיוחדים: שימוש בסימון סמנטי כדי לסמן טקסט מודגש או מיוחד (לדוגמא <strong>, <code>, <abbr>, <block quote>)\nד. טבלאות: שימוש בסימון טבלה להצגת מידע טבלאי (TH לתאי כותרת או scope attribute), וכן שימוש ב caption elements כדי לשייך כותרת טבלת נתונים עם טבלת נתונים, וב Summary element בהתאם לצורך.\nה. טפסים: שימוש label elements לשייך תוויות טקסט עם פקדי טופס. מתן תיאור עבור קבוצות של פקדי טופס באמצעות קבוצת שדות וlegend elements.\nו. אזורים בעמוד: אזורים בעמוד (תפריט ניווט, איזור ראשי וכד') מוגדרים באמצעות landmarks (רצוי)",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-programmatic.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "מידע, מבנה והקשרים המועברים חזותית חייבים להיות מובנים גם מהקוד: כותרות h1-h6, רשימות ul/ol/dl, טבלאות עם th ו-caption, וטפסים עם label ו-fieldset. אזורי העמוד יוגדרו באמצעות landmarks.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "list",
+          "listitem",
+          "definition-list",
+          "dlitem",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "scope-attr-valid",
+          "td-has-header",
+          "label",
+          "form-field-multiple-labels",
+          "select-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "empty-heading",
+          "heading-order",
+          "p-as-heading",
+          "table-fake-caption",
+          "landmark-one-main"
+        ],
+        "customRules": [
+          "fake-heading-detect",
+          "landmark-coverage"
+        ],
+        "applicability": "hasTextContent",
+        "evidenceSlice": "structure",
+        "rubricHe": "בדוק: (1) האם טקסט שנראה כותרת חזותית (גדול/מודגש/צבעוני, פותח מקטע) מסומן כ-h1-h6 ולא כ-p או div; (2) האם רשימות חזותיות ממומשות כ-ul/ol/dl ולא כפסקאות עם תווי בולט; (3) האם טבלאות נתונים כוללות th עם scope ו-caption, ושלא נעשה שימוש בטבלה לפריסה; (4) האם לכל פקד טופס יש label משויך; (5) האם קיימים landmarks (header/nav/main/footer או role מקביל) המכסים את אזורי העמוד. כותרת מזויפת היא הכשל הנפוץ ביותר בקריטריון זה.",
+        "remediation": {
+          "goalHe": "המבנה החזותי של העמוד משתקף במלואו בקוד הסמנטי.",
+          "instruction": "Replace visually-styled pseudo-headings with real `<h1>`–`<h6>` in hierarchical order; convert bullet-like paragraphs to `<ul>`/`<ol>`; give data tables `<caption>`, `<th scope=\"col|row\">`; associate every form control with a `<label for>`; wrap regions in `<header>`, `<nav>`, `<main>`, `<footer>`. Do not add ARIA roles to `<div>`s where the native element exists.",
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R14",
+      "form": {
+        "sourceRow": 14,
+        "guidelineHe": "הנחיה 1.3 ניתן להתאמה",
+        "guidelineFullHe": "הנחיה 1.3 ניתן להתאמה: יש לבנות תכנים הניתנים להצגה בדרכים שונות (למשל מתווה פשוט יותר) ללא איבוד מידע או מבנה.",
+        "criterionNo": "1.3.1",
+        "criterionNameHe": "מידע וקשרים",
+        "descriptionHe": "קיימת הפרדה מלאה בין תוכן לתצוגה על ידי שימוש ב CSS",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-programmatic.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "קיימת הפרדה מלאה בין תוכן לתצוגה על ידי שימוש ב-CSS.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "presentational-markup",
+          "layout-table-detect"
+        ],
+        "applicability": "hasTextContent",
+        "evidenceSlice": "structure",
+        "rubricHe": "בדוק שאין תגיות ומאפיינים עיצוביים בקוד: font, center, b/i במקום strong/em לצורך משמעות, bgcolor, align, width/height עיצוביים, טבלאות לפריסה, ו-&nbsp; רצופים ליצירת מרווח. שימוש נרחב ב-style inline לעיצוב מבני הוא כשל.",
+        "remediation": {
+          "goalHe": "כל העיצוב ב-CSS; ה-HTML נושא משמעות בלבד.",
+          "instruction": "Remove presentational markup (`<font>`, `<center>`, `bgcolor`, `align`, spacer tables, runs of `&nbsp;`) and move it to CSS. Keep `<b>`/`<i>` only where there is no semantic emphasis; use `<strong>`/`<em>` where there is.",
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R15",
+      "form": {
+        "sourceRow": 15,
+        "guidelineHe": "הנחיה 1.3 ניתן להתאמה",
+        "guidelineFullHe": "הנחיה 1.3 ניתן להתאמה: יש לבנות תכנים הניתנים להצגה בדרכים שונות (למשל מתווה פשוט יותר) ללא איבוד מידע או מבנה.",
+        "criterionNo": "1.3.2",
+        "criterionNameHe": "רצף בעל משמעות",
+        "descriptionHe": "כאשר הסדר שבו מוצג תוכן משפיע על המשמעות של התוכן, הרצף יקבע בקוד (שימו לב לסדר המידע בקוד יש השפעה על האופן בו הוא מוקרא לעיוורים העושים שימוש בקוראה מסך לכן חובה לבצע את הבדיקה באמצעות קורא מסך ולוודא שסדר ההקראה לוגי)",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-sequence.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "כאשר סדר הצגת התוכן משפיע על משמעותו, הרצף ייקבע בקוד. סדר המידע בקוד משפיע על סדר ההקראה בקורא מסך ולכן נדרשת בדיקה שסדר ההקראה לוגי.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "dom-visual-order-mismatch"
+        ],
+        "applicability": "hasTextContent",
+        "evidenceSlice": "readingOrder",
+        "rubricHe": "השווה את סדר ה-DOM לסדר החזותי (מיקום גיאומטרי, בהתחשב ב-RTL). דגל חריגות שנוצרו מ-flex/grid order, position absolute, או float — כאשר הן משנות את משמעות הרצף. הבדל שאינו משנה משמעות אינו כשל.",
+        "remediation": {
+          "goalHe": "סדר ה-DOM תואם את סדר הקריאה המשמעותי.",
+          "instruction": "Reorder the DOM to match the intended reading order instead of repositioning with CSS `order`, `float`, or absolute positioning. In RTL layouts use logical properties (`inset-inline-start`, `margin-inline`) so the visual order follows direction rather than fighting it.",
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R16",
+      "form": {
+        "sourceRow": 16,
+        "guidelineHe": "הנחיה 1.3 ניתן להתאמה",
+        "guidelineFullHe": "הנחיה 1.3 ניתן להתאמה: יש לבנות תכנים הניתנים להצגה בדרכים שונות (למשל מתווה פשוט יותר) ללא איבוד מידע או מבנה.",
+        "criterionNo": "1.3.3",
+        "criterionNameHe": "מאפייני חישה",
+        "descriptionHe": "הוראות אינן מסתמכות על צבע, צורה, או מיקום על המסך (לדוגמא, \"לחץ על הכפתור המרובע כדי להמשיך\", או \"קרא את הוראות בצבע כחול\")\nהוראות אינן מסתמכות על סאונד (לדוגמא, המתן להישמע צפצוף כדי לעבוד לשלב הבא).",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-understanding.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "הוראות אינן מסתמכות על צבע, צורה או מיקום על המסך בלבד. הוראות אינן מסתמכות על סאונד בלבד.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [],
+        "applicability": "hasSensoryInstructions",
+        "evidenceSlice": "sensoryText",
+        "rubricHe": "אתר טקסט שמפנה למאפיין חושי בלבד: \"לחץ על הכפתור הירוק\", \"בתיבה מימין\", \"העיגול למטה\", \"המתן לצפצוף\". כשל נקבע רק אם אין מזהה נוסף (שם, תווית, סדר) שמאפשר לזהות את היעד בלי אותו חוש. הפניה שכוללת גם שם הפקד אינה כשל.",
+        "remediation": {
+          "goalHe": "כל הוראה מזהה את היעד גם בטקסט, לא רק בצבע/צורה/מיקום/צליל.",
+          "instruction": "Rewrite sensory-only instructions to name the target: \"לחץ על הכפתור הירוק\" → \"לחץ על הכפתור 'שליחה' (הירוק)\". Keep the sensory cue as an addition, never as the only identifier.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R17",
+      "form": {
+        "sourceRow": 17,
+        "guidelineHe": "הנחיה 1.4 בר-הבחנה",
+        "criterionNo": "1.4.1",
+        "criterionNameHe": "שימוש בצבע",
+        "descriptionHe": "א. צבע אינו אמצעי יחידי - צבע אינו משמש כאמצעי החזותי היחיד להעברת מידע, סימון פעולה, בקשת תגובה, או הבחנה בפרט חזותי.\nב. צבע אינו המבחין היחידי לסימון קישורים. אלא אם כן הבדלי הצבע בין הקישור לטקסט רגיל הוא 1:3 ועיצוב קישור משתנה במרכיב נוסף מלבד צבע on mouse over ו on focus (לדוגמא underline) .",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-without-color.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "צבע אינו האמצעי החזותי היחיד להעברת מידע, סימון פעולה, בקשת תגובה או הבחנה בפרט חזותי. קישורים בתוך טקסט לא יובחנו בצבע בלבד, אלא אם יחס הניגודיות מול הטקסט הרגיל הוא 3:1 והעיצוב משתנה גם ב-hover וב-focus.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "link-in-text-block"
+        ],
+        "customRules": [
+          "color-only-meaning"
+        ],
+        "applicability": "hasColorCodedContent",
+        "evidenceSlice": "colorUsage",
+        "rubricHe": "בדוק: (1) האם קיים מידע שמובחן בצבע בלבד — סטטוסים, שדות חובה באדום, מקראות גרפים, שורות מודגשות; (2) קישורים בתוך פסקת טקסט — האם יש קו תחתון או הבחנה לא-צבעונית, ואם לא, האם יחס הניגודיות מול טקסט הסביבה הוא 3:1 לפחות וקיים שינוי עיצוב ב-hover/focus. שדה חובה המסומן בכוכבית אדומה בלבד ללא טקסט \"שדה חובה\" הוא כשל.",
+        "remediation": {
+          "goalHe": "לכל הבחנה חזותית מלווה סימן שאינו צבע — טקסט, אייקון, קו תחתון או דפוס.",
+          "instruction": "Pair every colour-coded distinction with a non-colour cue: an icon plus text label for statuses, `underline` for in-text links (or 3:1 contrast against surrounding text *and* a hover/focus style change), patterns in charts, and the word \"חובה\" or `aria-required` for required fields rather than a red asterisk alone.",
+          "hebrewStrings": {
+            "requiredField": "שדה חובה",
+            "errorPrefix": "שגיאה:"
+          },
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R18",
+      "form": {
+        "sourceRow": 18,
+        "guidelineHe": "הנחיה 1.4 בר-הבחנה",
+        "criterionNo": "1.4.2",
+        "criterionNameHe": "שליטה באודיו",
+        "descriptionHe": "שליטה באודיו - קיים מנגנון עצירה או הפסקה, או לשליטה בעוצמה של אודיו המנגן אוטומטית בדף במשך למעלה מ 3 שניות.",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-dis-audio.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "לאודיו המתנגן אוטומטית בדף למשך יותר משלוש שניות נדרש מנגנון עצירה, הפסקה או שליטה בעוצמה.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "no-autoplay-audio"
+        ],
+        "customRules": [],
+        "applicability": "hasAutoplayAudio",
+        "evidenceSlice": "media",
+        "rubricHe": "אם קיים אודיו שמתנגן אוטומטית מעל 3 שניות: האם קיים פקד עצירה/השתקה הנגיש במקלדת ומופיע בתחילת העמוד? היעדר פקד, או פקד המופיע רק אחרי תוכן רב, הם כשל.",
+        "remediation": {
+          "goalHe": "לאודיו אוטומטי פקד עצירה נגיש בתחילת העמוד.",
+          "instruction": "Best fix: do not autoplay audio. If it must, add a stop/mute control as one of the first focusable elements on the page, operable by keyboard, and remember the user's choice.",
+          "hebrewStrings": {
+            "stopButton": "עצור את השמע"
+          },
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R19",
+      "form": {
+        "sourceRow": 19,
+        "guidelineHe": "הנחיה 1.4 בר-הבחנה",
+        "criterionNo": "1.4.3",
+        "criterionNameHe": "קונטרסט",
+        "descriptionHe": "קונטרסט - עבור כל הטקסטים בעמוד - יחס-קונטרסט של לפחות 4.5:1 בטקסט רגיל. בטקסט גדול (over 18 point or 14 point bold) יחס של לפחות 3:1\n(למעט: לוגו, טקסטים המשמשים כרקע לתמונה, טקסטים שלא נראים לאף אחד)\nאם לא ניתן לעמוד בהנחיה זו מותר על פי התקנות לעשות שימוש בסט צבעים נוסף לאתר העומד בהנחיה.",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "יחס ניגודיות של 4.5:1 לפחות לטקסט רגיל ו-3:1 לפחות לטקסט גדול (מעל 18pt או 14pt מודגש). למעט לוגו, טקסט על גבי תמונת רקע וטקסט שאינו נראה.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "auto",
+        "axeRules": [
+          "color-contrast"
+        ],
+        "customRules": [],
+        "applicability": "hasTextContent",
+        "evidenceSlice": "contrast",
+        "rubricHe": "קריטריון זה נקבע חישובית. יחס מתחת ל-4.5:1 בטקסט רגיל או מתחת ל-3:1 בטקסט גדול הוא כשל, למעט לוגו וטקסט מוסתר.",
+        "remediation": {
+          "goalHe": "כל טקסט עומד ביחס הניגודיות הנדרש מול רקעו בפועל.",
+          "instruction": "Darken the foreground or lighten the background until the measured ratio is met. Note that Hebrew typefaces render thinner than Latin at the same size and weight, so a ratio that only just clears 4.5:1 reads worse in Hebrew — aim above the minimum. Do not \"fix\" this by enlarging text to reach the 3:1 large-text threshold unless the larger size is a genuine design decision.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R20",
+      "form": {
+        "sourceRow": 20,
+        "guidelineHe": "הנחיה 1.4 בר-הבחנה",
+        "criterionNo": "1.4.4",
+        "criterionNameHe": "הגדלת טקסט",
+        "descriptionHe": "הגדלת טקסט - כאשר מגדילים את הטקסט ב 200% (פי 2) אין פגיעה במידע ובפונקציונאליות של העמוד.",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "בהגדלת הטקסט ל-200% אין פגיעה במידע ובפונקציונליות של העמוד.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "meta-viewport"
+        ],
+        "customRules": [
+          "zoom-200-reflow"
+        ],
+        "applicability": "hasTextContent",
+        "evidenceSlice": "contrast",
+        "rubricHe": "בהגדלה ל-200%: האם נחתך טקסט, נעלם תוכן, מופיעה גלילה אופקית, או חופפים רכיבים באופן שמונע שימוש? הופעת פס גלילה אופקי בלבד בטבלה רחבה אינה בהכרח כשל; חיתוך טקסט או חסימת פקד הם כשל.",
+        "remediation": {
+          "goalHe": "העמוד שמיש במלואו בהגדלת טקסט של 200%.",
+          "instruction": "Use relative units (`rem`, `em`, `%`) for text and containers, avoid fixed `height` on text boxes, remove `user-scalable=no` and `maximum-scale` from the viewport meta, and let containers wrap instead of clipping (`overflow: visible` or `auto`, never `hidden` on text).",
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R21",
+      "form": {
+        "sourceRow": 21,
+        "guidelineHe": "הנחיה 1.4 בר-הבחנה",
+        "criterionNo": "1.4.5",
+        "criterionNameHe": "תמונות של טקסט",
+        "descriptionHe": "אם טכנולוגית ניתן להשיג את אותה תצוגה ויזואלית באמצעות טקסט חי (למשל טקסט חי על תמונת רקע) אין להשתמש בטקסט של תמונה. פרט ל: אם קיימת טכניקה בה התמונה של טקסט יכולה להיות מותאמת אישית מבחינה ויזואלית לדרישות של המשתמש; או שהתמונה היא חיונית: הצגה מסוימת של טקסט בתמונה היא חיונית למידע (הערה - לוגו או brand נחשבים לחיוניים).",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-text-presentation.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "אין להשתמש בתמונה של טקסט כאשר ניתן להשיג את אותה תצוגה חזותית בטקסט חי. פרט למקרים שבהם התמונה ניתנת להתאמה אישית או שהצגת הטקסט בתמונה חיונית — לוגו ומותג נחשבים חיוניים.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [
+          "text-in-image-detect"
+        ],
+        "applicability": "hasTextImages",
+        "evidenceSlice": "textImages",
+        "rubricHe": "אתר תמונות שמכילות טקסט משמעותי — באנרים, כרזות מבצע, אינפוגרפיקות, ציטוטים מעוצבים, טבלאות מחירים כתמונה, צילומי מסך של טקסט. לוגו ומותג פטורים. תמונה שהטקסט בה זמין במלואו גם כטקסט חי סמוך אינה כשל.",
+        "remediation": {
+          "goalHe": "טקסט מוצג כטקסט חי; תמונות טקסט מוחלפות או מלוות בטקסט שווה ערך.",
+          "instruction": "Rebuild banners and promo graphics as live text over a background image using CSS. Where the image genuinely must stay (logo, brand mark), that is an exception. Never ship a scanned price list or a screenshot of a table as the only source of that information.",
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R22",
+      "form": {
+        "sourceRow": 22,
+        "guidelineHe": "הנחיה 2.1 מקלדת נגישה",
+        "guidelineFullHe": "הנחיה 2.1 מקלדת נגישה: יש לאפשר תפקוד מלא ממקלדת.",
+        "criterionNo": "2.1.1",
+        "criterionNameHe": "מקלדת",
+        "descriptionHe": "א. כל הפעולות באתר ניתנות לביצוע באמצעות מקלדת לחיצה על מקש tab)\nב. מעבר הפוקוס לוגי - מעבר לוגי אינטואיטיבי ומותאם למבנה המסך בין קישורים, פקדים וכדומה.\nג. רכיבים שאינם HTML מאפשרים שימוש מלא במקלדת המותאם להתנהגות רכיבי html.\nד. כאשר רכיב בדף מקבל פוקוס הדבר לא מעורר שינוי משמעותי בדף (פתיחת דף נוסף, הופעת popup, העברת הפוקוס לרכיב אחר וכדומה)",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/keyboard-operation-keyboard-operable.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "כל הפעולות באתר ניתנות לביצוע במקלדת ומעבר הפוקוס לוגי ומותאם למבנה המסך. רכיבים שאינם HTML מאפשרים שימוש מלא במקלדת, וקבלת פוקוס אינה מעוררת שינוי משמעותי בדף.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "nested-interactive",
+          "scrollable-region-focusable"
+        ],
+        "customRules": [
+          "keyboard-walk",
+          "click-handler-no-keyboard"
+        ],
+        "applicability": "hasFocusableElements",
+        "evidenceSlice": "keyboard",
+        "rubricHe": "בדוק: (1) רכיבים אינטראקטיביים שאינם נגישים ב-Tab — div/span עם onclick ללא tabindex ו-role; (2) פונקציונליות שזמינה רק ב-hover או רק בעכבר (תפריטי משנה, גרירה ללא חלופה); (3) רכיבי ARIA מותאמים ללא תמיכת מקשי חיצים/Enter/Escape. אלמנט עם מאזין קליק שאינו button/a ואינו ממומש כפקד הוא כשל.",
+        "remediation": {
+          "goalHe": "כל פעולה בעמוד ניתנת לביצוע מהמקלדת בלבד.",
+          "instruction": "Convert click-handling `<div>`/`<span>` into `<button>`/`<a>`, or give them `role`, `tabindex=\"0\"` and Enter/Space handlers. Give hover-only menus focus and keyboard equivalents. Implement the expected key bindings for every custom widget (arrows within a menu, Escape to close, Home/End within a list).",
+          "effort": "high"
+        }
+      }
+    },
+    {
+      "id": "R23",
+      "form": {
+        "sourceRow": 23,
+        "guidelineHe": "הנחיה 2.1 מקלדת נגישה",
+        "guidelineFullHe": "הנחיה 2.1 מקלדת נגישה: יש לאפשר תפקוד מלא ממקלדת.",
+        "criterionNo": "2.1.2",
+        "criterionNameHe": "מלכודות מקלדת",
+        "descriptionHe": "הדף אינו כולל \"מלכודות מקלדת\" (אלמנטים שניתן להגיע אליהם באמצעות המקלדת אך לא ניתן לנווט מהם הלאה)",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/keyboard-operation-trapping.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "הדף אינו כולל מלכודות מקלדת — אלמנטים שניתן להגיע אליהם במקלדת אך לא ניתן לנווט מהם הלאה.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "auto",
+        "axeRules": [],
+        "customRules": [
+          "keyboard-trap"
+        ],
+        "applicability": "hasFocusableElements",
+        "evidenceSlice": "keyboard",
+        "rubricHe": "נקבע על ידי הליכת Tab אוטומטית: אם הפוקוס חוזר לאותו אלמנט פעמיים ברציפות, או אינו מתקדם אחרי מספר לחיצות, קיימת מלכודת. מודאל שכולא פוקוס בכוונה אך ניתן לסגירה ב-Escape אינו מלכודת.",
+        "remediation": {
+          "goalHe": "ניתן לצאת מכל רכיב במקלדת בלבד.",
+          "instruction": "Fix focus-trapping widgets so Tab/Shift+Tab can leave them, and give every intentional focus trap (modal, dialog) an Escape handler and a visible close control. Embedded third-party players are a common source — check them explicitly.",
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R24",
+      "form": {
+        "sourceRow": 24,
+        "guidelineHe": "הנחיה 2.2 זמן מספיק",
+        "guidelineFullHe": "הנחיה 2.2 זמן מספיק: יש לתת למשתמשים מספיק זמן לקרוא ולהשתמש בתכנים.",
+        "criterionNo": "2.2.1",
+        "criterionNameHe": "כוונון זמן",
+        "descriptionHe": "בכל מצב בו יש הגבלת זמן לקריאה, תגובה או פעולה (כולל time out), למשתמש ניתנת אפשרות לבטל, להאריך, או להתאים לעצמו את הגבלת הזמן.\n(למעט מקרים בהם הגבלת הזמן היא מעל 20 שעות).",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/time-limits-required-behaviors.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "בכל מצב של הגבלת זמן לקריאה, תגובה או פעולה — כולל time out — ניתנת למשתמש אפשרות לבטל, להאריך או להתאים את ההגבלה. למעט הגבלות זמן שמעל 20 שעות.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "meta-refresh"
+        ],
+        "customRules": [
+          "timeout-detect"
+        ],
+        "applicability": "hasTimeLimit",
+        "evidenceSlice": "timing",
+        "rubricHe": "אתר הגבלות זמן: meta refresh, ספירה לאחור, פקיעת session, קרוסלה שמתקדמת אוטומטית, הודעה שנעלמת. עבור כל אחת — האם המשתמש יכול לבטל, להאריך או להתאים? הגבלה מעל 20 שעות פטורה.",
+        "remediation": {
+          "goalHe": "לכל הגבלת זמן אפשרות ביטול, הארכה או התאמה.",
+          "instruction": "Warn before a session expires and offer a one-action extension. Remove `<meta http-equiv=\"refresh\">`. Give auto-advancing carousels a pause control. Toast messages that carry information must persist until dismissed.",
+          "hebrewStrings": {
+            "extendSession": "הארך את זמן ההתחברות",
+            "sessionWarning": "ההתחברות שלך תפוג בעוד דקה"
+          },
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R25",
+      "form": {
+        "sourceRow": 25,
+        "guidelineHe": "הנחיה 2.2 זמן מספיק",
+        "guidelineFullHe": "הנחיה 2.2 זמן מספיק: יש לתת למשתמשים מספיק זמן לקרוא ולהשתמש בתכנים.",
+        "criterionNo": "2.2.2",
+        "criterionNameHe": "הפסקה, עצירה, הסתרה",
+        "descriptionHe": "א. ניתן להפסיק, לעצור או להסתיר מידע מהבהב, נע או נגלל (שמופיע במשך יותר מ 5 שניות)\nב.יש לקבוע מנגנון שיאפשר למשתמש לעצור, להפסיק או להסתיר מידע המתעדכן באופן אוטומטי, או שיאפשר שליטה בתדירות העדכון, אם המידע (1) מופיע באופן אוטומטי, (2) מוצג במקביל לתוכן אחר; למעט מקרים שבהם העדכון האוטומטי מהותי לפעולה.",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/time-limits-pause.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "ניתן להפסיק, לעצור או להסתיר מידע מהבהב, נע או נגלל המופיע למעלה מ-5 שניות. למידע המתעדכן אוטומטית ומוצג במקביל לתוכן אחר יסופק מנגנון עצירה או שליטה בתדירות, למעט כשהעדכון מהותי לפעולה.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "blink",
+          "marquee"
+        ],
+        "customRules": [
+          "moving-content-detect"
+        ],
+        "applicability": "hasMovingContent",
+        "evidenceSlice": "motion",
+        "rubricHe": "אתר קרוסלות אוטומטיות, טיקרים, אנימציות מחזוריות, GIF נע, ותוכן שמתרענן לבדו. עבור כל אחד — האם קיים פקד עצירה נגיש במקלדת? כיבוד prefers-reduced-motion הוא שיפור אך אינו מחליף פקד עצירה גלוי.",
+        "remediation": {
+          "goalHe": "לכל תוכן נע או מתעדכן אוטומטית פקד עצירה גלוי ונגיש.",
+          "instruction": "Add a visible, keyboard-reachable pause/stop control to carousels, tickers and auto-refreshing regions. Also honour `prefers-reduced-motion`, but do not treat that as a substitute for the control.",
+          "hebrewStrings": {
+            "pause": "השהה",
+            "play": "המשך",
+            "stopAnimation": "עצור אנימציה"
+          },
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R26",
+      "form": {
+        "sourceRow": 26,
+        "guidelineHe": "הנחיה 2.3 התקפים",
+        "guidelineFullHe": "הנחיה 2.3 התקפים: אין לעצב תכנים באופן הידוע כגורם להתקפים.",
+        "criterionNo": "2.3.1",
+        "criterionNameHe": "הבהוב וריצוד",
+        "descriptionHe": "אין הבהוב או ריצוד על במסך בקצב של יותר משלוש פעמים בשנייה או general flash and red flash thresholds.",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/seizure-does-not-violate.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "אין הבהוב או ריצוד על המסך בקצב של יותר משלוש פעמים בשנייה, או מעבר לספי ההבהוב הכללי והאדום.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "blink",
+          "marquee"
+        ],
+        "customRules": [
+          "flash-candidates"
+        ],
+        "applicability": "hasFlashingCandidates",
+        "evidenceSlice": "motion",
+        "rubricHe": "אתר מועמדים להבהוב: אנימציות CSS מהירות, GIF מהבהבים, וידאו עם חיתוכים מהירים, אפקטי stroboscope. הכלי מסמן מועמדים בלבד — כשל ודאי נקבע רק כשקצב ההבהוב ניתן למדידה ועולה על 3 לשנייה.",
+        "remediation": {
+          "goalHe": "אין תוכן המהבהב יותר משלוש פעמים בשנייה.",
+          "instruction": "Slow or remove any flashing effect above 3 Hz. This is a seizure-safety criterion — when in doubt, remove the effect rather than tuning it.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R27",
+      "form": {
+        "sourceRow": 27,
+        "guidelineHe": "הנחיה 2.4 ניתן לניווט",
+        "guidelineFullHe": "הנחיה 2.4 ניתן לניווט: יש לספק דרכים כדי לעזור למשתמשים לנווט, לאתר תכנים, ולקבוע את מקום הימצא.",
+        "criterionNo": "2.4.1",
+        "criterionNameHe": "עקיפת בלוקים",
+        "descriptionHe": "קיים מנגנון לעקיפת בלוקים (יחידות קבועות שחוזרות על עצמן במספר עמודים כגון תפריטים, באנרים וכד'). המנגנון תומך בניווט ישיר לתוכן העמוד.",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-skip.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "קיים מנגנון לעקיפת בלוקים החוזרים על עצמם במספר עמודים, כגון תפריטים ובאנרים. המנגנון תומך בניווט ישיר לתוכן העמוד.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "bypass",
+          "region",
+          "landmark-one-main"
+        ],
+        "customRules": [
+          "skip-link-functional"
+        ],
+        "applicability": "hasRepeatedBlocks",
+        "evidenceSlice": "navigation",
+        "rubricHe": "בדוק: (1) קיים קישור דילוג שהוא מהראשונים בסדר ה-Tab; (2) הוא נעשה גלוי בקבלת פוקוס; (3) הוא מוביל ליעד קיים שמקבל פוקוס בפועל. קישור דילוג שמוסתר ב-display:none או שמצביע ל-id שאינו קיים הוא כשל. לחלופין — מבנה landmarks מלא.",
+        "remediation": {
+          "goalHe": "קיים קישור דילוג פעיל לתוכן הראשי, או מבנה landmarks מלא.",
+          "instruction": "Add `<a href=\"#main-content\" class=\"skip-link\">דלג לתוכן הראשי</a>` as the first focusable element; make it visible on focus (offset it with `inset-inline-start`, not `left`, so it works in RTL); give the target `id=\"main-content\"` and `tabindex=\"-1\"` so focus actually lands there.",
+          "hebrewStrings": {
+            "skipLink": "דלג לתוכן הראשי",
+            "skipNav": "דלג לתפריט הניווט"
+          },
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R28",
+      "form": {
+        "sourceRow": 28,
+        "guidelineHe": "הנחיה 2.4 ניתן לניווט",
+        "guidelineFullHe": "הנחיה 2.4 ניתן לניווט: יש לספק דרכים כדי לעזור למשתמשים לנווט, לאתר תכנים, ולקבוע את מקום הימצא.",
+        "criterionNo": "2.4.2",
+        "criterionNameHe": "כותרת דף",
+        "descriptionHe": "לכל העמודים יש כותרת - page title - ייחודית המתארת את תוכן / פונקציונאליות של העמוד",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-title.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "לכל העמודים יש כותרת ייחודית המתארת את תוכן העמוד או את הפונקציונליות שלו.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "document-title"
+        ],
+        "customRules": [
+          "title-unique-across-site"
+        ],
+        "applicability": "always",
+        "evidenceSlice": "navigation",
+        "rubricHe": "בדוק: (1) קיים title לא ריק; (2) הוא מתאר את תוכן העמוד הספציפי ולא רק את שם האתר; (3) הוא ייחודי ביחס לשאר עמודי האתר שנסרקו. \"דף הבית\" בכל העמודים הוא כשל. כותרת שהיא שם האתר בלבד היא כשל.",
+        "remediation": {
+          "goalHe": "לכל עמוד כותרת ייחודית שמתארת אותו.",
+          "instruction": "Set `<title>` to \"{תיאור העמוד} | {שם האתר}\", with the page-specific part first so screen-reader users hear it before the site name.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R29",
+      "form": {
+        "sourceRow": 29,
+        "guidelineHe": "הנחיה 2.4 ניתן לניווט",
+        "guidelineFullHe": "הנחיה 2.4 ניתן לניווט: יש לספק דרכים כדי לעזור למשתמשים לנווט, לאתר תכנים, ולקבוע את מקום הימצא.",
+        "criterionNo": "2.4.3",
+        "criterionNameHe": "Focus order",
+        "descriptionHe": "בניווט באמצעות מקלדת (מקש TAB) מעבר הפוקוס לוגי, אינטואיטיבי ומותאם למבנה העמוד",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-focus-order.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "בניווט באמצעות מקלדת מעבר הפוקוס לוגי, אינטואיטיבי ומותאם למבנה העמוד.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "tabindex"
+        ],
+        "customRules": [
+          "focus-order-walk"
+        ],
+        "applicability": "hasFocusableElements",
+        "evidenceSlice": "keyboard",
+        "rubricHe": "השווה את סדר הפוקוס בפועל לסדר החזותי ב-RTL. דגל: tabindex חיובי, קפיצות בין אזורים מרוחקים, פוקוס שנכנס לתוכן מוסתר, ומודאל שאינו לוכד פוקוס. סדר שנראה שונה אך שומר על היגיון קריאה אינו כשל.",
+        "remediation": {
+          "goalHe": "סדר הפוקוס תואם את הסדר החזותי וההגיוני של העמוד.",
+          "instruction": "Remove positive `tabindex` values and let DOM order drive focus. Make hidden content genuinely unfocusable (`display:none`, `hidden`, or `inert`). Move focus into a dialog when it opens and return it to the trigger when it closes.",
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R30",
+      "form": {
+        "sourceRow": 30,
+        "guidelineHe": "הנחיה 2.4 ניתן לניווט",
+        "guidelineFullHe": "הנחיה 2.4 ניתן לניווט: יש לספק דרכים כדי לעזור למשתמשים לנווט, לאתר תכנים, ולקבוע את מקום הימצא.",
+        "criterionNo": "2.4.4",
+        "criterionNameHe": "מטרת הקישור (מתוך הקשר)",
+        "descriptionHe": "מטרת הקישור ברורה מתוך טקסט הקישור או מתוך הקונטקסט (המשפט או הפסקה בו הוא נמצא). בכל מקרה שעלול להיווצר חוסר בהירות מסופק title לקישור שמסביר במדוייק ובאופן מלא מהי מטרת הקישור.",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-refs.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "מטרת הקישור ברורה מטקסט הקישור או מההקשר שבו הוא נמצא. במקרה של חוסר בהירות יסופק title המסביר במדויק מהי מטרת הקישור.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "link-name"
+        ],
+        "customRules": [
+          "generic-link-text"
+        ],
+        "applicability": "hasLinks",
+        "evidenceSlice": "links",
+        "rubricHe": "עבור כל קישור: האם ניתן להבין את יעדו מטקסט הקישור לבדו, או מהמשפט/הפסקה שסביבו? \"לחץ כאן\", \"קרא עוד\", \"כאן\", \"לפרטים\" ללא הקשר מבהיר הם כשל. קישור שטקסטו הוא כתובת URL ארוכה הוא כשל. שני קישורים באותו עמוד עם אותו טקסט אך יעדים שונים הם כשל.",
+        "remediation": {
+          "goalHe": "טקסט כל קישור מתאר את יעדו, גם כשקוראים אותו לבדו.",
+          "instruction": "Rewrite link text to name the destination: \"קרא עוד\" → \"קרא עוד על תנאי השירות\". Where the visible text must stay short, extend the accessible name with `aria-label` or visually-hidden text — but prefer fixing the visible text, since sighted keyboard users read it too.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R31",
+      "form": {
+        "sourceRow": 31,
+        "guidelineHe": "הנחיה 2.4 ניתן לניווט",
+        "guidelineFullHe": "הנחיה 2.4 ניתן לניווט: יש לספק דרכים כדי לעזור למשתמשים לנווט, לאתר תכנים, ולקבוע את מקום הימצא.",
+        "criterionNo": "2.4.5",
+        "criterionNameHe": "ריבוי דרכים לאיתור דף באתר",
+        "descriptionHe": "יש יותר מדרך אחת להגיע לעמוד (אלא אם הוא שלב בתהליך או תוצאה של תהליך): דרכים אפשריות - מפת אתר, מנגנון חיפוש, תוכן עניינים, תפריט המכיל את כל העמודים באתר, bookmarks במסמכי PDF.",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-mult-loc.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "יש יותר מדרך אחת להגיע לעמוד, אלא אם הוא שלב בתהליך או תוצאה של תהליך. דרכים אפשריות: מפת אתר, מנגנון חיפוש, תוכן עניינים, תפריט מלא, או bookmarks במסמכי PDF.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "multiple-ways-site"
+        ],
+        "applicability": "isMultiPageSite",
+        "evidenceSlice": "siteConsistency",
+        "rubricHe": "ברמת האתר: האם קיימות לפחות שתי דרכים להגיע לעמוד — תפריט, חיפוש, מפת אתר, פירורי לחם? עמוד שהוא שלב בתהליך (תשלום, אשף) פטור מהקריטריון.",
+        "remediation": {
+          "goalHe": "לכל עמוד לפחות שתי דרכי הגעה.",
+          "instruction": "Add a site search, a sitemap page linked from the footer, or breadcrumbs — any two mechanisms satisfy this. Exclude genuine process steps from the requirement rather than bolting navigation onto a checkout flow.",
+          "hebrewStrings": {
+            "sitemap": "מפת האתר",
+            "search": "חיפוש באתר"
+          },
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R32",
+      "form": {
+        "sourceRow": 32,
+        "guidelineHe": "הנחיה 2.4 ניתן לניווט",
+        "guidelineFullHe": "הנחיה 2.4 ניתן לניווט: יש לספק דרכים כדי לעזור למשתמשים לנווט, לאתר תכנים, ולקבוע את מקום הימצא.",
+        "criterionNo": "2.4.6",
+        "criterionNameHe": "כותרות ותוויות",
+        "descriptionHe": "כותרות ותוויות ברורות המבהירות בברור את הנושא או המטרה.",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-descriptive.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "כותרות ותוויות ברורות המבהירות את הנושא או המטרה.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "llm",
+        "axeRules": [
+          "empty-heading"
+        ],
+        "customRules": [],
+        "applicability": "hasHeadingsOrLabels",
+        "evidenceSlice": "headingsLabels",
+        "rubricHe": "עבור כל כותרת ותווית: האם היא מתארת את תוכן המקטע או את מטרת השדה? כותרות גנריות (\"מידע\", \"פרטים\", \"עוד\"), תוויות שהן placeholder בלבד, ותוויות זהות לשדות שונים — כשל. כותרת קצרה אך ממוקדת אינה כשל.",
+        "remediation": {
+          "goalHe": "כל כותרת ותווית מתארת במדויק את מה שהיא מכסה.",
+          "instruction": "Replace generic headings and labels with specific ones (\"מידע\" → \"מידע על ביטול עסקה\"). A `placeholder` is not a label — add a real `<label>`.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R33",
+      "form": {
+        "sourceRow": 33,
+        "guidelineHe": "הנחיה 2.4 ניתן לניווט",
+        "guidelineFullHe": "הנחיה 2.4 ניתן לניווט: יש לספק דרכים כדי לעזור למשתמשים לנווט, לאתר תכנים, ולקבוע את מקום הימצא.",
+        "criterionNo": "2.4.7",
+        "criterionNameHe": "פוקוס נראה לעין",
+        "descriptionHe": "אפקט ויזואלי בפוקוס - כל מרכיב המקבל פוקוס בשימוש במקלדת מקבל אפקט ויזואלי (ע\"י הדפדפן או ע\"י שינוי עיצוב של הרכיב)",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-other-lang-id.htmlhttp:/www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-doc-lang-id.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "כל מרכיב המקבל פוקוס בשימוש במקלדת מקבל אפקט ויזואלי — מהדפדפן או משינוי עיצוב של הרכיב.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "focus-visible-check"
+        ],
+        "applicability": "hasFocusableElements",
+        "evidenceSlice": "focusVisible",
+        "rubricHe": "עבור כל רכיב שמקבל פוקוס: האם יש הבדל חזותי מדיד בין מצב רגיל למצב פוקוס? outline:none ללא חלופה הוא כשל. אינדיקטור בניגודיות נמוכה מאוד מול הרקע הוא כשל מעשי.",
+        "remediation": {
+          "goalHe": "לכל רכיב שמקבל פוקוס אינדיקטור חזותי ברור.",
+          "instruction": "Never ship `outline: none` without a replacement. Use `:focus-visible { outline: 3px solid <high-contrast>; outline-offset: 2px; }`. Verify the indicator is visible against every background it appears on, including inside dark sections.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R34",
+      "form": {
+        "sourceRow": 34,
+        "guidelineHe": "הנחיה 2.4 ניתן לניווט",
+        "guidelineFullHe": "הנחיה 2.4 ניתן לניווט: יש לספק דרכים כדי לעזור למשתמשים לנווט, לאתר תכנים, ולקבוע את מקום הימצא.",
+        "criterionNo": "2.4.10",
+        "criterionNameHe": "כותרות לקטעים",
+        "descriptionHe": "יש שימוש בכותרות כדי לזהות קטעים (sections)",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-headings.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "יש שימוש בכותרות כדי לזהות קטעים (sections) בעמוד.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "heading-order",
+          "empty-heading"
+        ],
+        "customRules": [
+          "section-heading-coverage"
+        ],
+        "applicability": "hasSections",
+        "evidenceSlice": "structure",
+        "rubricHe": "בדוק שכל מקטע תוכן משמעותי נפתח בכותרת, ושההיררכיה רציפה (אין דילוג מ-h2 ל-h4). עמוד ללא h1 הוא כשל. מקטע ארוך ללא כותרת הוא כשל.",
+        "remediation": {
+          "goalHe": "כל מקטע תוכן נפתח בכותרת, בהיררכיה רציפה.",
+          "instruction": "Give the page exactly one `<h1>`, open each section with the next heading level down, and do not skip levels. Style heading levels with CSS rather than picking a level for its default size.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R35",
+      "form": {
+        "sourceRow": 35,
+        "guidelineHe": "הנחיה 3.1 קריא",
+        "guidelineFullHe": "הנחיה 3.1 קריא: יש ליצור תכני טקסט קריאים וניתנים להבנה.",
+        "criterionNo": "3.1.1",
+        "criterionNameHe": "השפה בדף",
+        "descriptionHe": "שפת כתיבה - בעמוד מוגדרת שפת הכתיבה (עברית, ערבית, אנגלית) ב HTML TAG. לדוגמא \"Lang=\"he",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-doc-lang-id.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "בעמוד מוגדרת שפת הכתיבה בתגית ה-HTML, לדוגמה lang=\"he\".",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "auto",
+        "axeRules": [
+          "html-has-lang",
+          "html-lang-valid",
+          "html-xml-lang-mismatch"
+        ],
+        "customRules": [
+          "hebrew-lang-dir"
+        ],
+        "applicability": "always",
+        "evidenceSlice": "language",
+        "rubricHe": "נקבע אוטומטית: קיום lang תקין על תגית html. לתוכן עברי נדרש גם dir=\"rtl\" — היעדרו נרשם כממצא נפרד לפי התוספת הישראלית.",
+        "remediation": {
+          "goalHe": "תגית ה-html מצהירה על שפת העמוד, ובעברית גם על כיוון הכתיבה.",
+          "instruction": "Set `<html lang=\"he\" dir=\"rtl\">` for Hebrew pages (`lang=\"ar\"` for Arabic, also RTL; `lang=\"en\"` with `dir=\"ltr\"` for English).",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R36",
+      "form": {
+        "sourceRow": 36,
+        "guidelineHe": "הנחיה 3.1 קריא",
+        "guidelineFullHe": "הנחיה 3.1 קריא: יש ליצור תכני טקסט קריאים וניתנים להבנה.",
+        "criterionNo": "3.1.2",
+        "criterionNameHe": "השפה בחלקים בעמוד",
+        "descriptionHe": "בכל מקום בתוכן בו יש שינוי של שפת הכתיבה מצוין השינוי בקוד באמצעות Lang attribute",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-other-lang-id.htmlhttp:/www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-doc-lang-id.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "בכל מקום בתוכן שבו משתנה שפת הכתיבה, השינוי מצוין בקוד באמצעות מאפיין lang.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "valid-lang"
+        ],
+        "customRules": [
+          "foreign-language-run"
+        ],
+        "applicability": "hasForeignLanguageParts",
+        "evidenceSlice": "language",
+        "rubricHe": "אתר קטעי טקסט בשפה שונה משפת העמוד באורך משמעותי (מעל כמה מילים) שאינם מסומנים ב-lang. שמות מותג, מונחים טכניים ומילות השאלה שהשתרשו בעברית אינם דורשים סימון. פסקה שלמה באנגלית בתוך עמוד עברי ללא lang=\"en\" היא כשל.",
+        "remediation": {
+          "goalHe": "כל קטע בשפה זרה מסומן ב-lang, ובמידת הצורך גם ב-dir.",
+          "instruction": "Wrap foreign-language passages: `<span lang=\"en\" dir=\"ltr\">…</span>`. Inside Hebrew text, also mark LTR islands — phone numbers, IDs, order numbers, emails, code — with `dir=\"ltr\"` so bidi does not scramble them.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R37",
+      "form": {
+        "sourceRow": 37,
+        "guidelineHe": "הנחיה 3.2 ניתן לניבוי",
+        "guidelineFullHe": "הנחיה 3.2 ניתן לניבוי: יש לגרום לדפי רשת להופיע ולתפקד באופן הניתן לניבוי",
+        "criterionNo": "3.2.1",
+        "criterionNameHe": "on focus",
+        "descriptionHe": "כאשר רכיב מקבל פוקוס לא מתרחש שינוי משמעותי (דוגמאות לשינוי משמעותי - פתיחת חלון חדש, העברת מוקד לרכיב אחר, מעבר לדף חדש (כולל כל דבר שנראה למשתמש כאילו בוצע מעבר לדף חדש) או ארגון מחדש של התכנים בדף).",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-receive-focus.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "כאשר רכיב מקבל פוקוס לא מתרחש שינוי משמעותי: פתיחת חלון חדש, העברת מוקד לרכיב אחר, מעבר לדף חדש או ארגון מחדש של תכני הדף.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "context-change-on-focus"
+        ],
+        "applicability": "hasFocusableElements",
+        "evidenceSlice": "keyboard",
+        "rubricHe": "נמדד בהליכת Tab: האם קבלת פוקוס גרמה לניווט, לפתיחת חלון, להזזת הפוקוס, או לשינוי מבני בדף? הופעת tooltip או הדגשה חזותית אינם שינוי משמעותי.",
+        "remediation": {
+          "goalHe": "קבלת פוקוס אינה משנה את ההקשר.",
+          "instruction": "Move context changes from `onfocus` to `onclick`/`onchange` with explicit user intent. Never submit a form or navigate on focus.",
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R38",
+      "form": {
+        "sourceRow": 38,
+        "guidelineHe": "הנחיה 3.2 ניתן לניבוי",
+        "guidelineFullHe": "הנחיה 3.2 ניתן לניבוי: יש לגרום לדפי רשת להופיע ולתפקד באופן הניתן לניבוי",
+        "criterionNo": "3.2.2",
+        "criterionNameHe": "on input",
+        "descriptionHe": "כאשר המשתמש משנה ערך של ממשק משמש לא מתרחש שינוי משמעותי באופן אוטומטי אלא אם כן המשתמש יודע על כך מראש (דוגמאות לשינוי משמעותי - פתיחת חלון חדש, העברת מוקד לרכיב אחר, מעבר לדף חדש (כולל כל דבר שנראה למשתמש כאילו בוצע מעבר לדף חדש) או ארגון מחדש של התכנים בדף).",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-unpredictable-change.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "שינוי ערך של פקד אינו גורם לשינוי משמעותי אוטומטי, אלא אם המשתמש יודע על כך מראש.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "context-change-on-input"
+        ],
+        "applicability": "hasForms",
+        "evidenceSlice": "forms",
+        "rubricHe": "אתר פקדים שמשנים הקשר בעת שינוי ערך — select ששולח טופס, שדה שמנווט אוטומטית, קלט שמעביר פוקוס לשדה הבא. כשל אלא אם קיימת אזהרה מראש הנגישה לקורא מסך.",
+        "remediation": {
+          "goalHe": "שינוי ערך אינו מנווט או משנה מבנה בלי שהמשתמש ביקש.",
+          "instruction": "Add an explicit submit button instead of auto-submitting on `change`. If auto-advance must stay (OTP fields), announce it in advance with visible instructions and `aria-describedby`.",
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R39",
+      "form": {
+        "sourceRow": 39,
+        "guidelineHe": "הנחיה 3.2 ניתן לניבוי",
+        "guidelineFullHe": "הנחיה 3.2 ניתן לניבוי: יש לגרום לדפי רשת להופיע ולתפקד באופן הניתן לניבוי",
+        "criterionNo": "3.2.3",
+        "criterionNameHe": "ניווט עקבי",
+        "descriptionHe": "מנגנוני ניווט באתר מופיעים באותו סדר בכל פעם בה הם חוזרים על עצמם ויש להם אותו זיהוי.",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-consistent-locations.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "מנגנוני הניווט באתר מופיעים באותו סדר בכל פעם שהם חוזרים, ויש להם אותו זיהוי.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "nav-consistency"
+        ],
+        "applicability": "isMultiPageSite",
+        "evidenceSlice": "siteConsistency",
+        "rubricHe": "השווה את רצף פריטי הניווט בין העמודים שנסרקו. שינוי סדר של אותם פריטים בין עמודים הוא כשל; הוספה או הסרה של פריטים לפי הקשר אינה כשל כל עוד הסדר היחסי נשמר.",
+        "remediation": {
+          "goalHe": "סדר פריטי הניווט זהה בכל העמודים.",
+          "instruction": "Render navigation from one shared component/partial so the order cannot drift between templates.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R40",
+      "form": {
+        "sourceRow": 40,
+        "guidelineHe": "הנחיה 3.2 ניתן לניבוי",
+        "guidelineFullHe": "הנחיה 3.2 ניתן לניבוי: יש לגרום לדפי רשת להופיע ולתפקד באופן הניתן לניבוי",
+        "criterionNo": "3.2.4",
+        "criterionNameHe": "זיהוי עקבי",
+        "descriptionHe": "זיהוי רכיבים באופן זהה - כל רכיבי ממשק המשתמש המופיעים במספר רב של עמודים מזוהים באופן זהה",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-consistent-functionality.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "כל רכיבי ממשק המשתמש המופיעים במספר עמודים מזוהים באופן זהה.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "component-identity"
+        ],
+        "applicability": "isMultiPageSite",
+        "evidenceSlice": "siteConsistency",
+        "rubricHe": "השווה שמות נגישים ואייקונים של רכיבים חוזרים בין עמודים: כפתור חיפוש שנקרא \"חיפוש\" בעמוד אחד ו-\"חפש\" באחר, אותו אייקון עם משמעויות שונות. חוסר עקביות בשם הנגיש הוא כשל.",
+        "remediation": {
+          "goalHe": "לרכיב חוזר אותו שם נגיש ואותו אייקון בכל האתר.",
+          "instruction": "Centralise labels for shared components in one strings module and reference it everywhere.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R41",
+      "form": {
+        "sourceRow": 41,
+        "guidelineHe": "הנחיה 3.3 עזרה בקלט",
+        "guidelineFullHe": "הנחיה 3.3 עזרה בקלט: יש לסייע למשתמשים להמנע משגיאות ולתקנן.",
+        "criterionNo": "3.3.1 / 3.3.3",
+        "criterionNameHe": "זיהוי שגיאה",
+        "descriptionHe": "הודעות שגיאה - בטופס אם ניתן לזהות שגיאות של המשתמש באופן אוטומטי מופיעה הודעת שגיאה טקסטואלית\nאם ידועות הצעות לתיקון, אזי ההצעות ניתנות למשתמש, אלא אם כן זה עלול לחבל באבטחה או במטרה של התכנים\nהודעת השגיאה מזוהה גם על ידי קוראי מסך",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-identified.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "כאשר ניתן לזהות שגיאת קלט אוטומטית, מופיעה הודעת שגיאה טקסטואלית והיא מזוהה גם על ידי קוראי מסך. אם ידועות הצעות לתיקון הן מוצגות למשתמש, אלא אם הדבר יפגע באבטחה או במטרת התוכן.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "aria-valid-attr-value"
+        ],
+        "customRules": [
+          "error-announcement"
+        ],
+        "applicability": "hasFormsWithValidation",
+        "evidenceSlice": "formErrors",
+        "rubricHe": "בדוק: (1) האם השגיאה מוצגת כטקסט ולא רק כמסגרת אדומה; (2) האם היא משויכת לשדה ב-aria-describedby ומסומנת ב-aria-invalid; (3) האם היא מוכרזת דרך role=\"alert\" או aria-live; (4) האם היא מציעה תיקון קונקרטי; (5) האם היא בעברית. הודעה כללית בראש הטופס ללא שיוך לשדות היא כשל חלקי ותירשם ככשל.",
+        "remediation": {
+          "goalHe": "כל שגיאה מוצגת כטקסט בעברית, משויכת לשדה ומוכרזת לקורא מסך.",
+          "instruction": "On validation failure set `aria-invalid=\"true\"` on the field, render the message in an element referenced by `aria-describedby`, and announce it through `role=\"alert\"`. Name the problem and the fix (\"מספר תעודת זהות חייב להכיל 9 ספרות\"), not just \"שגיאה\".",
+          "hebrewStrings": {
+            "required": "שדה חובה — נא למלא",
+            "invalidEmail": "כתובת דוא\"ל אינה תקינה. לדוגמה: name@example.co.il",
+            "invalidId": "מספר תעודת זהות חייב להכיל 9 ספרות",
+            "invalidPhone": "מספר טלפון אינו תקין. לדוגמה: 050-1234567"
+          },
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "R42",
+      "form": {
+        "sourceRow": 42,
+        "guidelineHe": "הנחיה 3.3 עזרה בקלט",
+        "guidelineFullHe": "הנחיה 3.3 עזרה בקלט: יש לסייע למשתמשים להמנע משגיאות ולתקנן.",
+        "criterionNo": "3.3.2",
+        "criterionNameHe": "תויות והוראות",
+        "descriptionHe": "כאשר המשתמש נדרש להזים מידע מסופקות לו תוויות והוראות",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-cues.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "כאשר המשתמש נדרש להזין מידע, מסופקות לו תוויות והוראות.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "label",
+          "form-field-multiple-labels",
+          "select-name",
+          "input-button-name",
+          "aria-input-field-name",
+          "aria-toggle-field-name",
+          "label-title-only"
+        ],
+        "customRules": [
+          "placeholder-as-label"
+        ],
+        "applicability": "hasForms",
+        "evidenceSlice": "forms",
+        "rubricHe": "עבור כל פקד: האם קיימת תווית גלויה ומשויכת? placeholder בלבד הוא כשל — הוא נעלם בהקלדה. בנוסף: האם סופקו הוראות פורמט לשדות שדורשים פורמט מסוים, והאם שדות חובה מסומנים בטקסט ולא בכוכבית בלבד?",
+        "remediation": {
+          "goalHe": "לכל שדה תווית גלויה משויכת, והוראות פורמט היכן שנדרש.",
+          "instruction": "Give every control a visible `<label for>`. Keep `placeholder` as an example only, never as the label. Add format hints through `aria-describedby`, and mark required fields with the word \"חובה\" as well as `required`/`aria-required`.",
+          "hebrewStrings": {
+            "requiredMark": "חובה",
+            "formatHint": "פורמט: {{דוגמה}}"
+          },
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R43",
+      "form": {
+        "sourceRow": 43,
+        "guidelineHe": "הנחיה 3.3 עזרה בקלט",
+        "guidelineFullHe": "הנחיה 3.3 עזרה בקלט: יש לסייע למשתמשים להמנע משגיאות ולתקנן.",
+        "criterionNo": "3.3.4",
+        "criterionNameHe": "מניעת שגיאות (משפטי, פיננסי נתונים)",
+        "descriptionHe": "בטפסים הגוררים התחיבויות משפטיות או פעולות פיננסיות, שינוי או מחיקה של נתוני משתמש מבסיס נתונים, או תשובות משתמש במבחן, לפחות אחד הבאים מתקיים:\n1. הפיכות: ביצוע הפעולה הוא הפיך.\n2. בדיקה: נתונים שהוזנו על ידי המשתמש נבדקים לאיתור שגיאות קלט ולמשתמש ניתנת הזדמנות לתקן אותן.\n3. אישור: קיים מנגנון לבחינה חוזרת, אישור, ותיקון מידע לפני ביצוע submit סופי.",
+        "level": "AA",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-reversible.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "בטפסים הגוררים התחייבות משפטית, פעולה פיננסית, שינוי או מחיקה של נתוני משתמש, או תשובות במבחן — נדרש שהפעולה תהיה הפיכה, או שהנתונים ייבדקו לאיתור שגיאות, או שיתאפשרו בחינה חוזרת ואישור לפני שליחה סופית.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [],
+        "applicability": "hasHighStakesForm",
+        "evidenceSlice": "forms",
+        "rubricHe": "אם הטופס גורר חיוב, התחייבות משפטית, מחיקת נתונים או הגשת מבחן: האם מתקיים לפחות אחד מהשלושה — הפיכות, בדיקת קלט עם הזדמנות לתיקון, או מסך אישור לפני שליחה? היעדר כל השלושה הוא כשל.",
+        "remediation": {
+          "goalHe": "לפעולה בעלת השלכות קיימת דרך לבטל, לתקן או לאשר לפני ביצוע.",
+          "instruction": "Add a review-and-confirm step before final submission that shows every value the user entered and lets them go back and edit it. For destructive actions, prefer reversibility (undo window, soft delete) over a confirmation dialog.",
+          "hebrewStrings": {
+            "reviewHeading": "בדיקת הפרטים לפני שליחה",
+            "confirm": "אישור ושליחה",
+            "back": "חזרה לעריכה"
+          },
+          "effort": "high"
+        }
+      }
+    },
+    {
+      "id": "R44",
+      "form": {
+        "sourceRow": 44,
+        "guidelineHe": "הנחיה 4.1 תואם",
+        "guidelineFullHe": "הנחיה 4.1 תואם: יש לדאוג לתאימות מרבית עם סוכני משתמש קיימים ועתידיים, כולל טכנולוגיות מסייעות.",
+        "criterionNo": "4.1.1",
+        "criterionNameHe": "סטנדרטיזציה",
+        "descriptionHe": "בשימוש ב markup languages:\nא. לכל אלמנט יש tag התחלה וסיום לפי הסטנדרטים\nב. אין attributes כפולים\nג. כל ה IDs ייחודים\nד. יש nesting נכון על פי הסטנדרטים",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/ensure-compat-parses.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "בשימוש בשפות סימון: לכל אלמנט תגית פתיחה וסיום לפי הסטנדרטים, אין מאפיינים כפולים, כל המזהים ייחודיים, וה-nesting תקין.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "auto",
+        "axeRules": [
+          "duplicate-id",
+          "duplicate-id-active",
+          "duplicate-id-aria"
+        ],
+        "customRules": [
+          "markup-validity"
+        ],
+        "applicability": "always",
+        "evidenceSlice": "markupValidity",
+        "rubricHe": "נקבע אוטומטית: מזהים כפולים, מאפיינים כפולים, ותגיות שלא נסגרו או מקוננות שגוי. שגיאות שהדפדפן מתקן בשקט עדיין נחשבות כשל בקריטריון זה.",
+        "remediation": {
+          "goalHe": "הקוד תקין: מזהים ייחודיים, תגיות סגורות ומקוננות כהלכה.",
+          "instruction": "Make every `id` unique (a duplicated `id` breaks `label for`, `aria-describedby` and in-page anchors), remove duplicate attributes, and fix unclosed or mis-nested tags.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "R45",
+      "form": {
+        "sourceRow": 45,
+        "guidelineHe": "הנחיה 4.1 תואם",
+        "guidelineFullHe": "הנחיה 4.1 תואם: יש לדאוג לתאימות מרבית עם סוכני משתמש קיימים ועתידיים, כולל טכנולוגיות מסייעות.",
+        "criterionNo": "4.1.2",
+        "criterionNameHe": "שם תפקיד וערך",
+        "descriptionHe": "א. שם תפקיד וערך - עבור כל רכיבי ממשק המשתמש (כולל אך לא מוגבל ל: אלמנטים בטופס, קישורים ורכיבים שנוצרו על ידי תסריטים), השם והתפקיד של הרכיב מזוהים בקוד; מצבים מאפיינים וערכים שהמשתמש יכול להגדיר ניתנים מוגדרים בקוד; והודעה על שינויים בפריטים אלה זמינה לסוכני משתמש, כולל טכנולוגיות מסייעות (כגון קוראי מסך)\nב. כמו כן, לכל frame ו iframe יש title המתאר את מטרתו",
+        "level": "A",
+        "techniquesUrl": "http://www.w3.org/WAI/WCAG20/quickref/",
+        "understandingUrl": "http://www.w3.org/TR/UNDERSTANDING-WCAG20/ensure-compat-rsv.html"
+      },
+      "engine": {
+        "part": 1,
+        "summaryHe": "לכל רכיבי ממשק המשתמש — כולל שדות טופס, קישורים ורכיבים שנוצרו בתסריטים — השם והתפקיד מזוהים בקוד, ומצבים וערכים ניתנים להגדרה ומדווחים לטכנולוגיות מסייעות. לכל frame ו-iframe יש title המתאר את מטרתו.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [
+          "button-name",
+          "link-name",
+          "frame-title",
+          "frame-title-unique",
+          "aria-allowed-attr",
+          "aria-allowed-role",
+          "aria-command-name",
+          "aria-hidden-body",
+          "aria-hidden-focus",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-attr",
+          "aria-roles",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-valid-attr",
+          "aria-valid-attr-value",
+          "presentation-role-conflict"
+        ],
+        "customRules": [
+          "custom-widget-state"
+        ],
+        "applicability": "hasFocusableElements",
+        "evidenceSlice": "ariaWidgets",
+        "rubricHe": "בדוק לכל רכיב אינטראקטיבי: שם נגיש קיים ומשמעותי, role מתאים למה שהרכיב עושה בפועל, ומצבים (expanded/checked/selected/disabled) משתקפים ב-ARIA ומתעדכנים בזמן אמת. כפתור עם אייקון בלבד ללא aria-label הוא כשל. accordion ללא aria-expanded הוא כשל.",
+        "remediation": {
+          "goalHe": "לכל רכיב ממשק שם, תפקיד ומצב שניתנים לקריאה בקוד.",
+          "instruction": "Give icon-only controls an `aria-label` in Hebrew. Use native elements before ARIA. Where a custom widget is unavoidable, follow the matching APG pattern in full — role, states, and keyboard interaction — and keep `aria-expanded`/`aria-selected`/`aria-checked` in sync with the visual state. Give every `<iframe>` a descriptive `title`.",
+          "hebrewStrings": {
+            "close": "סגור",
+            "menu": "תפריט",
+            "search": "חיפוש",
+            "expand": "הרחב",
+            "collapse": "כווץ"
+          },
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "D01",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "עקרון 1: ניתן לתפיסה בחושים",
+        "criterionNo": "1.1.1",
+        "criterionNameHe": "תוכן שאינו טקסטואלי — תמונות במסמך",
+        "descriptionHe": "אם תמונה מעבירה מידע או מסר שאינו מוצג בגוף הטקסט, יוסף לה טקסט חלופי שיתאר את המידע ואת המסר של התמונה. לתמונות בעלות קישור יוסף טקסט חלופי המבהיר בקצרה לאן מפנה הקישור. אם תמונה מיועדת לקישוט (pure decoration), היא תוגדר באופן שהמשתמשים יוכלו להתעלם ממנה באמצעות טכנולוגיה מסייעת, ככל שהתוכנה מאפשרת. תמונות של תרשימים ואיורים המספקות מידע חיוני ילוו בטקסט חלופי שיתאר את התרשים או האיור. אובייקטים חזותיים כגון סימנים וצורות ילוו בטקסט חלופי.",
+        "level": "A"
+      },
+      "engine": {
+        "part": 2,
+        "summaryHe": "לכל תמונה במסמך המעבירה מידע נדרש טקסט חלופי המתאר את המידע ואת המסר. תמונה דקורטיבית תסומן כך שטכנולוגיה מסייעת תתעלם ממנה.",
+        "appliesTo": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "txt"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "doc-image-alt"
+        ],
+        "applicability": "hasImages",
+        "evidenceSlice": "documentStructure",
+        "rubricHe": "עבור כל תמונה במסמך: האם קיים טקסט חלופי? האם הוא מתאר את המידע ולא את הקובץ? האם תמונה דקורטיבית סומנה כארטיפקט (PDF) או כדקורטיבית (Office)? תמונה אינפורמטיבית ללא alt היא כשל.",
+        "remediation": {
+          "goalHe": "לכל תמונה במסמך טקסט חלופי, ולתמונות דקורטיביות סימון מתאים.",
+          "instruction": "Word/PowerPoint: right-click the image → \"עריכת טקסט חלופי\" and describe the information it carries; tick \"סמן כדקורטיבי\" for purely decorative images. PDF: tag the image as `/Figure` with an `/Alt` string, or as an artifact when decorative. Re-export from the source document rather than patching the PDF where possible — patched tags are lost on the next export.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "D02",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "עקרון 1: ניתן לתפיסה בחושים",
+        "criterionNo": "1.3.1",
+        "criterionNameHe": "מידע וקשרים — כותרות",
+        "descriptionHe": "טקסט המוצג ככותרת יגויית בגיוות סמנטי. במסמך שיש בו כותרת אחת, הגיוות הסמנטי ככותרת אינו חובה. במסמך שיש בו כמה רמות כותרת (לדוגמה כותרת ראשית ומשנית) יש לגייג את הכותרות בהיררכיה המתאימה (heading 1-6).",
+        "level": "A"
+      },
+      "engine": {
+        "part": 2,
+        "summaryHe": "טקסט המוצג ככותרת יסומן בתגית כותרת סמנטית. במסמך עם כמה רמות כותרת יש לסמנן בהיררכיה מתאימה (heading 1-6).",
+        "appliesTo": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "txt"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "doc-heading-structure"
+        ],
+        "applicability": "hasHeadingsOrLists",
+        "evidenceSlice": "documentStructure",
+        "rubricHe": "בדוק אם קיים טקסט שנראה ככותרת (גופן גדול/מודגש, פותח מקטע) אך אינו מסומן בסגנון כותרת. זהו הכשל הנפוץ ביותר במסמכי Word: כותרת שנוצרה בהדגשה והגדלה ידנית במקום בסגנון \"כותרת 1\". במסמך עם יותר מרמת כותרת אחת, גם היררכיה שבורה היא כשל.",
+        "remediation": {
+          "goalHe": "כל כותרת במסמך מסומנת בסגנון כותרת סמנטי, בהיררכיה רציפה.",
+          "instruction": "Word: apply the built-in \"כותרת 1/2/3\" styles instead of bolding and enlarging text; restyle the style itself if you dislike its look. PowerPoint: use the slide-layout title placeholder, not a free text box. PDF: the `/H1`–`/H6` structure tags must exist and nest without skipping levels.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "D03",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "עקרון 1: ניתן לתפיסה בחושים",
+        "criterionNo": "1.3.1",
+        "criterionNameHe": "מידע וקשרים — מבנה היררכי ברשימות",
+        "descriptionHe": "ביצירת רשימות תיעשה אחת מהפעולות: גיוות סמנטי של תבליטים ומספור אוטומטי; או שימוש במספור המייצג את ההיררכיה בין רמות התוכן באופן תקין ורציף (ללא גיוות סמנטי).",
+        "level": "A"
+      },
+      "engine": {
+        "part": 2,
+        "summaryHe": "רשימות ייווצרו בגיוות סמנטי של תבליטים ומספור אוטומטי. לחלופין, במספור המייצג נכון ורציף את ההיררכיה בין רמות התוכן.",
+        "appliesTo": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "txt"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "doc-list-structure"
+        ],
+        "applicability": "hasHeadingsOrLists",
+        "evidenceSlice": "documentStructure",
+        "rubricHe": "אתר רשימות שנוצרו בהקלדה ידנית של \"-\", \"•\", \"1.\" בתחילת פסקה במקום ברשימה אוטומטית. שים לב שהתקן מתיר מספור ידני רציף והיררכי כחלופה — מספור ידני תקין ורציף אינו כשל, מספור שבור או תבליט מוקלד הוא כשל.",
+        "remediation": {
+          "goalHe": "רשימות נוצרות ברשימה אוטומטית, או במספור היררכי רציף ותקין.",
+          "instruction": "Word/PowerPoint: use the bullet and numbering buttons rather than typing \"-\" or \"1.\" manually. PDF: lists must carry `/L`, `/LI`, `/Lbl`, `/LBody` tags. Where manual numbering is kept, it must be continuous and reflect the hierarchy (1, 1.1, 1.1.1).",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "D04",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "עקרון 1: ניתן לתפיסה בחושים",
+        "criterionNo": "1.3.2",
+        "criterionNameHe": "רצף בעל משמעות",
+        "descriptionHe": "סדר ההקראה בטכנולוגיה המסייעת יהיה בהלימה לסדר התצוגה. נושא זה חשוב במיוחד כאשר המידע מוצג בטבלאות.",
+        "level": "A"
+      },
+      "engine": {
+        "part": 2,
+        "summaryHe": "סדר ההקראה בטכנולוגיה מסייעת תואם את סדר התצוגה. הדבר קריטי במיוחד כאשר המידע מוצג בטבלאות.",
+        "appliesTo": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "txt"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "doc-reading-order"
+        ],
+        "applicability": "hasTextContent",
+        "evidenceSlice": "documentStructure",
+        "rubricHe": "השווה את סדר עץ התגיות/סדר הקריאה לסדר החזותי בעמוד. דגל תיבות טקסט צפות, עמודות, וטבלאות שסדר הקריאה בהן חוצה עמודות במקום שורות. במצגת — סדר הקריאה בחלונית \"סדר הבחירה\".",
+        "remediation": {
+          "goalHe": "סדר ההקראה במסמך זהה לסדר הקריאה החזותי.",
+          "instruction": "PowerPoint: fix the order in \"סידור\" → \"חלונית הבחירה\" (the pane reads bottom-to-top). Word: avoid floating text boxes; use a single-column flow or real columns. PDF: correct the order in the Tags/Order panel of the tagging tool, and re-verify after every export.",
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "D05",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "עקרון 1: ניתן לתפיסה בחושים",
+        "criterionNo": "1.3.3",
+        "criterionNameHe": "מאפייני חישה",
+        "descriptionHe": "אין לספק למשתמש הוראות המסתמכות רק על חוש הראייה או רק על חוש השמיעה.",
+        "level": "A"
+      },
+      "engine": {
+        "part": 2,
+        "summaryHe": "אין לספק הוראות המסתמכות על חוש הראייה בלבד או על חוש השמיעה בלבד.",
+        "appliesTo": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "txt"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [],
+        "applicability": "hasSensoryInstructions",
+        "evidenceSlice": "documentText",
+        "rubricHe": "אתר הוראות במסמך המפנות לצורה, צבע, גודל או מיקום בלבד: \"ראה בטבלה מימין\", \"המסומן באדום\", \"בתרשים למטה\". כשל רק אם אין מזהה נוסף כמו מספר טבלה או כותרת מקטע.",
+        "remediation": {
+          "goalHe": "כל הפניה במסמך מזהה את היעד בשם או במספר, לא רק במיקום או בצבע.",
+          "instruction": "Rewrite \"ראה בטבלה מימין\" as \"ראה טבלה 3 — פירוט העלויות\". Number tables and figures and refer to them by number.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "D06",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "עקרון 1: ניתן לתפיסה בחושים",
+        "criterionNo": "1.4.1",
+        "criterionNameHe": "שימוש בצבע",
+        "descriptionHe": "צבע אינו האמצעי החזותי היחיד להעברת מידע, לסימון פעולה או להבחנה בפרט חזותי. אין הכוונה לאסור שימוש בצבע לצורכי עיצוב, אלא רק לאסור שימוש בצבע כאמצעי היחיד להעברת מידע.",
+        "level": "A"
+      },
+      "engine": {
+        "part": 2,
+        "summaryHe": "צבע אינו האמצעי החזותי היחיד להעברת מידע, לסימון פעולה או להבחנה בפרט חזותי. שימוש בצבע לצורכי עיצוב מותר.",
+        "appliesTo": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "txt"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [
+          "doc-color-only"
+        ],
+        "applicability": "hasColorCodedContent",
+        "evidenceSlice": "documentText",
+        "rubricHe": "אתר מידע שמובחן בצבע בלבד: שורות מודגשות בטבלה, מקרא גרף לפי צבע, טקסט אדום שמסמן שינוי. כשל אם אין סימן נוסף — טקסט, סמל או דפוס.",
+        "remediation": {
+          "goalHe": "לכל הבחנה צבעונית במסמך מתלווה סימן שאינו צבע.",
+          "instruction": "Add a text label, symbol, or pattern next to every colour-coded distinction. In charts, use patterns or direct labels rather than a colour-only legend.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "D07",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "עקרון 1: ניתן לתפיסה בחושים",
+        "criterionNo": "1.4.3",
+        "criterionNameHe": "ניגודיות",
+        "descriptionHe": "בהצגה חזותית של טקסט ושל תמונות טקסט מתקיים יחס ניגודיות של 4.5:1 לפחות, ובטקסט גדול יחס ניגודיות של 3:1 לפחות. בתמונות סמליל (לוגו) — עבור טקסט שהוא חלק מסמליל או משם מותג — אין דרישת מינימום ליחס ניגודיות.",
+        "level": "AA"
+      },
+      "engine": {
+        "part": 2,
+        "summaryHe": "יחס ניגודיות של 4.5:1 לפחות לטקסט רגיל, ו-3:1 לפחות לטקסט גדול. טקסט שהוא חלק מלוגו או משם מותג פטור מהדרישה.",
+        "appliesTo": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "txt"
+        ],
+        "method": "auto",
+        "axeRules": [],
+        "customRules": [
+          "doc-contrast"
+        ],
+        "applicability": "hasTextContent",
+        "evidenceSlice": "documentText",
+        "rubricHe": "חושב לפי ספי §3.6 של חלק 2: במסמכי עיבוד תמלילים טקסט גדול הוא 14 נקודות ומעלה מודגש, או 18 נקודות ומעלה. שים לב שהספים שונים מאלה של דפי אינטרנט.",
+        "remediation": {
+          "goalHe": "כל טקסט במסמך עומד ביחס הניגודיות הנדרש.",
+          "instruction": "Darken text or lighten backgrounds. Watch out for light-grey body text and for text placed over a photograph or a coloured table fill — both are frequent failures. Remember the document thresholds (14pt bold / 18pt), which are not the web ones.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "D08",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "עקרון 1: ניתן לתפיסה בחושים",
+        "criterionNo": "1.4.5",
+        "criterionNameHe": "תמונות טקסט",
+        "descriptionHe": "העברת מידע תיעשה באמצעות טקסט ולא באמצעות תמונות טקסט. אין להציג תמונות טקסט, כגון צילומי מסך של טקסט, עמודים או פסקאות, אלא את הטקסט עצמו. אין להשתמש בקבצים סרוקים. עבור טקסט שאינו ניתן להצגה אלא כתמונה, יש לספק גם הסבר. קריטריון זה אינו חל על טקסט המהווה חלק מסמליל (לוגו).",
+        "level": "AA"
+      },
+      "engine": {
+        "part": 2,
+        "summaryHe": "העברת מידע תיעשה בטקסט ולא בתמונות טקסט, ואין להשתמש בקבצים סרוקים. טקסט שאינו ניתן להצגה אלא כתמונה ילווה בהסבר; טקסט בלוגו פטור.",
+        "appliesTo": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "txt"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "doc-scanned-detect",
+          "doc-text-image"
+        ],
+        "applicability": "hasTextImages",
+        "evidenceSlice": "documentText",
+        "rubricHe": "כשל ודאי: מסמך סרוק ללא שכבת טקסט — התקן אוסר זאת מפורשות. כשל נוסף: צילומי מסך של טקסט או טבלאות, עמודים שהוטמעו כתמונה. לוגו פטור.",
+        "remediation": {
+          "goalHe": "המסמך מכיל טקסט אמיתי; אין קבצים סרוקים ואין צילומי מסך של טקסט.",
+          "instruction": "Rebuild scanned documents from the source file. Where no source exists, run OCR and then proof-read the result — unproofed Hebrew OCR is unreliable and an unchecked text layer is not compliance. Replace screenshots of tables with real tables.",
+          "effort": "high"
+        }
+      }
+    },
+    {
+      "id": "D09",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "עקרון 2: ניתן לתפעול",
+        "criterionNo": "2.4.2",
+        "criterionNameHe": "שם המסמך",
+        "descriptionHe": "שם המסמך יהיה בעל משמעות. ניתן לממש זאת באמצעות שם הקובץ או לחלופין באמצעות כותרת. אופן גיוות הכותרת משתנה בין סוג מסמך אחד לסוג מסמך אחר.",
+        "level": "A"
+      },
+      "engine": {
+        "part": 2,
+        "summaryHe": "שם המסמך יהיה בעל משמעות. ניתן לממש זאת באמצעות שם הקובץ או באמצעות כותרת המסמך.",
+        "appliesTo": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "txt"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "doc-title"
+        ],
+        "applicability": "always",
+        "evidenceSlice": "documentStructure",
+        "rubricHe": "בדוק את מאפיין ה-Title של המסמך ואת שם הקובץ. התקן מקבל כל אחד מהשניים. כשל: שם קובץ כמו \"doc1.pdf\", \"scan_0012.pdf\", \"final_v3.docx\" יחד עם Title ריק. ב-PDF יש לוודא גם שהמציג מוגדר להציג את הכותרת ולא את שם הקובץ (DisplayDocTitle).",
+        "remediation": {
+          "goalHe": "למסמך שם או כותרת שמתארים את תוכנו.",
+          "instruction": "Set the document Title property (Word: קובץ → מידע → כותרת) and give the file a descriptive name. For PDF, also set `/ViewerPreferences /DisplayDocTitle true` so readers announce the title instead of the filename.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "D10",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "עקרון 2: ניתן לתפעול",
+        "criterionNo": "2.4.4",
+        "criterionNameHe": "תכלית הקישור",
+        "descriptionHe": "תכליתו של כל קישור תהיה ברורה מטקסט הקישור או מהטקסט המלווה אותו ומההקשר שהוא נתון בו. יוצאים מכלל זה מקרים שבהם תכלית הקישור אינה ברורה לאיש.",
+        "level": "A"
+      },
+      "engine": {
+        "part": 2,
+        "summaryHe": "תכלית כל קישור תהיה ברורה מטקסט הקישור או מהטקסט המלווה ומההקשר. קישור המשולב בפסקה והכולל מילים כמו \"לחץ כאן\" מקיים את הדרישה אם הטקסט המלווה מבהיר אותה.",
+        "appliesTo": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "txt"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [],
+        "applicability": "hasLinks",
+        "evidenceSlice": "documentText",
+        "rubricHe": "עבור כל קישור במסמך: האם מטרתו ברורה מהטקסט או מהמשפט שסביבו? שים לב שחלק 2 מקל כאן במפורש — \"לחץ כאן\" בתוך משפט מבהיר אינו כשל. קישור שטקסטו כתובת URL ארוכה ללא הקשר הוא כשל.",
+        "remediation": {
+          "goalHe": "תכלית כל קישור ברורה מהטקסט או מההקשר שסביבו.",
+          "instruction": "Give links descriptive display text rather than a raw URL. Where the visible text is generic, make sure the surrounding sentence names the destination.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "D11",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "עקרון 2: ניתן לתפעול",
+        "criterionNo": "2.4.6",
+        "criterionNameHe": "כותרות ותוויות",
+        "descriptionHe": "כותרות ותוויות המשמשות לתיאור נושא או תכלית. טקסט שאינו משמש להגדרת הנושא או תכלית התוכן שיבוא אחריו — לדוגמה פסקה או משפט — אין לסמנו ככותרת.",
+        "level": "AA"
+      },
+      "engine": {
+        "part": 2,
+        "summaryHe": "כותרות ותוויות משמשות לתיאור נושא או תכלית. אין לסמן ככותרת טקסט שאינו מגדיר את הנושא של התוכן שיבוא אחריו.",
+        "appliesTo": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "txt"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [],
+        "applicability": "hasHeadingsOrLists",
+        "evidenceSlice": "documentStructure",
+        "rubricHe": "שים לב לכיוון הכשל הייחודי כאן: לא רק כותרת שאינה מתארת, אלא גם פסקה שלמה או משפט שסומנו בטעות בסגנון כותרת. שניהם כשל.",
+        "remediation": {
+          "goalHe": "סגנון כותרת מוחל רק על כותרות אמיתיות, והן מתארות את המקטע.",
+          "instruction": "Remove heading styles from paragraphs that were styled as headings for their looks, and rewrite vague headings to name their section.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "D12",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "סעיף 6: מידע מורכב",
+        "criterionNo": "5568-2/6",
+        "criterionNameHe": "מידע מורכב",
+        "descriptionHe": "מסמכים הכוללים מידע מורכב, לדוגמה תרשימים, משוואות, נוסחאות, גרפים וטבלאות מרובות שכבות, יְלוּוּ בתיאור חלופי טקסטואלי מקצועי ככל שניתן.",
+        "level": "AA"
+      },
+      "engine": {
+        "part": 2,
+        "summaryHe": "מסמכים הכוללים מידע מורכב — תרשימים, משוואות, נוסחאות, גרפים וטבלאות מרובות שכבות — ילוו בתיאור חלופי טקסטואלי מקצועי ככל שניתן.",
+        "appliesTo": [
+          "pdf",
+          "docx",
+          "pptx",
+          "xlsx",
+          "txt"
+        ],
+        "method": "llm",
+        "axeRules": [],
+        "customRules": [
+          "doc-complex-info"
+        ],
+        "applicability": "hasComplexImages",
+        "evidenceSlice": "documentComplexInfo",
+        "rubricHe": "אתר מידע מורכב: גרפים, תרשימים, נוסחאות, וטבלאות מרובות שכבות (כותרות מקוננות, תאים ממוזגים). עבור כל אחד — האם קיים תיאור טקסטואלי מקצועי שמעביר את אותו מידע? טקסט חלופי קצר בן כמה מילים אינו מספיק לגרף — נדרש תיאור שמאפשר להסיק את אותן מסקנות.",
+        "remediation": {
+          "goalHe": "לכל מידע מורכב תיאור טקסטואלי מקצועי המעביר את אותו מידע.",
+          "instruction": "Next to each chart, add a text description covering the trend, the extremes and the conclusion, or provide the underlying data as a real table. Write equations in a formula editor (MathML/OMML) rather than pasting them as images. Flatten multi-layer tables into several simple tables where possible.",
+          "effort": "high"
+        }
+      }
+    },
+    {
+      "id": "IL01",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "תוספת ישראלית — תקנות שוויון זכויות",
+        "criterionNo": "IL-1",
+        "criterionNameHe": "הצהרת נגישות",
+        "descriptionHe": "באתר מתפרסמת הצהרת נגישות הנגישה מכל עמוד, הכוללת את רמת הנגישות, אמצעי הנגישות שבוצעו, מגבלות נגישות ידועות, פרטי רכז הנגישות, דרך פנייה בנושא נגישות, תאריך הביקורת האחרונה ותאריך עדכון ההצהרה.",
+        "level": "A"
+      },
+      "engine": {
+        "part": "IL",
+        "summaryHe": "באתר מתפרסמת הצהרת נגישות הנגישה מכל עמוד. ההצהרה כוללת את רמת הנגישות, האמצעים שבוצעו, מגבלות ידועות, פרטי רכז הנגישות, דרך פנייה ותאריכי ביקורת ועדכון.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "accessibility-statement"
+        ],
+        "applicability": "always",
+        "evidenceSlice": "siteConsistency",
+        "rubricHe": "בדוק: (1) קיים קישור להצהרת נגישות בכל עמוד, בדרך כלל בכותרת התחתונה; (2) עמוד ההצהרה קיים ונטען; (3) הוא מכיל את שבעת הפריטים הנדרשים. היעדר מגבלות נגישות ידועות או היעדר תאריך ביקורת הם ממצאי הביקורת הנפוצים ביותר בסעיף זה.",
+        "remediation": {
+          "goalHe": "הצהרת נגישות מלאה, מקושרת מכל עמוד באתר.",
+          "instruction": "Publish an accessibility statement covering all seven required items and link it from the footer of every page. If there are no known limitations, say so explicitly — an empty limitations section reads as an omission. Keep the audit date current.",
+          "hebrewStrings": {
+            "statementLink": "הצהרת נגישות",
+            "statementHeading": "הצהרת נגישות"
+          },
+          "effort": "medium"
+        }
+      }
+    },
+    {
+      "id": "IL02",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "תוספת ישראלית — תקנות שוויון זכויות",
+        "criterionNo": "IL-2",
+        "criterionNameHe": "פרטי רכז נגישות ודרך פנייה",
+        "descriptionHe": "מפורסמים שם רכז הנגישות ודרכי התקשרות עמו — טלפון ודואר אלקטרוני — לצורך פניות וטיפול בתלונות בנושא נגישות.",
+        "level": "A"
+      },
+      "engine": {
+        "part": "IL",
+        "summaryHe": "מפורסמים שם רכז הנגישות ודרכי ההתקשרות עמו, טלפון ודואר אלקטרוני. הפרטים משמשים לפניות ולטיפול בתלונות נגישות.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "coordinator-contact"
+        ],
+        "applicability": "always",
+        "evidenceSlice": "siteConsistency",
+        "rubricHe": "בדוק שבהצהרת הנגישות מופיעים שם רכז נגישות ולפחות שתי דרכי התקשרות. שים לב שחובת מינוי רכז חלה על גוף ציבורי או מעסיק של 25 עובדים ומעלה; באתר קטן יותר די בדרך פנייה בנושא נגישות.",
+        "remediation": {
+          "goalHe": "פרטי רכז הנגישות ודרכי פנייה מפורסמים באתר.",
+          "instruction": "Add the coordinator's name, phone and email to the accessibility statement. Route incoming accessibility complaints to them — the 60-day cure clock starts when a fix notice arrives.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "IL03",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "תוספת ישראלית — תקן 5568 חלק 1",
+        "criterionNo": "IL-3",
+        "criterionNameHe": "הצהרת כיוון כתיבה RTL",
+        "descriptionHe": "בתוכן בעברית או בערבית מוגדר כיוון הכתיבה באמצעות dir=\"rtl\", וקטעים בשפה משמאל-לימין בתוך הטקסט מסומנים ב-dir=\"ltr\".",
+        "level": "A"
+      },
+      "engine": {
+        "part": "IL",
+        "summaryHe": "בתוכן בעברית או בערבית מוגדר כיוון הכתיבה ב-dir=\"rtl\". קטעים בשפה משמאל-לימין בתוך הטקסט — מספרי טלפון, תעודת זהות ודוא\"ל — מסומנים ב-dir=\"ltr\".",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "hebrew-lang-dir",
+          "ltr-island-marked"
+        ],
+        "applicability": "hasTextContent",
+        "evidenceSlice": "language",
+        "rubricHe": "בדוק קיום dir=\"rtl\" בתוכן עברי, ואיים של תוכן LTR — מספרי טלפון, ת\"ז, מספרי הזמנה, כתובות דוא\"ל, מונחים באנגלית — שאינם מסומנים ב-dir=\"ltr\" ולכן מוצגים בסדר שגוי.",
+        "remediation": {
+          "goalHe": "כיוון הכתיבה מוצהר, ואיי LTR בתוך טקסט עברי מסומנים.",
+          "instruction": "Set `dir=\"rtl\"` on `<html>`. Wrap LTR content inside Hebrew text with `<span dir=\"ltr\">`, especially phone numbers, ID numbers and order references, which bidi otherwise renders in the wrong order. Use CSS logical properties (`margin-inline-start`, `inset-inline-end`) instead of `left`/`right`.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "IL04",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "תוספת ישראלית — תקנות שוויון זכויות",
+        "criterionNo": "IL-4",
+        "criterionNameHe": "הודעות ושגיאות בעברית",
+        "descriptionHe": "בתוכן המיועד לקהל דובר עברית, מחרוזות הממשק, הודעות השגיאה והשמות הנגישים מוצגים בעברית.",
+        "level": "A"
+      },
+      "engine": {
+        "part": "IL",
+        "summaryHe": "בתוכן המיועד לקהל דובר עברית, מחרוזות הממשק והודעות השגיאה מוצגות בעברית. הדבר חל גם על שמות נגישים המיועדים לקוראי מסך.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "hebrew-ui-strings"
+        ],
+        "applicability": "hasTextContent",
+        "evidenceSlice": "language",
+        "rubricHe": "אתר שמות נגישים והודעות באנגלית בעמוד עברי: aria-label=\"close\", \"Submit\", \"Required field\". שמות מותג ומונחים טכניים מקובלים אינם כשל.",
+        "remediation": {
+          "goalHe": "כל מחרוזות הממשק והשגיאות בעברית בעמודים בעברית.",
+          "instruction": "Translate accessible names, button labels and validation messages to Hebrew. Screen-reader users hear the accessible name, so an English `aria-label` on a Hebrew page is read out in English.",
+          "effort": "low"
+        }
+      }
+    },
+    {
+      "id": "IL05",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "תוספת ישראלית — תקנה 35",
+        "criterionNo": "IL-5",
+        "criterionNameHe": "רכיב העדפות נגישות",
+        "descriptionHe": "באתר קיים רכיב המאפשר למשתמש לשנות העדפות תצוגה — ניגודיות, גודל טקסט, מרווח שורות, הדגשת קישורים ועצירת אנימציות — הנגיש במקלדת. הרכיב הוא כלי העדפות משתמש ואינו מתיימר להנגיש את האתר בעצמו.",
+        "level": "A"
+      },
+      "engine": {
+        "part": "IL",
+        "summaryHe": "באתר קיים רכיב העדפות נגישות הנגיש במקלדת, המאפשר שינוי ניגודיות, גודל טקסט, מרווח שורות והדגשת קישורים. הרכיב הוא כלי העדפות ואינו תחליף להנגשת האתר עצמו.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "a11y-widget-present",
+          "a11y-widget-keyboard",
+          "overlay-antipattern"
+        ],
+        "applicability": "always",
+        "evidenceSlice": "siteConsistency",
+        "rubricHe": "בדוק: (1) קיים רכיב העדפות נגישות; (2) ניתן להגיע אליו ולהפעילו במקלדת; (3) הוא אינו תוסף overlay שמצהיר שהוא הופך את האתר לנגיש. רכיב שמזריק alt אוטומטי או משכתב ARIA הוא סיכון משפטי ולא תיקון — יש לסמנו כממצא.",
+        "remediation": {
+          "goalHe": "רכיב העדפות נגישות נגיש במקלדת, ללא הצהרות תאימות שווא.",
+          "instruction": "Ship a preferences widget that only toggles CSS classes on `<html>` — contrast, text size, line spacing, link highlighting, reduced motion — reachable by keyboard (Alt+A detected via `e.code`, not `e.key`). Do not use a third-party overlay that claims to make the site compliant. See `references/widget-implementation.md` in the israeli-accessibility-compliance skill for a full implementation.",
+          "effort": "high"
+        }
+      }
+    },
+    {
+      "id": "IL06",
+      "form": {
+        "sourceRow": 0,
+        "guidelineHe": "תוספת ישראלית — תקנות שוויון זכויות",
+        "criterionNo": "IL-6",
+        "criterionNameHe": "הודעה על ביצוע התאמות נגישות",
+        "descriptionHe": "בוצעו בשירות האינטרנט התאמות נגישות לפי התקנות, יצוין במקום בולט לעין באתר כי בוצעו בו התאמות נגישות עבור אנשים עם מוגבלות.",
+        "level": "A"
+      },
+      "engine": {
+        "part": "IL",
+        "summaryHe": "כאשר בוצעו התאמות נגישות, יצוין הדבר במקום בולט לעין באתר. הדרישה מופיעה בהוראות טופס הבדיקה הרשמי.",
+        "appliesTo": [
+          "page"
+        ],
+        "method": "hybrid",
+        "axeRules": [],
+        "customRules": [
+          "accessibility-notice-visible"
+        ],
+        "applicability": "always",
+        "evidenceSlice": "siteConsistency",
+        "rubricHe": "בדוק שקיים ציון גלוי לעין — סמל נגישות, קישור \"הצהרת נגישות\" בכותרת התחתונה או רכיב ההעדפות — שמודיע שבוצעו התאמות נגישות. הודעה שמופיעה רק בעמוד פנימי שאינו מקושר אינה \"בולטת לעין\".",
+        "remediation": {
+          "goalHe": "ציון גלוי באתר על ביצוע התאמות הנגישות.",
+          "instruction": "Put an accessibility link or icon in the footer of every page, visible without scrolling through a menu, pointing at the accessibility statement.",
+          "effort": "low"
+        }
+      }
+    }
+  ]
+}

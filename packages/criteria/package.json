@@ -1,0 +1,13 @@
+{
+  "name": "@ai5568/criteria",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "IS 5568 criteria catalogue. The single source of truth for every consumer.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts",
+    "./catalogue.json": "./data/criteria.json",
+    "./import-form-xlsx": "./src/import-form-xlsx.ts"
+  }
+}

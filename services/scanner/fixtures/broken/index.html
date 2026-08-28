@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!--
+  Deliberately non-compliant Hebrew page.
+  Every defect here is one a real Israeli site audit turns up. The golden test
+  asserts the exact set of rows that must come back "לא תקין" for this file.
+  Do not "improve" this page — fix the fixture expectations instead.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+  <title>דף</title>
+  <style>
+    body { font-family: Arial, sans-serif; direction: rtl; background: #fff; color: #999; }
+    .fake-heading { font-size: 26px; font-weight: bold; color: #333; }
+    .low-contrast { color: #bbb; background: #fff; }
+    a { color: #6a7fd6; text-decoration: none; }
+    button:focus, a:focus, input:focus { outline: none; }
+    .clip { height: 20px; overflow: hidden; }
+    .spin { animation: spin 0.2s linear infinite; width: 40px; height: 40px; background: #333; }
+    @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+    .clickable { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div id="top">
+    <font color="#333"><center>אתר הדוגמה</center></font>
+  </div>
+
+  <div>
+    <a href="/">בית</a>
+    <a href="/about">אודות</a>
+    <a href="/contact">צור קשר</a>
+  </div>
+
+  <div id="content">
+    <p class="fake-heading">השירותים שלנו</p>
+    <p class="low-contrast">אנחנו מספקים שירותים מגוונים ללקוחות פרטיים ועסקיים בכל רחבי הארץ, בליווי מקצועי ואישי.</p>
+
+    <!-- Data URIs so the images render at real dimensions with no network:
+         the size-based heuristics (decorative vs content, text-in-image) would
+         otherwise all see a 0x0 broken image and the fixture would prove nothing. -->
+    <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='600'%20height='300'%3E%3Crect%20width='600'%20height='300'%20fill='%23cfd8e3'/%3E%3C/svg%3E"
+         width="600" height="300">
+    <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='700'%20height='200'%3E%3Crect%20width='700'%20height='200'%20fill='%23e2b04a'/%3E%3Ctext%20x='350'%20y='120'%20font-size='64'%20text-anchor='middle'%3E50%25%3C/text%3E%3C/svg%3E"
+         alt="banner-sale.png" width="700" height="200" class="promo-banner">
+    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1">
+
+    <p>- שירות ראשון</p>
+    <p>- שירות שני</p>
+    <p>- שירות שלישי</p>
+
+    <p class="clip">טקסט זה נחתך כאשר מגדילים את הגופן משום שהמכולה שלו בגובה קבוע ומסתירה את הגלישה.</p>
+
+    <p>לפרטים נוספים <a href="/services">לחץ כאן</a> או <a href="/pricing">לחץ כאן</a>.</p>
+    <p>לחץ על הכפתור הירוק כדי להמשיך בתהליך.</p>
+    <p>ניתן ליצור קשר בטלפון 03-1234567 או בדוא"ל info@example.co.il.</p>
+
+    <div class="spin"></div>
+    <marquee>הודעה חשובה שרצה על המסך</marquee>
+
+    <table>
+      <tr><td>שם</td><td>תפקיד</td><td>טלפון</td></tr>
+      <tr><td>ישראל ישראלי</td><td>מנהל</td><td>052-1111111</td></tr>
+    </table>
+
+    <form>
+      <input type="text" placeholder="שם מלא">
+      <input type="email" placeholder="דוא&quot;ל">
+      <select><option>בחר נושא</option></select>
+      <div class="clickable" onclick="alert('נשלח')">שלח</div>
+    </form>
+
+    <div class="clickable" onclick="document.getElementById('content').style.display='none'">הסתר תוכן</div>
+
+    <p>This is an entire paragraph written in English inside a Hebrew page, with no language marking of any kind, which a screen reader will read using Hebrew phonetics.</p>
+
+    <button><svg width="16" height="16"><rect width="16" height="16"/></svg></button>
+
+    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" width="400" height="220"></iframe>
+
+    <div id="dup">א</div>
+    <div id="dup">ב</div>
+  </div>
+
+  <div>
+    <p>כל הזכויות שמורות</p>
+  </div>
+
+  <script>
+    setTimeout(function () { console.log('session check'); }, 900000);
+  </script>
+</body>
+</html>

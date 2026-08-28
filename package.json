@@ -1,0 +1,28 @@
+{
+  "name": "ai-5568-guru",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "IL 5568 Accessibility Review and Guidance before Formal Audit",
+  "workspaces": [
+    "packages/criteria",
+    "packages/report-contract",
+    "packages/remediation",
+    "services/scanner"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test -w @ai5568/scanner",
+    "scan": "npm run scan -w @ai5568/scanner",
+    "web": "npm run web -w @ai5568/scanner",
+    "import-criteria": "node packages/criteria/src/import-form-xlsx.ts",
+    "emit-skill-refs": "node packages/criteria/generators/emit-skill-references.ts"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "typescript": "^5.9.3"
+  }
+}
