@@ -13,10 +13,19 @@
  * writes. That covers the signup trigger, RLS, the domains API, verification
  * and review gating.
  *
- * What it does NOT cover is /auth/callback exchanging a PKCE code — that path
- * needs a browser-initiated flow whose verifier lives in a cookie, and it is
- * blocked until localhost is on the project's redirect allowlist. Said plainly
- * rather than implied by a green tick.
+ * What it does NOT cover is /auth/callback exchanging a PKCE code.
+ *
+ * `generate_link` always returns an implicit-flow token in the URL fragment,
+ * and a fragment is never sent to a server — so no server route can see it. It
+ * ignores `code_challenge` too, so the flow cannot be forced. Only a
+ * browser-initiated sign-in produces the `?code=` the callback consumes,
+ * because the verifier it is checked against lives in a cookie the browser
+ * wrote.
+ *
+ * Note on `redirect_to`: it belongs at the top level of the body. Nested under
+ * `options` it is silently ignored and the Site URL is substituted — which
+ * reads exactly like a redirect allowlist rejecting the URL, and cost an hour
+ * of blaming a correct configuration.
  */
 import { readFileSync } from 'node:fs';
 
@@ -34,7 +43,7 @@ const EMAIL = `e2e-${Date.now()}@aiguru.co.il`;
 
 const admin = (p, i = {}) => fetch(U + p, { ...i, headers: { apikey: SERVICE, authorization: `Bearer ${SERVICE}`, 'content-type': 'application/json', ...i.headers } });
 
-const g = await admin('/auth/v1/admin/generate_link', { method: 'POST', body: JSON.stringify({ type: 'magiclink', email: EMAIL, options: { redirect_to: `${APP}/auth/callback` } }) });
+const g = await admin('/auth/v1/admin/generate_link', { method: 'POST', body: JSON.stringify({ type: 'magiclink', email: EMAIL, redirect_to: `${APP}/auth/callback` }) });
 const link = await g.json();
 console.log('1. account minted   ', EMAIL);
 
