@@ -1,54 +1,39 @@
-'use client';
-
-import { FormEvent, useRef, useState, useTransition } from 'react';
-import { supabaseBrowser } from '@/lib/supabase/client';
+import type { Metadata } from 'next';
 import { ProductShell } from '@/components/product-shell';
+import { sendSignInLink } from './actions';
+
+export const metadata: Metadata = { title: 'כניסה' };
 
 /**
- * Sign-in by emailed link.
+ * Sign-in by emailed link. No password field, deliberately: a password is a
+ * credential we would have to take responsibility for — resets, strength rules,
+ * breach handling — for a product whose value is a scan report.
  *
- * No password field, deliberately. A password is a credential we would have to
- * take responsibility for — reset flows, strength rules, breach handling — for
- * a product whose whole value is a scan report. The link does the same job with
- * nothing to leak.
+ * A server component with a server action, so it works with no JavaScript and
+ * the address is never placed in a URL. See actions.ts for why that matters.
  */
-export default function SignIn() {
-  const [email, setEmail] = useState('');
-  const [tone, setTone] = useState<'idle' | 'sent' | 'error'>('idle');
-  const [message, setMessage] = useState('');
-  const [isPending, startTransition] = useTransition();
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!email.trim()) {
-      setTone('error');
-      setMessage('הזינו כתובת דוא"ל.');
-      requestAnimationFrame(() => inputRef.current?.focus());
-      return;
-    }
+const MESSAGES = {
+  sent: 'אם הכתובת תקינה, נשלח אליה קישור כניסה. הקישור תקף לזמן מוגבל.',
+  invalid: 'הזינו כתובת דוא"ל תקינה.',
+} as const;
 
-    startTransition(async () => {
-      const supabase = supabaseBrowser();
-      const { error } = await supabase.auth.signInWithOtp({
-        email: email.trim(),
-        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
-      });
+export default async function SignIn({
+  searchParams,
+}: {
+  searchParams: Promise<{ state?: string; error?: string }>;
+}) {
+  const params = await searchParams;
+  const state = params.state === 'sent' ? 'sent' : params.state === 'invalid' ? 'invalid' : null;
 
-      if (error) {
-        setTone('error');
-        setMessage('לא הצלחנו לשלוח את הקישור. נסו שוב בעוד רגע.');
-        requestAnimationFrame(() => inputRef.current?.focus());
-        return;
-      }
+  const linkError =
+    params.error === 'invalid-link'
+      ? 'הקישור אינו תקף או שכבר נעשה בו שימוש. בקשו קישור חדש.'
+      : params.error === 'missing-code'
+        ? 'הקישור חסר. בקשו קישור חדש.'
+        : null;
 
-      // The same message whether or not the address has an account. Saying
-      // "no such user" would turn this form into a way to test which addresses
-      // are registered here.
-      setTone('sent');
-      setMessage('אם הכתובת תקינה, נשלח אליה קישור כניסה. הקישור תקף לזמן מוגבל.');
-    });
-  }
+  const isError = state === 'invalid' || linkError !== null;
 
   return (
     <ProductShell>
@@ -61,7 +46,13 @@ export default function SignIn() {
 
         <section className="panel" aria-labelledby="signin-heading">
           <h2 id="signin-heading">קישור כניסה בדוא&quot;ל</h2>
-          <form onSubmit={submit} noValidate>
+
+          {/*
+            method="post" via the server action. A GET form would put the
+            address in the query string the moment anyone submits it — which is
+            how it ends up in history, in Referer headers, and in access logs.
+          */}
+          <form action={sendSignInLink}>
             <label className="field-label" htmlFor="email">
               כתובת דוא&quot;ל
             </label>
@@ -72,27 +63,25 @@ export default function SignIn() {
               type="email"
               autoComplete="email"
               dir="ltr"
-              ref={inputRef}
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              aria-invalid={tone === 'error'}
+              aria-invalid={isError}
               aria-describedby="signin-status"
               required
             />
             <div className="action-row">
-              <button className="button" type="submit" disabled={isPending || tone === 'sent'}>
-                {isPending ? 'שולחים…' : 'שליחת קישור'}
+              <button className="button" type="submit">
+                שליחת קישור
               </button>
             </div>
-            <p
-              className={tone === 'error' ? 'error' : 'status-message'}
-              id="signin-status"
-              role="status"
-              aria-live="polite"
-            >
-              {message || 'לא נדרשת סיסמה.'}
-            </p>
           </form>
+
+          {/*
+            Rendered on the server after the redirect, so the outcome is in the
+            document rather than announced into a live region that a screen
+            reader may or may not have been watching.
+          */}
+          <p className={isError ? 'error' : 'status-message'} id="signin-status" role="status">
+            {linkError ?? (state ? MESSAGES[state] : 'לא נדרשת סיסמה.')}
+          </p>
         </section>
       </main>
     </ProductShell>
