@@ -126,7 +126,7 @@ async function main(): Promise<void> {
 
     // 2. Start the web UI and audit it too.
     procs.push(
-      spawn(process.execPath, ['--experimental-strip-types', resolve(ROOT, 'packages/web/src/server.ts')], {
+      spawn(process.execPath, [resolve(ROOT, 'web/src/server.ts')], {
         stdio: 'ignore',
         cwd: ROOT,
         env: { ...process.env, PORT: String(WEB_PORT) },

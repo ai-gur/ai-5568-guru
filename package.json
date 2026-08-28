@@ -16,7 +16,8 @@
     "scan": "npm run scan -w @ai5568/scanner",
     "web": "npm run web -w @ai5568/scanner",
     "import-criteria": "node packages/criteria/src/import-form-xlsx.ts",
-    "emit-skill-refs": "node packages/criteria/generators/emit-skill-references.ts"
+    "emit-skill-refs": "node packages/criteria/generators/emit-skill-references.ts",
+    "verify:self": "npm run verify:self -w @ai5568/scanner"
   },
   "engines": {
     "node": ">=22.18"
