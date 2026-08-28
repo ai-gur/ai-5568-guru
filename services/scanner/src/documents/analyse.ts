@@ -12,7 +12,7 @@ import { join } from 'node:path';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Catalogue, CheckResult, Finding } from '@ai5568/criteria';
-import { levelApplies } from '@ai5568/criteria';
+import { itemApplies, standardExcludes } from '@ai5568/criteria';
 import { checkDocumentApplicability } from '../checks/applicability.ts';
 import type { DiscoveredDocument } from '../crawl/crawler.ts';
 import type { ScanOptions, TargetReport } from '../types.ts';
@@ -93,10 +93,23 @@ function evaluateDocument(opts: EvaluateDocumentOptions): CheckResult[] {
   const results: CheckResult[] = [];
 
   const items = catalogue.items.filter(
-    (item) => item.engine.appliesTo.includes(doc.docType) && levelApplies(item.form.level, level),
+    (item) => item.engine.appliesTo.includes(doc.docType) && itemApplies(item, level),
   );
 
   for (const item of items) {
+    const excluded = standardExcludes(item);
+    if (excluded) {
+      results.push({
+        itemId: item.id,
+        verdict: 'NA',
+        method: 'na-probe',
+        confidence: 1,
+        findings: [],
+        noteHe: excluded.reasonHe,
+      });
+      continue;
+    }
+
     if (downloadError || !facts) {
       results.push({
         itemId: item.id,

@@ -15,7 +15,7 @@
  */
 
 import type { Catalogue, CheckItem, CheckResult, Finding, Method, Verdict } from '@ai5568/criteria';
-import { levelApplies } from '@ai5568/criteria';
+import { itemApplies, standardExcludes } from '@ai5568/criteria';
 import { checkApplicability, toCounts, type Counts } from './checks/applicability.ts';
 import { findingsFromAxe, incompleteFromAxe, type AxeMapping } from './checks/axe-map.ts';
 import { runCustomRule, type RuleContext, type SiteContext } from './checks/custom-rules.ts';
@@ -58,7 +58,7 @@ export function evaluatePage(opts: EvaluateOptions): PageEvaluation {
   const axeIncomplete = incompleteFromAxe(bundle.axe, mapping);
 
   const pageItems = catalogue.items.filter(
-    (item) => item.engine.appliesTo.includes('page') && levelApplies(item.form.level, level),
+    (item) => item.engine.appliesTo.includes('page') && itemApplies(item, level),
   );
 
   // A page that would not load cannot be assessed at all. Reporting every row as
@@ -85,6 +85,23 @@ export function evaluatePage(opts: EvaluateOptions): PageEvaluation {
   const counts = toCounts(bundle.evidence?.counts as Record<string, unknown> | undefined, site.pageCount);
 
   for (const item of pageItems) {
+    // ── 0. the standard cancels the criterion ──────────────────────────────
+    // Higher precedence than applicability: this row does not exist as a duty,
+    // whatever the page contains. It is still reported, because the form
+    // demands the row, and the clause is quoted so a reviewer can check it.
+    const excluded = standardExcludes(item);
+    if (excluded) {
+      results.push({
+        itemId: item.id,
+        verdict: 'NA',
+        method: 'na-probe',
+        confidence: 1,
+        findings: [],
+        noteHe: excluded.reasonHe,
+      });
+      continue;
+    }
+
     // ── 1. applicability ───────────────────────────────────────────────────
     const applicability = checkApplicability(item.engine.applicability, counts, bundle.evidence);
     if (!applicability.applicable) {

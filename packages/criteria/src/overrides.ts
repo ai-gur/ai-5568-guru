@@ -203,6 +203,19 @@ export const ENGINE_OVERRIDES: Record<string, EngineSpec> = {
         'Add a selectable audio-description track (`<track kind="descriptions">` where the player supports it, or a separate described version of the video linked next to the original).',
       effort: 'high',
     },
+    // SI 5568 part 1 (2023) moves 1.2.5 from AA to AAA, so it falls outside an
+    // AA review. The standard's own note explains why: producing Hebrew audio
+    // description is a "נטל כבד" today, and the duty is limited to an
+    // individual request. Reporting it as a failure at AA would fail a site on
+    // something it is not required to do.
+    standardOverride: {
+      source: 'ת"י 5568 חלק 1 (2023), נספח D',
+      clause: '1.2.5',
+      effect: 'level',
+      level: 'AAA',
+      reasonHe:
+        'ת"י 5568 חלק 1 (2023) מעביר את סעיף 1.2.5 מרמה AA לרמה AAA, וקובע כי הוא חל רק אם התקבלה בקשה פרטנית. הקריטריון אינו נדרש בבדיקה ברמה AA.',
+    },
   },
 
   // ── הנחיה 1.3 ניתן להתאמה ────────────────────────────────────────────────
@@ -693,6 +706,27 @@ export const ENGINE_OVERRIDES: Record<string, EngineSpec> = {
       instruction:
         'Wrap foreign-language passages: `<span lang="en" dir="ltr">…</span>`. Inside Hebrew text, also mark LTR islands — phone numbers, IDs, order numbers, emails, code — with `dir="ltr"` so bidi does not scramble them.',
       effort: 'low',
+    },
+    // SI 5568 part 1 (2023) cancels 3.1.2 outright: "הסעיף, על כותרתו, אינו חל".
+    //
+    // The reasoning the standard gives is wrong on the technical facts — UTF-8
+    // is a character encoding and carries no language information, and screen
+    // readers do not switch pronunciation engines from it. We implement the
+    // standard anyway. Our job is to report the duty as the standard states it,
+    // not to enforce a stricter rule we happen to think is better.
+    //
+    // The row is still reported, because regulation 93(א) requires the sheet to
+    // be filled in and the sheet contains it. It resolves NA with the clause
+    // quoted, so a reviewer can check the claim instead of trusting it.
+    //
+    // Marking foreign-language passages remains genuinely good practice, and
+    // the remediation instruction above is kept for anyone who wants it.
+    standardOverride: {
+      source: 'ת"י 5568 חלק 1 (2023), פירוט השינויים הלאומיים',
+      clause: '3.1.2',
+      effect: 'notApplicable',
+      reasonHe:
+        'ת"י 5568 חלק 1 (2023) קובע במפורש לגבי סעיף 3.1.2 (השפה בחלקים מהדף): "הסעיף, על כותרתו, אינו חל". הקריטריון מדווח לצורך מילוי הטופס בלבד ואינו מהווה דרישה.',
     },
   },
 

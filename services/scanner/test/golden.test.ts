@@ -29,6 +29,7 @@ import { canonicalize, classifyLink, registrableDomain } from '../src/crawl/url.
 import { loadCatalogue, scan } from '../src/scan.ts';
 import { DEFAULT_OPTIONS, type ScanOptions } from '../src/types.ts';
 import type { TargetReport } from '../src/types.ts';
+import { itemApplies, standardExcludes } from '@ai5568/criteria';
 import type { Catalogue } from '@ai5568/criteria';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -177,7 +178,12 @@ describe('the broken fixture', () => {
       ['2.4.4', 'two "לחץ כאן" links with different destinations'],
       ['2.4.7', 'outline:none with no replacement'],
       ['3.1.1', 'no lang attribute'],
-      ['3.1.2', 'an English paragraph with no lang'],
+      // 3.1.2 (Language of Parts) used to be expected here. SI 5568 part 1
+      // (2023) cancels it outright — "הסעיף, על כותרתו, אינו חל" — so the
+      // fixture's unmarked English paragraph is no longer a defect under the
+      // Israeli standard. The row is still reported, as NA; see the override
+      // test below, which asserts exactly that rather than letting the
+      // criterion quietly disappear.
       ['3.3.2', 'placeholder used as the label'],
       ['4.1.1', 'duplicate id'],
       ['4.1.2', 'an icon-only button and an untitled iframe'],
@@ -321,6 +327,60 @@ describe('part 2 — documents', () => {
   });
 });
 
+describe('where the standard departs from the check sheet', () => {
+  /**
+   * The form (reg. 93(א)) and the standard (reg. 35א) are two instruments and
+   * they are not synchronised. The sheet still carries rows that SI 5568 part 1
+   * (2023) moved or cancelled. Failing a site on those is the same class of
+   * error as passing something untested — it just points the other way.
+   */
+
+  it('cancels 3.1.2 but still reports the row, with the clause quoted', async () => {
+    const item = catalogue.items.find((i) => i.id === 'R36');
+    assert.ok(item, 'R36 is the sheet row for 3.1.2');
+    assert.equal(item.form.criterionNo, '3.1.2');
+    assert.ok(standardExcludes(item), 'the standard cancels 3.1.2');
+
+    const report = await scan(options(`${BASE}/broken/`), null);
+    const row = report.pages[0]?.results.find((r) => r.itemId === 'R36');
+    // Reported, because reg. 93(א) requires the sheet to be filled in…
+    assert.ok(row, '3.1.2 must still appear in the report');
+    // …but never as a failure, because the standard says it does not apply.
+    assert.equal(row.verdict, 'NA');
+    assert.deepEqual(row.findings, []);
+    assert.match(row.noteHe ?? '', /אינו חל/, 'the NA reason must quote the clause, not paraphrase it');
+  });
+
+  it('drops 1.2.5 from an AA review, because the standard moved it to AAA', async () => {
+    const item = catalogue.items.find((i) => i.id === 'R12');
+    assert.ok(item);
+    assert.equal(item.form.criterionNo, '1.2.5');
+    assert.equal(item.form.level, 'AA', 'the sheet still marks it AA');
+    assert.equal(itemApplies(item, 'AA'), false, 'but the standard puts it at AAA');
+
+    const report = await scan(options(`${BASE}/broken/`), null);
+    assert.equal(
+      report.pages[0]?.results.some((r) => r.itemId === 'R12'),
+      false,
+      'an AAA row must not be reported in an AA review',
+    );
+  });
+
+  it('leaves every other row deciding by the sheet', () => {
+    const overridden = catalogue.items.filter((i) => i.engine.standardOverride);
+    assert.deepEqual(
+      overridden.map((i) => i.id).sort(),
+      ['R12', 'R36'],
+      'only the two rows the 2023 standard actually changed may carry an override',
+    );
+    for (const item of overridden) {
+      const o = item.engine.standardOverride!;
+      assert.match(o.source, /5568/, 'an override must name the instrument it comes from');
+      assert.ok(o.reasonHe.length > 20, 'an override must explain itself in the report');
+    }
+  });
+});
+
 describe('verdict discipline', () => {
   it('never reports an unverified row as passing', async () => {
     const report = await scan(options(`${BASE}/good/`, 2), null);
@@ -347,7 +407,13 @@ describe('verdict discipline', () => {
     const report = await scan(options(`${BASE}/broken/`), null);
     const page = report.pages[0];
     assert.ok(page);
-    const expected = catalogue.items.filter((i) => i.engine.appliesTo.includes('page')).length;
+    // Level matters: SI 5568 moved 1.2.5 to AAA, which puts it outside an AA
+    // review. `itemApplies` is what the scanner filters on, so the expectation
+    // is computed the same way — otherwise this test would only ever restate
+    // the filter back to itself.
+    const expected = catalogue.items.filter(
+      (i) => i.engine.appliesTo.includes('page') && itemApplies(i, 'AA'),
+    ).length;
     assert.equal(page.results.length, expected, 'every applicable row must appear, none silently dropped');
   });
 });

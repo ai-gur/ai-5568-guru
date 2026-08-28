@@ -107,6 +107,8 @@ export interface EngineSpec {
   rubricHe: string;
   /** How to fix it, used to build the remediation Markdown. */
   remediation: Remediation;
+  /** Set only where SI 5568 departs from the check sheet. See StandardOverride. */
+  standardOverride?: StandardOverride;
 }
 
 /**
@@ -180,6 +182,42 @@ export type EvidenceSlice =
   | 'documentText'
   | 'documentComplexInfo';
 
+/**
+ * Where the standard departs from the check sheet.
+ *
+ * Two legal instruments govern, and they are not synchronised:
+ *
+ *   the STANDARD (SI 5568) defines what is required — regulation 35א;
+ *   the FORM defines what must be reported — regulation 93(א).
+ *
+ * The check sheet was last touched in July 2025 but still carries rows that
+ * SI 5568 part 1 (2023) moved or cancelled. Following the sheet alone makes the
+ * scanner fail sites on duties they do not have, which is the same class of
+ * error as passing something untested — it just points the other way.
+ *
+ * So the sheet keeps deciding which rows are *reported*, and this field records
+ * where the standard changed what the row *requires*. It lives in the engine
+ * layer, never in `form`, because `form` is copied verbatim and re-imported.
+ */
+export interface StandardOverride {
+  /** The instrument that overrides, e.g. 'ת"י 5568 חלק 1 (2023)'. */
+  source: string;
+  /** Clause within it, e.g. '3.1.2'. */
+  clause: string;
+  /**
+   * `notApplicable` — the standard cancels the criterion outright. The row is
+   *   still reported (the form demands it) but always resolves NA, with the
+   *   reason quoted so a reviewer can check the claim rather than trust it.
+   * `level` — the standard assigns a different conformance level than the
+   *   sheet. AAA rows fall outside an AA review.
+   */
+  effect: 'notApplicable' | 'level';
+  /** Required when `effect` is 'level'. Replaces `form.level` for filtering. */
+  level?: 'A' | 'AA' | 'AAA';
+  /** Shown in the report, in Hebrew. Must cite the clause, not paraphrase it. */
+  reasonHe: string;
+}
+
 export interface Remediation {
   /** One-line statement of the end state the page must reach. */
   goalHe: string;
@@ -234,7 +272,28 @@ export interface CheckResult {
 
 export const LEVELS = ['A', 'AA'] as const;
 
-/** Sheet-declared level ordering, for "does this row apply at level A only?" filters. */
-export function levelApplies(itemLevel: 'A' | 'AA', target: 'A' | 'AA'): boolean {
+/**
+ * Level ordering. AAA never applies to an A or AA review — the standard moved
+ * 1.2.4 and 1.2.5 there precisely so they would fall outside the duty.
+ */
+export function levelApplies(itemLevel: 'A' | 'AA' | 'AAA', target: 'A' | 'AA'): boolean {
+  if (itemLevel === 'AAA') return false;
   return target === 'AA' ? true : itemLevel === 'A';
+}
+
+/** The level that actually binds: the standard's, where it differs from the sheet's. */
+export function effectiveLevel(item: CheckItem): 'A' | 'AA' | 'AAA' {
+  const o = item.engine.standardOverride;
+  return o?.effect === 'level' && o.level ? o.level : item.form.level;
+}
+
+/** True when the standard cancels this criterion outright. */
+export function standardExcludes(item: CheckItem): StandardOverride | null {
+  const o = item.engine.standardOverride;
+  return o?.effect === 'notApplicable' ? o : null;
+}
+
+/** Does this row belong in a review at `target`? */
+export function itemApplies(item: CheckItem, target: 'A' | 'AA'): boolean {
+  return levelApplies(effectiveLevel(item), target);
 }

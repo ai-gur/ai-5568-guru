@@ -2,7 +2,7 @@
   "source": {
     "file": "sitedocs_internet_accessibility_form.xlsx",
     "sheet": "בדיקת נגישות לאינטרנט",
-    "importedAt": "2026-07-29T06:22:35.172Z",
+    "importedAt": "2026-08-28T13:13:20.617Z",
     "rowCount": 42
   },
   "items": [
@@ -325,6 +325,13 @@
           "goalHe": "לכל וידאו רצועת תיאור אודיו ניתנת להפעלה.",
           "instruction": "Add a selectable audio-description track (`<track kind=\"descriptions\">` where the player supports it, or a separate described version of the video linked next to the original).",
           "effort": "high"
+        },
+        "standardOverride": {
+          "source": "ת\"י 5568 חלק 1 (2023), נספח D",
+          "clause": "1.2.5",
+          "effect": "level",
+          "level": "AAA",
+          "reasonHe": "ת\"י 5568 חלק 1 (2023) מעביר את סעיף 1.2.5 מרמה AA לרמה AAA, וקובע כי הוא חל רק אם התקבלה בקשה פרטנית. הקריטריון אינו נדרש בבדיקה ברמה AA."
         }
       }
     },
@@ -1214,6 +1221,12 @@
           "goalHe": "כל קטע בשפה זרה מסומן ב-lang, ובמידת הצורך גם ב-dir.",
           "instruction": "Wrap foreign-language passages: `<span lang=\"en\" dir=\"ltr\">…</span>`. Inside Hebrew text, also mark LTR islands — phone numbers, IDs, order numbers, emails, code — with `dir=\"ltr\"` so bidi does not scramble them.",
           "effort": "low"
+        },
+        "standardOverride": {
+          "source": "ת\"י 5568 חלק 1 (2023), פירוט השינויים הלאומיים",
+          "clause": "3.1.2",
+          "effect": "notApplicable",
+          "reasonHe": "ת\"י 5568 חלק 1 (2023) קובע במפורש לגבי סעיף 3.1.2 (השפה בחלקים מהדף): \"הסעיף, על כותרתו, אינו חל\". הקריטריון מדווח לצורך מילוי הטופס בלבד ואינו מהווה דרישה."
         }
       }
     },
