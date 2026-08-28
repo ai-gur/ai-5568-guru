@@ -298,6 +298,19 @@
     all('p, div, span, strong, b, td, li').forEach(function (el) {
       if (fakeHeadings.length >= 60) return;
       if (el.closest('h1,h2,h3,h4,h5,h6,[role="heading"]')) return;
+      // The site wordmark: a link inside the banner landmark, carrying the
+      // organisation's name at display size. It is site identity, not a section
+      // heading, and marking it up as one would put a stray <h1> or <h2> on
+      // every page of the site.
+      //
+      // This exclusion was added after the rule fired on our own header, which
+      // is the worst possible reason to relax a check — so the test applied was
+      // whether it would be a false positive on OTHER sites. It would: nearly
+      // every site styles its wordmark larger or bolder than body text inside a
+      // link home. The rule already skips icons, badges and bare numbers for
+      // the same reason. Kept deliberately narrow: only inside a link, and only
+      // within a banner.
+      if (el.closest('header a, [role="banner"] a')) return;
       if (!isVisible(el)) return;
       // Hidden from assistive tech: it cannot be a heading a screen reader
       // should have been able to navigate to, so it is not a missing one.

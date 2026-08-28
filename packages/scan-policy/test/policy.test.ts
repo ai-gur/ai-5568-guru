@@ -5,7 +5,7 @@
 
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { blockedReason, guardUrl } from '../src/crawl/network-guard.ts';
+import { blockedReason, guardUrl } from '../src/network-guard.ts';
 import { pageLimitFor, verificationToken, SHALLOW_MAX_PAGES } from '../src/ownership.ts';
 
 describe('address ranges', () => {

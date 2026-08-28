@@ -1,0 +1,366 @@
+@import './tokens.css';
+
+/*
+ * 5568 Readiness — application surface.
+ *
+ * The AI Guru system is editorial: scale, whitespace, rules, photography. This
+ * is an application, so it borrows the palette, type scale and spacing rather
+ * than the layout, and stays disciplined about copper — reserved for decisions
+ * and primary actions, never decoration.
+ *
+ * Everything here has to survive the review this product runs on other people's
+ * sites. Where a rule exists for a criterion, the criterion is named.
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 20rem;
+  background: var(--paper);
+  color: var(--ink);
+  /* Driven by the display-preferences control; also what the browser's own
+     text-size setting acts on. */
+  font-size: var(--user-text-scale);
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-open-sans), Arial, sans-serif;
+  font-size: var(--text-base);
+  line-height: var(--body-line);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-frank), Georgia, serif;
+  font-weight: 560;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0 0 var(--space-s);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--text-h1);
+  max-inline-size: var(--measure-display);
+}
+h2 {
+  font-size: var(--text-h2);
+  max-inline-size: var(--measure-heading);
+}
+h3 {
+  font-size: var(--text-h4);
+}
+
+p {
+  margin: 0 0 var(--space-s);
+  max-inline-size: 68ch;
+}
+
+a {
+  color: var(--copper-dark);
+  /* 1.4.1 — never colour alone. The underline is the signal; colour is
+     emphasis on top of it. */
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--ink);
+}
+
+/*
+ * 2.4.7. One rule for every interactive element, using the token that was
+ * measured against every surface in the system rather than a colour that
+ * merely looks like a focus ring.
+ */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* 2.4.1 — first in the tab order, and genuinely visible once focused. */
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--space-s);
+  inset-block-start: -4rem;
+  z-index: 10;
+  padding: var(--space-2xs) var(--space-s);
+  background: var(--navy-deep);
+  color: var(--white);
+  border-radius: var(--radius-sm);
+  transition: inset-block-start 120ms ease;
+}
+
+.skip-link:focus-visible {
+  inset-block-start: var(--space-s);
+}
+
+/* ── shell ───────────────────────────────────────────────────────────────── */
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-s);
+  inline-size: var(--shell);
+  margin-inline: auto;
+  padding-block: var(--space-s);
+  border-block-end: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--ink);
+  margin-inline-end: auto;
+}
+
+.brand strong {
+  font-family: var(--font-frank), Georgia, serif;
+  font-size: var(--text-h4);
+  font-weight: 560;
+}
+
+.brand span {
+  font-size: var(--text-2xs);
+  color: var(--sage-text);
+}
+
+.topbar nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+}
+
+.page {
+  inline-size: var(--shell);
+  margin-inline: auto;
+  padding-block: var(--space-xl) var(--space-2xl);
+  flex: 1;
+}
+
+/* A programmatically focused region must not draw a ring as if the user had
+   tabbed to it — but it must still be reachable, hence tabindex="-1". */
+.page:focus {
+  outline: none;
+}
+
+.footer {
+  border-block-start: 1px solid var(--border);
+  background: var(--warm);
+}
+
+.footer-inner {
+  inline-size: var(--shell);
+  margin-inline: auto;
+  padding-block: var(--space-m);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  color: var(--sage-text);
+}
+
+/* ── panels and forms ────────────────────────────────────────────────────── */
+
+.panel {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-m);
+}
+
+.field-label {
+  display: block;
+  font-weight: 600;
+  font-size: var(--text-xs);
+  margin-block-end: var(--space-3xs);
+}
+
+.url-input {
+  inline-size: 100%;
+  min-block-size: 3rem;
+  padding: 0.7rem 0.8rem;
+  background: var(--white);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  /* A URL is LTR even inside a Hebrew page; without this, bidi reorders it. */
+  direction: ltr;
+  text-align: start;
+}
+
+.url-input[aria-invalid='true'] {
+  border-color: var(--error);
+  border-inline-start-width: 4px;
+}
+
+.field-hint {
+  font-size: var(--text-xs);
+  color: var(--sage-text);
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin-block: var(--space-s);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 3.2rem;
+  padding: 0.78rem 1.3rem;
+  border: 1px solid var(--copper-dark);
+  border-radius: var(--radius-sm);
+  background: var(--copper-dark);
+  color: var(--white);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button.secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--border);
+}
+
+.button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.status-message {
+  font-size: var(--text-xs);
+  color: var(--sage-text);
+}
+
+/*
+ * 1.4.1 and 3.3.1 — an error is never signalled by colour alone. The mark is
+ * carried by content, so it survives greyscale, high-contrast mode, and a
+ * screen reader.
+ */
+.error {
+  color: var(--error);
+  font-size: var(--text-xs);
+}
+
+.error::before {
+  content: '⚠ ';
+}
+
+.notice {
+  border-inline-start: 4px solid var(--copper);
+  background: var(--warm);
+  padding: var(--space-xs) var(--space-s);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+}
+
+/* ── display preferences (reg. 35ה) ──────────────────────────────────────── */
+
+.preferences {
+  position: relative;
+}
+
+.preferences-trigger {
+  min-block-size: 2.75rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.preferences-panel {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-3xs));
+  inset-inline-end: 0;
+  z-index: 5;
+  inline-size: min(20rem, 90vw);
+  display: grid;
+  gap: var(--space-2xs);
+  padding: var(--space-s);
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-size: var(--text-xs);
+}
+
+/* `display: grid` above would override the hidden attribute's own
+   `display: none`, so state it explicitly. */
+.preferences-panel[hidden] {
+  display: none;
+}
+
+.preferences-panel label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3xs);
+}
+
+/*
+ * The preferences have to do something real, or the widget is theatre — which
+ * is exactly what IL05 exists to catch on other people's sites.
+ */
+:root[data-contrast='true'] {
+  --paper: #ffffff;
+  --cream: #ffffff;
+  --warm: #f2f2f2;
+  --ink: #101010;
+  --sage-dark: #3a3a3a;
+  --border: #101010;
+  --copper-dark: #6d3115;
+}
+
+:root[data-text-size='true'] {
+  --user-text-scale: 125%;
+}
+
+/* 1.4.12 — the four properties the criterion actually names. */
+:root[data-spacing='true'] body {
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  word-spacing: 0.16em;
+}
+
+:root[data-spacing='true'] p {
+  margin-block-end: 2em;
+}
+
+/* ── motion ──────────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

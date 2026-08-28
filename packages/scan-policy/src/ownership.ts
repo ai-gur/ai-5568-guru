@@ -17,7 +17,7 @@
 
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { resolveTxt } from 'node:dns/promises';
-import { guardUrl } from './crawl/network-guard.ts';
+import { guardUrl } from './network-guard.ts';
 
 /** Pages a review will cover without proof of control. */
 export const SHALLOW_MAX_PAGES = 5;

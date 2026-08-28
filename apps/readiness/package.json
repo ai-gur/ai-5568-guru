@@ -1,0 +1,28 @@
+{
+  "name": "@ai5568/readiness",
+  "version": "0.1.0",
+  "private": true,
+  "description": "5568 Readiness — the review app. Hebrew, RTL, and held to the standard it reviews.",
+  "scripts": {
+    "dev": "next dev --port 3568",
+    "build": "next build",
+    "start": "next start --port 3568",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@ai5568/criteria": "*",
+    "@ai5568/report-contract": "*",
+    "@ai5568/scan-policy": "*",
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.47.10",
+    "next": "16.2.12",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  }
+}

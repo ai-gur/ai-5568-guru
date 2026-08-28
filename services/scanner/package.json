@@ -8,7 +8,8 @@
     "test": "node --test \"test/*.test.ts\"",
     "scan": "node cli/src/index.ts scan",
     "web": "node web/src/server.ts",
-    "verify:self": "node test/verify-self.ts"
+    "verify:self": "node test/verify-self.ts",
+    "review:self": "node test/review-own-app.ts"
   },
   "dependencies": {
     "@ai5568/criteria": "*",
@@ -19,6 +20,7 @@
     "exceljs": "^4.4.0",
     "fastify": "^5.2.0",
     "playwright": "^1.49.1",
-    "@ai5568/remediation": "*"
+    "@ai5568/remediation": "*",
+    "@ai5568/scan-policy": "*"
   }
 }

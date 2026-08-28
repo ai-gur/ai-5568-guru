@@ -1,0 +1,10 @@
+{
+  "name": "@ai5568/scan-policy",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "What may be scanned, and how deep. Shared by the web app and the scanner so the rules cannot drift between them.",
+  "license": "MIT",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": { "test": "node --test \"test/*.test.ts\"" },
+  "publishConfig": { "access": "public" }
+}

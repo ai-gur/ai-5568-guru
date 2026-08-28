@@ -18,7 +18,7 @@ import { join } from 'node:path';
 import { BrowserDriver, type PageBundle } from './browser.ts';
 import { fetchRobots, fetchSitemapUrls, type Robots } from './robots.ts';
 import { canonicalize, classifyLink, inScope, slugForUrl } from './url.ts';
-import { guardUrl } from './network-guard.ts';
+import { guardUrl } from '@ai5568/scan-policy';
 import type { ScanOptions } from '../types.ts';
 
 export interface DiscoveredDocument {

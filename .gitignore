@@ -16,3 +16,4 @@ reports/
 # what a reader actually needs.
 docs/external-resources/*
 !docs/external-resources/README.md
+.self-scan/

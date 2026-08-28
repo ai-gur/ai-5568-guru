@@ -1,0 +1,115 @@
+/*
+ * AI Guru design tokens.
+ *
+ * ⚠️ MIRRORED, NOT AUTHORED HERE.
+ * Source of truth: C:\AI_Projects\aiguru.co.il\Current\src\app\globals.css
+ * and the DESIGN.md beside it. Change them there first, then bring the change
+ * across — never the other way round.
+ *
+ * This is the same drift problem as the criteria catalogue, in a different
+ * costume: two products, one source of truth, and no mechanism keeping them
+ * honest. A generated `@aiguru/design-tokens` package would fix it properly and
+ * is the right answer once there is a second consumer that matters. Until then
+ * this header is the mechanism, which is worth being honest about.
+ *
+ * Two values below were derived rather than chosen, and must not be "tidied":
+ *
+ *   --focus  clears WCAG 1.4.11 (3:1) against every surface token in the
+ *            system — paper 3.01, cream 3.25, white 3.45, navy 3.21,
+ *            navy-deep 3.99, ink 4.33. A prettier orange fails against paper.
+ *
+ *   --measure-*  are restated for RTL. `ch` is the advance width of the digit
+ *            zero, so it measures the font and not the script: the same number
+ *            buys far fewer Hebrew characters than Latin ones.
+ */
+
+:root {
+  --ink: #282724;
+  --navy: #263e53;
+  --navy-deep: #1b2f40;
+  --copper: #b76843;
+  --copper-dark: #8f4729;
+  --copper-bright: #ffd3bd;
+  --sage: #7d8878;
+  --sage-dark: #667062;
+  --sage-light: #dce0d9;
+
+  /*
+   * ⚠️ DELIBERATE DIVERGENCE FROM THE BRAND MIRROR.
+   *
+   * --sage-dark on --warm measures 4.07:1. Body-size text needs 4.5:1 under
+   * 1.4.3, so the footer failed our own scan. It clears on --paper (4.52) by a
+   * hair, which is why the combination reads as fine until something measures
+   * it against the darker surface.
+   *
+   * The brand token is left untouched — this is not ours to redefine — and a
+   * text-specific token is introduced instead. #576050 gives 5.17 on warm,
+   * 5.74 on paper, 6.20 on cream, so it holds on every surface in the system
+   * rather than only on the one it was first checked against.
+   *
+   * Worth raising upstream: aiguru.co.il will have the same pairing.
+   */
+  --sage-text: #576050;
+  --paper: #f4efe6;
+  --warm: #ebe3d7;
+  --cream: #fbf8f2;
+  --white: #ffffff;
+  --error: #a52b23;
+  --focus: #ba7e1b;
+
+  --border: color-mix(in srgb, var(--ink) 22%, transparent);
+  --shell: min(100% - clamp(2rem, 6vw, 6rem), 90rem);
+  --radius-sm: 0.35rem;
+  --radius: 0.8rem;
+  --radius-lg: 1.4rem;
+  --shadow: 0 1.5rem 5rem rgb(24 38 56 / 0.12);
+  --body-line: 1.5;
+
+  /* Answers the browser's own text-size control; see the type scale note. */
+  --user-text-scale: 100%;
+
+  /* Latin measures. The RTL block below restates them for Hebrew. */
+  --measure-display: 21ch;
+  --measure-heading: 24ch;
+  --measure-heading-tight: 24ch;
+  --measure-heading-solo: 34ch;
+
+  /*
+   * Type scale. Every step interpolates between the same two anchors, 390px
+   * and 1512px, so the family moves together instead of each element growing
+   * at its own rate. The middle term keeps a rem component on purpose: bare
+   * `vw` does not respond when a visitor raises their text size, which would
+   * make the fluid range ignore the accessibility control.
+   */
+  --text-2xs: clamp(0.713rem, 0.689rem + 0.098vw, 0.781rem);
+  --text-xs: clamp(0.869rem, 0.823rem + 0.187vw, 1rem);
+  --text-base: clamp(1.063rem, 0.986rem + 0.312vw, 1.281rem);
+  --text-lead: clamp(1.294rem, 1.174rem + 0.49vw, 1.638rem);
+  --text-h4: clamp(1.581rem, 1.401rem + 0.74vw, 2.1rem);
+  --text-h3: clamp(1.931rem, 1.668rem + 1.078vw, 2.688rem);
+  --text-h2: clamp(2.356rem, 1.98rem + 1.542vw, 3.438rem);
+  --text-h1: clamp(2.875rem, 2.345rem + 2.175vw, 4.4rem);
+
+  --space-3xs: clamp(0.25rem, 0.207rem + 0.178vw, 0.375rem);
+  --space-2xs: clamp(0.5rem, 0.413rem + 0.357vw, 0.75rem);
+  --space-xs: clamp(0.75rem, 0.62rem + 0.535vw, 1.125rem);
+  --space-s: clamp(1rem, 0.826rem + 0.713vw, 1.5rem);
+  --space-m: clamp(1.5rem, 1.239rem + 1.07vw, 2.25rem);
+  --space-l: clamp(2rem, 1.652rem + 1.426vw, 3rem);
+  --space-xl: clamp(3rem, 2.479rem + 2.139vw, 4.5rem);
+  --space-2xl: clamp(4rem, 3.305rem + 2.852vw, 6rem);
+  --space-3xl: clamp(6rem, 4.957rem + 4.278vw, 9rem);
+  --section-space: clamp(4.5rem, 9vw, 9rem);
+}
+
+/*
+ * Applied to the element carrying `dir`, which is <html>; the custom properties
+ * then inherit to everything inside. `:dir()` is not used because it must
+ * resolve on the same element that declares the variables.
+ */
+[dir='rtl'] {
+  --measure-display: 16ch;
+  --measure-heading: 22ch;
+  --measure-heading-tight: 18ch;
+  --measure-heading-solo: 30ch;
+}
