@@ -11,6 +11,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import type { CheckResult, ScanReport } from '@ai5568/report-contract';
 import { compare } from '../src/index.ts';
+import { artifactKey } from '@ai5568/report-contract';
 
 function row(itemId: string, verdict: 'PASS' | 'FAIL' | 'NA', confidence: number, locators: string[] = []): CheckResult {
   return {
@@ -121,5 +122,49 @@ describe('delta', () => {
     const d = compare(base, next);
     assert.deepEqual(d.targetsAdded, ['https://a.co.il/new']);
     assert.deepEqual(d.targetsRemoved, ['https://a.co.il/']);
+  });
+});
+
+describe('artifact retention', () => {
+  /**
+   * Retention is enforced by R2 lifecycle rules keyed on prefix, so a key built
+   * with the wrong prefix means the rule silently does not apply. These pin the
+   * mapping the bucket was configured against.
+   */
+
+  it('routes screenshots to the 90-day prefix', () => {
+    assert.match(artifactKey('run-1', 'screenshot', 'home.png'), /^screenshots\/run-1\//);
+  });
+
+  it('routes the delta baseline to the prefix that has no expiry', () => {
+    // Deleting this destroys the ability to show that anything improved.
+    assert.match(artifactKey('run-1', 'json', 'report.json'), /^data\/run-1\//);
+    assert.match(artifactKey('run-1', 'fix_plan', 'plan.json'), /^data\/run-1\//);
+  });
+
+  it('routes customer deliverables to the one-year prefix', () => {
+    for (const format of ['html', 'pdf', 'xlsx', 'remediation']) {
+      assert.match(artifactKey('run-1', format, `report.${format}`), /^reports\/run-1\//, format);
+    }
+  });
+
+  it('keeps one review together under a single prefix, so deletion is one operation', () => {
+    assert.ok(artifactKey('run-9', 'html', 'a.html').includes('/run-9/'));
+  });
+
+  it('refuses to let a filename escape its prefix', () => {
+    // A crafted name must not walk out of the run's folder and into another's.
+    const key = artifactKey('run-1', 'html', '../../etc/passwd');
+    assert.equal(key.includes('..'), false);
+    assert.match(key, /^reports\/run-1\//);
+  });
+
+  it('does not produce a hidden or option-like filename on download', () => {
+    assert.match(artifactKey('run-1', 'html', '---rf.html'), /run-1\/rf\.html$/);
+    assert.match(artifactKey('run-1', 'html', '.bashrc'), /run-1\/bashrc$/);
+  });
+
+  it('never yields an empty name', () => {
+    assert.match(artifactKey('run-1', 'html', '...'), /run-1\/artifact$/);
   });
 });

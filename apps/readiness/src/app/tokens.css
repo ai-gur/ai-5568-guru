@@ -31,25 +31,26 @@
   --copper-dark: #8f4729;
   --copper-bright: #ffd3bd;
   --sage: #7d8878;
-  --sage-dark: #667062;
-  --sage-light: #dce0d9;
 
   /*
-   * ⚠️ DELIBERATE DIVERGENCE FROM THE BRAND MIRROR.
+   * #667062 originally, darkened by 11 steps.
    *
-   * --sage-dark on --warm measures 4.07:1. Body-size text needs 4.5:1 under
-   * 1.4.3, so the footer failed our own scan. It clears on --paper (4.52) by a
-   * hair, which is why the combination reads as fine until something measures
-   * it against the darker surface.
+   * The original failed 1.4.3 at body size against two surfaces in its own
+   * system: 4.07:1 on --warm and 3.87:1 on --sage-light, where 4.5 is
+   * required. It cleared --paper at 4.52, which is why the pairing reads as
+   * fine — the combination people check it against is the one it passes.
    *
-   * The brand token is left untouched — this is not ours to redefine — and a
-   * text-specific token is introduced instead. #576050 gives 5.17 on warm,
-   * 5.74 on paper, 6.20 on cream, so it holds on every surface in the system
-   * rather than only on the one it was first checked against.
+   * This value clears every surface: warm 4.79, paper 5.32, cream 5.75,
+   * white 6.10, sage-light 4.56. It is the nearest value to the original that
+   * does, so the muted tone the system wants is kept.
    *
-   * Worth raising upstream: aiguru.co.il will have the same pairing.
+   * ⚠️ Diverges from the mirror at aiguru.co.il, which still carries #667062
+   * and will have the same failure. Agreed to take it there once it has been
+   * seen working here.
    */
-  --sage-text: #576050;
+  --sage-dark: #5b6557;
+  --sage-light: #dce0d9;
+
   --paper: #f4efe6;
   --warm: #ebe3d7;
   --cream: #fbf8f2;

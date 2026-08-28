@@ -135,4 +135,11 @@ export interface ScanReport {
   };
 }
 
+export {
+  ARTIFACT_PREFIX,
+  artifactKey,
+  artifactKindFor,
+  type ArtifactKind,
+} from './storage.ts';
+
 export type { CheckResult, Target };

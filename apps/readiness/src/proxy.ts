@@ -4,6 +4,10 @@ import { NextResponse, type NextRequest } from 'next/server';
 /**
  * Keeps the session fresh.
  *
+ * Named `proxy` rather than `middleware`: Next 16 deprecated the middleware
+ * file convention, and a deprecation warning on a project this new is a warning
+ * that will still be there in a year.
+ *
  * Supabase access tokens are short-lived. Without a refresh on each request a
  * signed-in user is silently signed out mid-task, which on this product means
  * losing a verified domain and dropping back to a shallow review without being
@@ -13,7 +17,7 @@ import { NextResponse, type NextRequest } from 'next/server';
  * Supabase, the latter reads a cookie the client controls. Only one of those is
  * an authorisation decision.
  */
-export async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
