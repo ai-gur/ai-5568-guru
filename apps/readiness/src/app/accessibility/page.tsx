@@ -14,9 +14,9 @@ export const metadata: Metadata = { title: 'הצהרת נגישות' };
  * own known limitations rather than claiming there are none — which is exactly
  * what IL01 checks for on every site we scan.
  *
- * ⚠️ The coordinator details below are placeholders and must be filled in
- * before this goes public. An accessibility statement with a fake contact is
- * worse than no statement: it promises a channel that does not answer.
+ * The coordinator details are real. They have to be: a statement with a fake
+ * contact is worse than no statement, because it promises a channel that does
+ * not answer to the person who needed it most.
  */
 
 export default function AccessibilityStatement() {
@@ -52,13 +52,27 @@ export default function AccessibilityStatement() {
         </p>
 
         <h2>רכז הנגישות</h2>
+        {/*
+          Both channels are here because reg. 35ה asks for a way to report a
+          missing adaptation, and one channel is not a way — it is a single point
+          of failure for the person least able to route around it.
+
+          `dir="ltr"` on the number is not cosmetic: inside a Hebrew paragraph,
+          bidi reorders the digit groups and 054-4343666 can render as a number
+          nobody can dial. IL-3 checks other sites for exactly this.
+        */}
         <p>
-          {/* TODO — must be real before launch. */}
-          שם: <span data-placeholder>[להשלמה]</span>
+          שם: ניר בר
           <br />
-          דוא&quot;ל: <span dir="ltr">ai@aiguru.co.il</span>
+          דוא&quot;ל:{' '}
+          <a href="mailto:ai@aiguru.co.il" dir="ltr">
+            ai@aiguru.co.il
+          </a>
           <br />
-          טלפון: <span data-placeholder>[להשלמה]</span>
+          טלפון:{' '}
+          <a href="tel:+972544343666" dir="ltr">
+            054-4343666
+          </a>
         </p>
 
         <h2>דיווח על בעיית נגישות</h2>
