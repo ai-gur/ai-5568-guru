@@ -11,5 +11,6 @@
 
 export * from './schema.ts';
 export { loadCatalogue, CATALOGUE_PATH } from './load.ts';
+export { CATALOGUE_VERSION, EFFECTIVE_FROM, CATALOGUE_SOURCES } from './version.ts';
 export { ENGINE_OVERRIDES } from './overrides.ts';
 export { NON_FORM_ITEMS, PART2_TEXT_THRESHOLDS } from './part2-and-israeli.ts';

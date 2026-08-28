@@ -20,6 +20,8 @@
  * exactly the detail an auditor is looking for.
  */
 
+import type { CatalogueSource } from './version.ts';
+
 /** What a check row can be run against. */
 export type Target = 'page' | 'pdf' | 'docx' | 'pptx' | 'xlsx' | 'txt';
 
@@ -238,15 +240,27 @@ export interface CheckItem {
 }
 
 export interface Catalogue {
-  /** Where the form text came from, so a report can cite its own provenance. */
+  /**
+   * Which catalogue this is. Regulation 35 binds a rolling standard, so a
+   * review means nothing without saying which reading of it produced the
+   * verdicts. `@ai5568/delta` refuses to compare across versions.
+   */
+  version: string;
+  effectiveFrom: string;
+  /** Every instrument this catalogue rests on, with its authority tier. */
+  sources: CatalogueSource[];
+  /** Where the form text came from, specifically. */
   source: {
     file: string;
     sheet: string;
     importedAt: string;
     rowCount: number;
+    sha256?: string;
   };
   items: CheckItem[];
 }
+
+export type { CatalogueSource, SourceAuthority } from './version.ts';
 
 /** A finding: one concrete place where a check failed. */
 export interface Finding {

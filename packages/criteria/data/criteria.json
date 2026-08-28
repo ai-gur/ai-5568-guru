@@ -1,9 +1,50 @@
 {
+  "version": "2026.08.1",
+  "effectiveFrom": "2026-08-28",
+  "sources": [
+    {
+      "id": "commissioner-check-sheet",
+      "titleHe": "טופס בדיקות נגישות לאתר אינטרנט — נציבות שוויון זכויות",
+      "authority": "binding",
+      "url": "https://www.gov.il/he/pages/website_accessibility",
+      "publishedOn": "2025-07-08",
+      "retrievedOn": "2026-08-28",
+      "sha256": "e78a80ce7cd50c8894790e0c1d06f2220a3971525820da29be9417cafa7e5b0b",
+      "feeds": "חלק 1 — R04–R45 (42 שורות), בייבוא אוטומטי"
+    },
+    {
+      "id": "si-5568-1-2023",
+      "titleHe": "ת\"י 5568 חלק 1 — נגישות אתרי אינטרנט (ספטמבר 2023)",
+      "authority": "binding",
+      "url": "https://www.sii.org.il/",
+      "publishedOn": "2023-09",
+      "retrievedOn": "2026-08-28",
+      "feeds": "שבע הסטיות הלאומיות; standardOverride ב-R12 ו-R36"
+    },
+    {
+      "id": "si-5568-2",
+      "titleHe": "ת\"י 5568 חלק 2 — נגישות מסמכים דיגיטליים",
+      "authority": "binding",
+      "publishedOn": "2020-06",
+      "retrievedOn": "2026-08-28",
+      "feeds": "חלק 2 — D01–D12 (12 שורות)"
+    },
+    {
+      "id": "service-accessibility-regulations",
+      "titleHe": "תקנות שוויון זכויות (התאמות נגישות לשירות), תשע\"ג-2013 — סימן ג' כנוסחו בתיקון התשע\"ח-2017",
+      "authority": "binding",
+      "url": "https://www.nevo.co.il/law_html/law01/500_865.htm",
+      "publishedOn": "2017-10-26",
+      "retrievedOn": "2026-08-28",
+      "feeds": "תוספות ישראליות IL01–IL06; רמת AA; ספי הפטור"
+    }
+  ],
   "source": {
     "file": "sitedocs_internet_accessibility_form.xlsx",
     "sheet": "בדיקת נגישות לאינטרנט",
-    "importedAt": "2026-08-28T13:13:20.617Z",
-    "rowCount": 42
+    "importedAt": "2026-08-28T13:53:29.162Z",
+    "rowCount": 42,
+    "sha256": "e78a80ce7cd50c8894790e0c1d06f2220a3971525820da29be9417cafa7e5b0b"
   },
   "items": [
     {

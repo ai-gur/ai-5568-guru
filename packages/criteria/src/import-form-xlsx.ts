@@ -18,7 +18,9 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 import { unzipSync, strFromU8 } from './lib/unzip.ts';
+import { CATALOGUE_VERSION, EFFECTIVE_FROM, CATALOGUE_SOURCES } from './version.ts';
 import { ENGINE_OVERRIDES } from './overrides.ts';
 import { NON_FORM_ITEMS } from './part2-and-israeli.ts';
 import type { Catalogue, CheckItem, FormText } from './schema.ts';
@@ -253,11 +255,18 @@ export async function importForm(xlsxPath: string): Promise<Catalogue> {
   if (problems.length) throw new Error(problems.join('\n'));
 
   return {
+    version: CATALOGUE_VERSION,
+    effectiveFrom: EFFECTIVE_FROM,
+    sources: CATALOGUE_SOURCES,
     source: {
       file: xlsxPath.replace(/\\/g, '/').split('/').pop() ?? xlsxPath,
       sheet: SHEET_NAME,
       importedAt: new Date().toISOString(),
       rowCount: items.length,
+      // So a reader can prove they hold the same form we read, rather than a
+      // re-save that merely looks like it. The two differ byte-for-byte while
+      // being identical in content, which is exactly the confusion this ends.
+      sha256: createHash('sha256').update(await readFile(xlsxPath)).digest('hex'),
     },
     items: [...items, ...NON_FORM_ITEMS],
   };

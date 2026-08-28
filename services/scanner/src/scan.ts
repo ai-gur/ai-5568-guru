@@ -16,6 +16,7 @@ import { BrowserDriver, type PageBundle } from './crawl/browser.ts';
 import { crawl, type CrawlEvents, type DiscoveredDocument } from './crawl/crawler.ts';
 import { analyseDocuments } from './documents/analyse.ts';
 import { evaluatePage, mergeJudgement, summarise, type PendingJudgement } from './verdict.ts';
+import { CONTRACT_VERSION } from './types.ts';
 import type { ScanOptions, ScanReport, TargetReport } from './types.ts';
 
 /** Injected so the engine does not depend on the LLM package. */
@@ -134,7 +135,22 @@ export async function scan(options: ScanOptions, judge: Judge | null, events: Sc
   return {
     site: { name: siteName, startUrl: options.url, origin: new URL(options.url).origin },
     options,
+    contractVersion: CONTRACT_VERSION,
     catalogueSource: catalogue.source,
+    // Which reading of a rolling standard produced these verdicts. Without it
+    // a later scan cannot tell a fixed site from an amended standard, and
+    // `@ai5568/delta` refuses to call the comparison a delta.
+    catalogue: {
+      version: catalogue.version,
+      effectiveFrom: catalogue.effectiveFrom,
+      source: {
+        file: catalogue.source.file,
+        sheet: catalogue.source.sheet,
+        sha256: catalogue.source.sha256,
+        retrievedAt: catalogue.source.importedAt,
+      },
+    },
+    obligation: options.obligation,
     startedAt,
     finishedAt: new Date().toISOString(),
     pages: pageReports,
