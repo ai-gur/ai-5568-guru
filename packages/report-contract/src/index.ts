@@ -79,6 +79,19 @@ export interface ScanOptions {
   sourceRoot?: string;
   /** Supplied by the requester; narrows which duties apply. */
   obligation?: ObligationProfile;
+  /**
+   * ⚠️ Disables the SSRF guard. For scanning fixtures on localhost, and for
+   * an operator deliberately reviewing an internal staging site from inside
+   * that network.
+   *
+   * It must never be settable from a user-supplied request body — that would
+   * turn the public API into a proxy into our own network. The web layer drops
+   * it; only a local caller can set it.
+   *
+   * It lives in the report rather than in a private variable so that a review
+   * produced with the guard off says so, in writing, to whoever reads it.
+   */
+  allowPrivateNetworkTargets?: boolean;
 }
 
 /** Everything the report needs about one reviewed target. */

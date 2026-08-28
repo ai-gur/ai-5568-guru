@@ -5,7 +5,7 @@
   "type": "module",
   "description": "IS 5568 readiness scanner: crawl, deterministic rules, judgement layer and document analysis.",
   "scripts": {
-    "test": "node --test test/golden.test.ts",
+    "test": "node --test \"test/*.test.ts\"",
     "scan": "node cli/src/index.ts scan",
     "web": "node web/src/server.ts",
     "verify:self": "node test/verify-self.ts"

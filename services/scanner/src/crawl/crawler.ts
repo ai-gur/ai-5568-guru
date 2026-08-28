@@ -18,6 +18,7 @@ import { join } from 'node:path';
 import { BrowserDriver, type PageBundle } from './browser.ts';
 import { fetchRobots, fetchSitemapUrls, type Robots } from './robots.ts';
 import { canonicalize, classifyLink, inScope, slugForUrl } from './url.ts';
+import { guardUrl } from './network-guard.ts';
 import type { ScanOptions } from '../types.ts';
 
 export interface DiscoveredDocument {
@@ -48,6 +49,16 @@ interface QueueEntry {
 
 export async function crawl(options: ScanOptions, events: CrawlEvents = {}): Promise<CrawlOutcome> {
   const start = new URL(options.url);
+
+  // The scanner fetches a URL supplied by a stranger from inside our network.
+  // Refusing here, before anything is created on disk or a browser is started,
+  // is the whole of the SSRF defence: see network-guard.ts for why the check is
+  // on resolved addresses and not on the hostname.
+  const guardEnabled = options.allowPrivateNetworkTargets !== true;
+  if (guardEnabled) {
+    const entryGuard = await guardUrl(options.url);
+    if (!entryGuard.allowed) throw new Error(entryGuard.reasonHe ?? 'הכתובת נדחתה.');
+  }
   const screenshotDir = join(options.outDir, 'screenshots');
   await mkdir(screenshotDir, { recursive: true });
 
@@ -113,6 +124,19 @@ export async function crawl(options: ScanOptions, events: CrawlEvents = {}): Pro
       const results = await Promise.all(
         batch.map(async (entry, i) => {
           events.onPageStart?.(entry.url, index + i, queue.length);
+
+          // Re-checked per page, not just at the entry point. A crawl follows
+          // links the site controls, and a site under test can link inward —
+          // `<a href="http://10.0.0.5/">` is a page like any other until this
+          // says otherwise. Refused pages are recorded, never dropped quietly.
+          if (guardEnabled) {
+            const guard = await guardUrl(entry.url);
+            if (!guard.allowed) {
+              skipped.push({ url: entry.url, reason: guard.reasonHe ?? 'הכתובת נדחתה מטעמי אבטחת רשת' });
+              return null;
+            }
+          }
+
           if (delayMs) await sleep(delayMs * i);
           const bundle = await driver.visit(entry.url, {
             screenshotPath: join(screenshotDir, `${slugForUrl(entry.url)}.png`),
@@ -121,7 +145,7 @@ export async function crawl(options: ScanOptions, events: CrawlEvents = {}): Pro
         }),
       );
 
-      for (const { bundle, depth } of results) {
+      for (const { bundle, depth } of results.filter((r) => r !== null)) {
         pages.push(bundle);
         events.onPageDone?.(bundle, index, queue.length);
         index++;

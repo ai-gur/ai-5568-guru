@@ -73,6 +73,9 @@ function options(url: string, maxPages = 1): ScanOptions {
     // The golden tests must be deterministic and offline; the judgement layer
     // is exercised separately.
     noAi: true,
+    // The fixture server is on localhost, which the SSRF guard exists to
+    // refuse. Tests are the one caller allowed to say so explicitly.
+    allowPrivateNetworkTargets: true,
   };
 }
 

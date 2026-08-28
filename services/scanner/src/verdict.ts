@@ -16,10 +16,12 @@
 
 import type { Catalogue, CheckItem, CheckResult, Finding, Method, Verdict } from '@ai5568/criteria';
 import { itemApplies, standardExcludes } from '@ai5568/criteria';
+import { rowExemption, siteWideExemption, type Exemption } from './checks/obligation.ts';
 import { checkApplicability, toCounts, type Counts } from './checks/applicability.ts';
 import { findingsFromAxe, incompleteFromAxe, type AxeMapping } from './checks/axe-map.ts';
 import { runCustomRule, type RuleContext, type SiteContext } from './checks/custom-rules.ts';
 import type { PageBundle } from './crawl/browser.ts';
+import type { ObligationProfile } from './types.ts';
 
 /** A row that needs judgement, parked until the LLM layer runs. */
 export interface PendingJudgement {
@@ -47,10 +49,16 @@ export interface EvaluateOptions {
   level: 'A' | 'AA';
   /** When false, judgement rows resolve without the LLM. */
   useAi: boolean;
+  /**
+   * What the requester told us about themselves. Absent means unknown, and
+   * unknown means the duty applies — see checks/obligation.ts.
+   */
+  obligation?: ObligationProfile;
 }
 
 export function evaluatePage(opts: EvaluateOptions): PageEvaluation {
-  const { catalogue, bundle, site, mapping, level, useAi } = opts;
+  const { catalogue, bundle, site, mapping, level, useAi, obligation } = opts;
+  const obligationExemption = (item: CheckItem): Exemption | null => rowExemption(item, obligation);
   const results: CheckResult[] = [];
   const pending: PendingJudgement[] = [];
 
@@ -85,6 +93,23 @@ export function evaluatePage(opts: EvaluateOptions): PageEvaluation {
   const counts = toCounts(bundle.evidence?.counts as Record<string, unknown> | undefined, site.pageCount);
 
   for (const item of pageItems) {
+    // ── 0a. this duty-bearer is exempt from the row ────────────────────────
+    // Above applicability, below the standard: the duty exists, but not for
+    // them. Reporting it as a failure would be accurate about the criterion and
+    // wrong about the subject.
+    const exempt = obligationExemption(item);
+    if (exempt) {
+      results.push({
+        itemId: item.id,
+        verdict: 'NA',
+        method: 'na-probe',
+        confidence: 1,
+        findings: [],
+        noteHe: `${exempt.reasonHe} (${exempt.clause})`,
+      });
+      continue;
+    }
+
     // ── 0. the standard cancels the criterion ──────────────────────────────
     // Higher precedence than applicability: this row does not exist as a duty,
     // whatever the page contains. It is still reported, because the form

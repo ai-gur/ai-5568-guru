@@ -56,6 +56,9 @@ async function auditTarget(url: string, label: string): Promise<number> {
     maxDepth: 0,
     documents: false,
     noAi: true,
+    // The tool reviews its own output on localhost, which the SSRF guard
+    // exists to refuse. Saying so explicitly is the only way past it.
+    allowPrivateNetworkTargets: true,
   };
 
   const report = await scan(options, null);
@@ -114,7 +117,16 @@ async function main(): Promise<void> {
     const outDir = resolve(ROOT, '.self-review');
     const catalogue = await loadCatalogue();
     const report = await scan(
-      { ...DEFAULT_OPTIONS, url: `http://localhost:${FIXTURE_PORT}/broken/`, outDir, maxPages: 1, maxDepth: 0, documents: false, noAi: true },
+      {
+        ...DEFAULT_OPTIONS,
+        url: `http://localhost:${FIXTURE_PORT}/broken/`,
+        outDir,
+        maxPages: 1,
+        maxDepth: 0,
+        documents: false,
+        noAi: true,
+        allowPrivateNetworkTargets: true,
+      },
       null,
     );
     const emitted = await emitReports(report, catalogue, outDir, ['html', 'pdf']);

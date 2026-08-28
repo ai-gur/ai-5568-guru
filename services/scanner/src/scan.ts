@@ -65,7 +65,15 @@ export async function scan(options: ScanOptions, judge: Judge | null, events: Sc
   events.onPhase?.('evaluate');
   const evaluations = outcome.pages.map((bundle) => ({
     bundle,
-    ...evaluatePage({ catalogue, bundle, site, mapping, level: options.level, useAi: options.noAi ? false : judge !== null }),
+    ...evaluatePage({
+      catalogue,
+      bundle,
+      site,
+      mapping,
+      level: options.level,
+      useAi: options.noAi ? false : judge !== null,
+      obligation: options.obligation,
+    }),
   }));
 
   // ── judgement ────────────────────────────────────────────────────────────
