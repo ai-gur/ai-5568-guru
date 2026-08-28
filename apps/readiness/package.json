@@ -9,7 +9,8 @@
     "start": "next start --port 3568",
     "lint": "eslint",
     "sync-env": "node scripts/sync-public-env.mjs",
-    "verify:auth": "node scripts/verify-auth-flow.mjs"
+    "verify:auth": "node scripts/verify-auth-flow.mjs",
+    "test": "node --test \"test/*.test.mjs\""
   },
   "dependencies": {
     "@ai5568/criteria": "*",
