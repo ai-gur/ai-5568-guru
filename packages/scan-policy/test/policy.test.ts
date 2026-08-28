@@ -6,7 +6,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { blockedReason, guardUrl } from '../src/network-guard.ts';
-import { pageLimitFor, verificationToken, SHALLOW_MAX_PAGES } from '../src/ownership.ts';
+import { pageLimitFor, proofCovers, verificationToken, SHALLOW_MAX_PAGES } from '../src/ownership.ts';
 
 describe('address ranges', () => {
   it('blocks the cloud metadata endpoint', () => {
@@ -100,5 +100,35 @@ describe('ownership gate', () => {
     assert.notEqual(a, verificationToken('example.co.il', 'acct-2', 's3cret'));
     assert.notEqual(a, verificationToken('example.co.il', 'acct-1', 'different-secret'));
     assert.equal(a, verificationToken('EXAMPLE.CO.IL', 'acct-1', 's3cret'), 'domain case must not matter');
+  });
+});
+
+describe('proof coverage', () => {
+  it('covers the domain itself and its subdomains', () => {
+    assert.equal(proofCovers('example.co.il', 'example.co.il'), true);
+    assert.equal(proofCovers('example.co.il', 'shop.example.co.il'), true);
+    assert.equal(proofCovers('example.co.il', 'a.b.example.co.il'), true);
+  });
+
+  it('does NOT cover a different domain that merely ends the same way', () => {
+    // The bug this exists to prevent: `endsWith` without the dot would hand an
+    // attacker full-depth crawls of any host they can register.
+    assert.equal(proofCovers('example.co.il', 'example.co.il.attacker.com'), false);
+    assert.equal(proofCovers('example.co.il', 'notexample.co.il'), false);
+    assert.equal(proofCovers('example.co.il', 'myexample.co.il'), false);
+  });
+
+  it('does not let a subdomain proof cover its parent', () => {
+    // Control of shop.example.co.il says nothing about the zone above it.
+    assert.equal(proofCovers('shop.example.co.il', 'example.co.il'), false);
+  });
+
+  it('is indifferent to case and a trailing root dot', () => {
+    assert.equal(proofCovers('Example.CO.IL', 'SHOP.example.co.il.'), true);
+  });
+
+  it('refuses empty input rather than matching everything', () => {
+    assert.equal(proofCovers('', 'example.co.il'), false);
+    assert.equal(proofCovers('example.co.il', ''), false);
   });
 });

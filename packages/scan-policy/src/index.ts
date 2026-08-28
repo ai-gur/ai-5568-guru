@@ -17,6 +17,7 @@ export {
   pageLimitFor,
   SHALLOW_MAX_PAGES,
   WELL_KNOWN_PATH,
+  proofCovers,
   type VerificationMethod,
   type VerificationOutcome,
 } from './ownership.ts';

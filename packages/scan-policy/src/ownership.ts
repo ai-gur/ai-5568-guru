@@ -139,3 +139,21 @@ export function pageLimitFor(verified: boolean, requested: number): { maxPages: 
       `הדוח מתאר את העמודים שנסרקו בלבד ואינו מתאר את האתר כולו.`,
   };
 }
+
+/**
+ * Does a proof for `verified` cover a request for `host`?
+ *
+ * Exact match, or a true subdomain: whoever can place a TXT record on
+ * example.co.il controls the zone, so shop.example.co.il is covered.
+ *
+ * The dot is the whole point. `host.endsWith(verified)` on its own would accept
+ * `example.co.il.attacker.com` — a domain someone else owns that merely ends
+ * with the right characters — and hand them full-depth crawls of any host they
+ * can name. Requiring `.` before the verified domain closes that.
+ */
+export function proofCovers(verified: string, host: string): boolean {
+  const v = verified.trim().toLowerCase().replace(/\.$/, '');
+  const h = host.trim().toLowerCase().replace(/\.$/, '');
+  if (!v || !h) return false;
+  return h === v || h.endsWith(`.${v}`);
+}

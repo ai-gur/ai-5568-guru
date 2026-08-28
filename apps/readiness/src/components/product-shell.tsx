@@ -13,6 +13,7 @@ export function ProductShell({ children }: { children: ReactNode }) {
         <nav aria-label="ניווט ראשי">
           <Link href="/">סריקה</Link>
           <Link href="/reviews/demo">דוח לדוגמה</Link>
+          <Link href="/domains">דומיינים</Link>
           <Link href="/accessibility">הצהרת נגישות</Link>
           <Link href="/sitemap">מפת אתר</Link>
         </nav>

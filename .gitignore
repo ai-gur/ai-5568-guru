@@ -17,3 +17,4 @@ reports/
 docs/external-resources/*
 !docs/external-resources/README.md
 .self-scan/
+apps/readiness/.env.local

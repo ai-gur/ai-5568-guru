@@ -4,10 +4,11 @@
   "private": true,
   "description": "5568 Readiness — the review app. Hebrew, RTL, and held to the standard it reviews.",
   "scripts": {
-    "dev": "next dev --port 3568",
-    "build": "next build",
+    "dev": "node scripts/sync-public-env.mjs && next dev --port 3568",
+    "build": "node scripts/sync-public-env.mjs && next build",
     "start": "next start --port 3568",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync-env": "node scripts/sync-public-env.mjs"
   },
   "dependencies": {
     "@ai5568/criteria": "*",

@@ -1,6 +1,8 @@
 import { NextRequest } from 'next/server';
 import { guardUrl, pageLimitFor, SHALLOW_MAX_PAGES } from '@ai5568/scan-policy';
 import { serverEnv } from '@/lib/env';
+import { currentUser } from '@/lib/supabase/server';
+import { domainStanding } from '@/lib/verified-domain';
 
 /**
  * POST /api/v1/reviews — request a readiness review.
@@ -49,10 +51,13 @@ export async function POST(request: NextRequest): Promise<Response> {
     return badRequest(guard.reasonHe ?? 'הכתובת נדחתה.', 422);
   }
 
-  // Ownership is not wired to accounts yet, so every request is treated as
-  // unverified. That is the safe direction to be wrong in: it caps depth rather
-  // than granting it.
-  const verified = false;
+  // Depth is gated on proof of control, not on payment: a shallow review stays
+  // open to anyone, including an accessibility body looking at a site that is
+  // not theirs. An anonymous caller is simply never verified, which is the safe
+  // direction to be wrong in — it caps depth rather than granting it.
+  const user = await currentUser();
+  const standing = user ? await domainStanding(body.url) : { verified: false };
+  const verified = standing.verified;
 
   const requested =
     typeof body.maxPages === 'number' && Number.isInteger(body.maxPages)
@@ -88,9 +93,19 @@ export async function POST(request: NextRequest): Promise<Response> {
         id: payload.id,
         status: 'queued',
         maxPages,
+        verifiedDomain: standing.matchedDomain ?? null,
         // Present whenever the request was trimmed. The client is expected to
         // show it; the API states it either way so it cannot be lost silently.
         ...(cappedHe ? { notice: cappedHe } : {}),
+        // A proof that has aged out is a different situation from never having
+        // had one, and the person can fix it in one click if we say so.
+        ...(standing.staleSince
+          ? {
+              notice:
+                `${cappedHe ?? ''} אימות הבעלות על ${standing.matchedDomain} פג. ` +
+                'הריצו אימות מחדש בעמוד הדומיינים כדי לחזור לסריקה מלאה.'.trim(),
+            }
+          : {}),
       },
       { status: 202 },
     );
