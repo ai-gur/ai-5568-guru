@@ -1,9 +1,16 @@
 {
   "name": "@ai5568/report-contract",
   "version": "1.0.0",
-  "private": true,
   "type": "module",
   "description": "Versioned shape of a readiness review result. The boundary between the open scanner and the private remediation tooling.",
-  "exports": { ".": "./src/index.ts" },
-  "dependencies": { "@ai5568/criteria": "*" }
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@ai5568/criteria": "*"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }

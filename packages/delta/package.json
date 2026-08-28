@@ -1,0 +1,19 @@
+{
+  "name": "@ai5568/delta",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Compare two IS 5568 reviews: what was fixed, what still fails, what broke, and what could not be verified.",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@ai5568/report-contract": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "node --test test/compare.test.ts"
+  }
+}

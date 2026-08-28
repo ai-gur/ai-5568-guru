@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import type { Catalogue } from '@ai5568/criteria';
 import type { ScanReport } from '../../src/types.ts';
 import { renderHtmlReport } from './html.ts';
-import { renderRemediation } from './remediation.ts';
+import { renderRemediation } from '@ai5568/remediation';
 import { writeXlsxReport } from './xlsx.ts';
 import { writeTaggedPdf } from './pdf.ts';
 

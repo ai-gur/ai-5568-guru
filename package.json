@@ -8,11 +8,13 @@
     "packages/criteria",
     "packages/report-contract",
     "packages/remediation",
+    "packages/fix-plan",
+    "packages/delta",
     "services/scanner"
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "npm run test -w @ai5568/scanner",
+    "test": "npm run test -w @ai5568/delta && npm run test -w @ai5568/scanner",
     "scan": "npm run scan -w @ai5568/scanner",
     "web": "npm run web -w @ai5568/scanner",
     "import-criteria": "node packages/criteria/src/import-form-xlsx.ts",

@@ -1,0 +1,10 @@
+{
+  "name": "@ai5568/fix-plan",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Shape of an IS 5568 fix plan and of the surfaces that apply it. The seam between the open scanner and the remediation tooling.",
+  "license": "MIT",
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": { "@ai5568/criteria": "*" },
+  "publishConfig": { "access": "public" }
+}

@@ -41,25 +41,28 @@
 ## מבנה
 
 ```
-packages/
-  criteria/          עמוד השדרה — קטלוג הקריטריונים, ממוספר גרסה
-  report-contract/   חוזה תוצאות הסריקה
-  remediation/       הוראות תיקון + כללי איסור
-  standards-watch/   ניטור שינויים בתקן → Pull Request
+packages/          חמש חבילות ציבוריות, מפורסמות ל-npm
+  criteria/          מה נדרש — עמוד השדרה, ממוספר גרסה
+  report-contract/   מה מצאנו
+  remediation/       מה צריך להשתנות
+  fix-plan/          תוכנית השינויים + ממשק המשטח
+  delta/             האם זה עבד
 services/
   scanner/           מנוע הסריקה — Playwright, axe-core, סיידקאר Python
-  fixer/             💰 סוכן תיקון → Pull Request
 apps/
-  readiness/         Next.js, עברית RTL
+  readiness/         Next.js, עברית RTL  (+ אתר הידע)
 plugins/
-  ai-guru-core/      ספריית PHP משותפת לפלאגיני AI Guru
-  ai-guru-5568/      הפלאגין
+  ai-guru-5568/      החצי החינמי. GPL, לקראת wordpress.org
 skills/
   authoring/         🆓 בנייה נגישה מראש
   readiness-client/  הגשת סריקה מתוך סוכן
+  fixer/             🆓 סקיל מתקן — רץ בסוכן של המשתמש
+sources/             מסמכי המקור + hash
 supabase/            סכימה, RLS, אינדקסים
 docs/                החלטות וארכיטקטורה
 ```
+
+**הריפו הפרטי** (`ai-5568-guru-pro`) צורך את חמש החבילות מ-npm ומוסיף: `fix-planner`, ה-appliers ל-Git ול-WordPress, ניטור, `standards-watch` ורישוי. ראו [docs/09-repo-topology.md](docs/09-repo-topology.md).
 
 ---
 
@@ -76,6 +79,7 @@ docs/                החלטות וארכיטקטורה
 | [docs/05-open-questions.md](docs/05-open-questions.md) | מה טרם הוכרע |
 | [docs/06-knowledge-base.md](docs/06-knowledge-base.md) | אתר הידע, הפרדת רמות סמכות, שער הנגישות העצמית |
 | [docs/07-regulation-35.md](docs/07-regulation-35.md) | **סימן ג' — הדין הנוהג** (תיקון 2017): תקנות 35–35ו והשלכותיהן על המנוע |
+| [docs/09-repo-topology.md](docs/09-repo-topology.md) | **טופולוגיית הריפואים** — משטח × יכולת, חמש החבילות, ממשק ה-Surface |
 | [docs/08-standard-part1-2023.md](docs/08-standard-part1-2023.md) | **ת"י 5568 חלק 1 (2023)** — שבע הסטיות הלאומיות ושתי אי-התאמות בקטלוג |
 | [docs/external-resources/README.md](docs/external-resources/README.md) | **ספריית המקורות** — כל מסמך, סמכותו ומה הוא מזין |
 

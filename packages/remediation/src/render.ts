@@ -19,7 +19,7 @@
  */
 
 import type { Catalogue, CheckItem, CheckResult } from '@ai5568/criteria';
-import type { ScanReport, TargetReport } from '../../src/types.ts';
+import type { ScanReport, TargetReport } from '@ai5568/report-contract';
 
 const EFFORT_ORDER = { low: 0, medium: 1, high: 2 } as const;
 
