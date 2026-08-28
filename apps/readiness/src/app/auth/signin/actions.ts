@@ -3,6 +3,7 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { supabaseServer } from '@/lib/supabase/server';
+import { serverEnv } from '@/lib/env';
 
 /**
  * Send the sign-in link, on the server.
@@ -25,6 +26,23 @@ import { supabaseServer } from '@/lib/supabase/server';
  * client, which is also what lets /auth/callback exchange the code later.
  */
 export async function sendSignInLink(formData: FormData): Promise<void> {
+  /*
+   * ⚠️ SENDING IS OFF BY DEFAULT, and this guard is the reason.
+   *
+   * Supabase's built-in email service is shared infrastructure meant for
+   * development, and it judges a project by its bounce rate. Test runs here
+   * sent sign-in links to invented addresses at a real domain — they bounced,
+   * and the project was threatened with restriction. The addresses were
+   * obviously fake to a human and completely ordinary to a mail server.
+   *
+   * Set AUTH_EMAIL_ENABLED=true to turn it back on, and only once custom SMTP
+   * is configured so deliverability is ours to answer for rather than a shared
+   * pool's. Never point a test at an address that does not receive mail.
+   */
+  if (serverEnv('AUTH_EMAIL_ENABLED') !== 'true') {
+    redirect('/auth/signin?state=disabled');
+  }
+
   const email = String(formData.get('email') ?? '').trim();
 
   if (!email || !email.includes('@') || email.length > 254) {

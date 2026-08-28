@@ -29,6 +29,19 @@
  */
 import { readFileSync } from 'node:fs';
 
+/*
+ * ⚠️ DO NOT point this at a real domain.
+ *
+ * It creates throwaway accounts. `generate_link` does not send mail, but a
+ * neighbouring call that does — `signInWithOtp`, `POST /auth/v1/otp` — will,
+ * and an invented address at a real domain bounces. Enough bounces and the
+ * Supabase project is restricted. That happened here.
+ *
+ * `.invalid` is reserved by RFC 2606 precisely so it can never resolve, so a
+ * message to it cannot leave, cannot bounce, and cannot count against anyone.
+ */
+const TEST_DOMAIN = 'ai5568.invalid';
+
 const env = Object.fromEntries(
   readFileSync(new URL('../../../.env.local', import.meta.url), 'utf8').split(/\r?\n/)
     .map((l) => /^\s*([A-Z0-9_]+)\s*=\s*(.*)$/.exec(l)).filter(Boolean)
@@ -39,7 +52,7 @@ const ANON = env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const SERVICE = env.SUPABASE_SERVICE_ROLE_KEY;
 const REF = new URL(U).hostname.split('.')[0];
 const APP = 'http://127.0.0.1:3568';
-const EMAIL = `e2e-${Date.now()}@aiguru.co.il`;
+const EMAIL = `e2e-${Date.now()}@${TEST_DOMAIN}`;
 
 const admin = (p, i = {}) => fetch(U + p, { ...i, headers: { apikey: SERVICE, authorization: `Bearer ${SERVICE}`, 'content-type': 'application/json', ...i.headers } });
 
@@ -80,5 +93,5 @@ console.log('7. workspaces (RLS) ', rest.status, JSON.stringify(await rest.json(
 
 const users = await (await admin('/auth/v1/admin/users?per_page=200')).json();
 let removed = 0;
-for (const u of users.users ?? []) if (/^(e2e-|probe)/.test(u.email ?? '')) { await admin(`/auth/v1/admin/users/${u.id}`, { method: 'DELETE' }); removed++; }
+for (const u of users.users ?? []) if ((u.email ?? '').endsWith(`@${TEST_DOMAIN}`)) { await admin(`/auth/v1/admin/users/${u.id}`, { method: 'DELETE' }); removed++; }
 console.log('8. cleaned up       ', removed, 'test accounts');

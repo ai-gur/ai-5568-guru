@@ -16,6 +16,7 @@ export const metadata: Metadata = { title: 'כניסה' };
 const MESSAGES = {
   sent: 'אם הכתובת תקינה, נשלח אליה קישור כניסה. הקישור תקף לזמן מוגבל.',
   invalid: 'הזינו כתובת דוא"ל תקינה.',
+  disabled: 'הכניסה מושבתת זמנית עד להשלמת הגדרת שרת הדואר. סריקה מצומצמת פועלת ואינה דורשת חשבון.',
 } as const;
 
 export default async function SignIn({
@@ -24,7 +25,14 @@ export default async function SignIn({
   searchParams: Promise<{ state?: string; error?: string }>;
 }) {
   const params = await searchParams;
-  const state = params.state === 'sent' ? 'sent' : params.state === 'invalid' ? 'invalid' : null;
+  const state =
+    params.state === 'sent'
+      ? 'sent'
+      : params.state === 'invalid'
+        ? 'invalid'
+        : params.state === 'disabled'
+          ? 'disabled'
+          : null;
 
   const linkError =
     params.error === 'invalid-link'
@@ -34,6 +42,7 @@ export default async function SignIn({
         : null;
 
   const isError = state === 'invalid' || linkError !== null;
+  const isDisabled = state === 'disabled';
 
   return (
     <ProductShell>
@@ -79,7 +88,7 @@ export default async function SignIn({
             document rather than announced into a live region that a screen
             reader may or may not have been watching.
           */}
-          <p className={isError ? 'error' : 'status-message'} id="signin-status" role="status">
+          <p className={isError ? 'error' : isDisabled ? 'notice' : 'status-message'} id="signin-status" role="status">
             {linkError ?? (state ? MESSAGES[state] : 'לא נדרשת סיסמה.')}
           </p>
         </section>
