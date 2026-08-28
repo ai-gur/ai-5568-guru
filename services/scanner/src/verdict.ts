@@ -32,6 +32,12 @@ export interface PendingJudgement {
   incomplete: Finding[];
   /** FAIL already established; the LLM can only add detail. */
   alreadyFailed: boolean;
+  /**
+   * A deterministic rule ran, looked, and found nothing wrong — as opposed to
+   * declining to judge. The difference matters when the model then reports a
+   * failure it cannot point at: see mergeJudgement.
+   */
+  ruleSatisfied: boolean;
   /** Why a deterministic rule declined to judge, if it said. */
   ruleNotes: string;
 }
@@ -161,7 +167,14 @@ export function evaluatePage(opts: EvaluateOptions): PageEvaluation {
     const needsJudgement = item.engine.method === 'llm' || item.engine.method === 'hybrid';
 
     if (needsJudgement && useAi) {
-      pending.push({ item, priorFindings: dedupe(findings), incomplete, alreadyFailed: failed, ruleNotes });
+      pending.push({
+        item,
+        priorFindings: dedupe(findings),
+        incomplete,
+        alreadyFailed: failed,
+        ruleSatisfied: anyRuleHadAnOpinion && !failed,
+        ruleNotes,
+      });
       continue;
     }
 
@@ -251,7 +264,7 @@ export function mergeJudgement(
   pending: PendingJudgement,
   judgement: { verdict: Verdict; confidence: number; findings: Finding[]; noteHe?: string } | null,
 ): CheckResult {
-  const { item, priorFindings, alreadyFailed } = pending;
+  const { item, priorFindings, alreadyFailed, ruleSatisfied } = pending;
 
   // The LLM never ran or failed: fall back to whatever the rules established,
   // and if they established nothing, say so rather than passing the row.
@@ -295,6 +308,38 @@ export function mergeJudgement(
   }
 
   if (judgement.verdict === 'FAIL') {
+    /*
+     * A judgement that fails a row without pointing at anything, on a row a
+     * deterministic rule already checked and found sound, does not stand.
+     *
+     * This is the mirror of the rule that an automated failure survives the
+     * model. It was written after a real scan: a site with a working
+     * accessibility preferences widget — found and named by the keyboard walk —
+     * was failed on IL-5 because the evidence slice handed to the judge did not
+     * contain it. The model reasoned correctly from what it was given and said
+     * "not in the evidence", which is not the same claim as "not on the page".
+     *
+     * The slice was the root cause and is fixed. This is the guard that stops
+     * the same shape of mistake arriving through a different slice: absence
+     * from evidence is not evidence of absence, and a finding with no locator
+     * is exactly what that mistake looks like.
+     *
+     * A judgement that CAN point at something still fails the row — that is the
+     * whole value of the layer, and it is untouched.
+     */
+    const locatable = judgement.findings.filter((f) => f.locator && f.locator !== 'body');
+    if (ruleSatisfied && locatable.length === 0) {
+      return {
+        itemId: item.id,
+        verdict: 'PASS',
+        method,
+        confidence: Math.min(judgement.confidence, 0.8),
+        findings: [],
+        noteHe:
+          'בדיקה אוטומטית מצאה את הרכיב הנדרש. שכבת שיקול הדעת לא אישרה זאת אך גם לא הצביעה על ליקוי מסוים, ולכן הכרעת הבדיקה האוטומטית עומדת.',
+      };
+    }
+
     return {
       itemId: item.id,
       verdict: 'FAIL',

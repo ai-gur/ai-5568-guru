@@ -27,6 +27,7 @@ import { buildAxeMapping } from '../src/checks/axe-map.ts';
 import { toCounts } from '../src/checks/applicability.ts';
 import { canonicalize, classifyLink, registrableDomain } from '../src/crawl/url.ts';
 import { loadCatalogue, scan } from '../src/scan.ts';
+import { mergeJudgement, type PendingJudgement } from '../src/verdict.ts';
 import { DEFAULT_OPTIONS, type ScanOptions } from '../src/types.ts';
 import type { TargetReport } from '../src/types.ts';
 import { itemApplies, standardExcludes } from '@ai5568/criteria';
@@ -418,5 +419,67 @@ describe('verdict discipline', () => {
       (i) => i.engine.appliesTo.includes('page') && itemApplies(i, 'AA'),
     ).length;
     assert.equal(page.results.length, expected, 'every applicable row must appear, none silently dropped');
+  });
+});
+
+describe('judgement cannot fail a row it cannot point at', () => {
+  /**
+   * Written after the first real scan. A site with a working accessibility
+   * preferences widget — found and named by the keyboard walk — was failed on
+   * IL-5 because the evidence slice handed to the judge did not contain it. The
+   * model reasoned correctly from what it was given and said "not in the
+   * evidence", which is not the same claim as "not on the page".
+   */
+
+  function pending(overrides: Partial<PendingJudgement> = {}): PendingJudgement {
+    const item = catalogue.items.find((i) => i.id === 'IL05')!;
+    return { item, priorFindings: [], incomplete: [], alreadyFailed: false, ruleSatisfied: true, ruleNotes: '', ...overrides };
+  }
+
+  it('keeps the rule verdict when the model fails without a locator', () => {
+    const merged = mergeJudgement(pending(), { verdict: 'FAIL', confidence: 0.6, findings: [], noteHe: 'לא נמצא בראיות' });
+    assert.equal(merged.verdict, 'PASS');
+    assert.deepEqual(merged.findings, []);
+    assert.ok(merged.noteHe?.includes('הבדיקה האוטומטית'), 'the report must say why the rule prevailed');
+  });
+
+  it('treats a body-wide locator as no locator', () => {
+    // "body" is where a model points when it has nothing specific to point at.
+    const merged = mergeJudgement(pending(), {
+      verdict: 'FAIL',
+      confidence: 0.6,
+      findings: [{ locator: 'body', reasonHe: 'לא נמצא רכיב' }],
+    });
+    assert.equal(merged.verdict, 'PASS');
+  });
+
+  it('still fails when the model points at something specific', () => {
+    // The whole value of the layer, and it must survive the guard.
+    const merged = mergeJudgement(pending(), {
+      verdict: 'FAIL',
+      confidence: 0.9,
+      findings: [{ locator: '#a11y-widget-trigger', reasonHe: 'הרכיב אינו נגיש במקלדת' }],
+    });
+    assert.equal(merged.verdict, 'FAIL');
+    assert.equal(merged.findings.length, 1);
+  });
+
+  it('does not shield a row no rule actually checked', () => {
+    // `ruleSatisfied` means a rule looked and was content — not that none ran.
+    const merged = mergeJudgement(pending({ ruleSatisfied: false }), {
+      verdict: 'FAIL',
+      confidence: 0.6,
+      findings: [],
+    });
+    assert.equal(merged.verdict, 'FAIL');
+  });
+
+  it('never lets the guard override an automated failure', () => {
+    const merged = mergeJudgement(pending({ alreadyFailed: true, priorFindings: [{ locator: 'x', reasonHe: 'y' }] }), {
+      verdict: 'PASS',
+      confidence: 1,
+      findings: [],
+    });
+    assert.equal(merged.verdict, 'FAIL');
   });
 });

@@ -291,9 +291,29 @@ export function buildSlice(slice: EvidenceSlice, bundle: PageBundle): unknown {
         elementsActingAsControls: take(e.aria?.pseudoControls, 25),
       };
 
-    case 'siteConsistency':
-      // Filled in by the judge, which alone has the cross-page view.
-      return { note: 'ההשוואה בין העמודים מסופקת בהקשר הסריקה.' };
+    case 'siteConsistency': {
+      /*
+       * The cross-page comparison is supplied by the judge, which alone holds
+       * it. But this slice also serves the site-level Israeli rows, and it used
+       * to carry nothing else — so a judge asked "is there a preferences
+       * widget?" was handed a note and no page evidence, and answered, entirely
+       * reasonably, that there was none in the evidence.
+       *
+       * It said that about a site whose widget the keyboard walk had already
+       * found and named. Absence from a slice is not absence from the page, and
+       * the fix belongs here rather than in the prompt.
+       */
+      const e = bundle.evidence as Ev;
+      return {
+        note: 'ההשוואה בין העמודים מסופקת בהקשר הסריקה.',
+        accessibilityWidget: e?.navigation?.a11yWidget ?? null,
+        contacts: e?.navigation?.contacts ?? null,
+        searchMechanisms: take(e?.navigation?.searchMechanisms, 10),
+        sitemapLinks: take(e?.navigation?.sitemapLinks, 10),
+        statementLinks: take(e?.navigation?.statementLinks, 10),
+        skipLinks: take(e?.navigation?.skipLinks, 10),
+      };
+    }
 
     case 'documentStructure':
     case 'documentText':
