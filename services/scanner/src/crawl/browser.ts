@@ -65,6 +65,8 @@ export interface PageBundle {
   keyboard: KeyboardWalkResult | null;
   zoom: ZoomResult | null;
   screenshotPath?: string;
+  /** Set when the page was taller than the capture cap and the shot is the top of it. */
+  screenshotTruncated?: boolean;
   links: { href: string; text: string }[];
   error?: string;
 }
@@ -164,10 +166,36 @@ export class BrowserDriver {
       }
 
       if (opts.screenshotPath) {
+        /*
+         * Capped height.
+         *
+         * A full-page shot of a long marketing page runs past 8000 px, which is
+         * the API's per-dimension limit — and the request is rejected only when
+         * the judge sends it, minutes later, on a criterion that then falls back
+         * to "requires manual check". A real scan lost two rows that way.
+         *
+         * The cap belongs at capture rather than at send: the stored artefact is
+         * then valid everywhere it is used, and the top of a page is where the
+         * visual criteria live in any case.
+         */
+        const MAX_SHOT_PX = 7800;
+        const height = await page
+          .evaluate(() => Math.max(document.documentElement.scrollHeight, document.body?.scrollHeight ?? 0))
+          .catch(() => 0);
+        const width = page.viewportSize()?.width ?? 1280;
+        const clip = height > MAX_SHOT_PX ? { x: 0, y: 0, width, height: MAX_SHOT_PX } : undefined;
+
         await page
-          .screenshot({ path: opts.screenshotPath, fullPage: true, animations: 'disabled', timeout: 15000 })
+          .screenshot({
+            path: opts.screenshotPath,
+            fullPage: clip === undefined,
+            clip,
+            animations: 'disabled',
+            timeout: 15000,
+          })
           .then(() => {
             bundle.screenshotPath = opts.screenshotPath;
+            if (clip) bundle.screenshotTruncated = true;
           })
           .catch(() => undefined);
       }

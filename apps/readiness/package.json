@@ -10,7 +10,10 @@
     "lint": "eslint",
     "sync-env": "node scripts/sync-public-env.mjs",
     "verify:auth": "node scripts/verify-auth-flow.mjs",
-    "test": "node --test \"test/*.test.mjs\""
+    "test": "node --test \"test/*.test.mjs\"",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:deploy": "opennextjs-cloudflare deploy",
+    "cf:preview": "opennextjs-cloudflare preview"
   },
   "dependencies": {
     "@ai5568/criteria": "*",
@@ -18,9 +21,10 @@
     "@ai5568/scan-policy": "*",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.10",
-    "next": "16.2.12",
+    "next": "^16.3.3",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "@opennextjs/cloudflare": "^1.20.4"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

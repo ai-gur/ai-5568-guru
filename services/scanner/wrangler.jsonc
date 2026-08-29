@@ -1,0 +1,34 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ai5568-scanner",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // No public route. The Readiness app reaches this through a service binding;
+  // nothing else can address it.
+  "workers_dev": false,
+
+  "containers": [
+    {
+      "class_name": "ScannerContainer",
+      "image": "./Dockerfile",
+      "image_build_context": "../..",
+      "name": "ai5568-scanner",
+      // 2 vCPU / 8 GiB. Chromium with a dozen tabs of a real site is the memory
+      // consumer here; the judge calls are I/O and cost almost no CPU.
+      "instance_type": "standard-3",
+      // One scan at a time is the product decision, enforced inside the scanner.
+      // This is the backstop that makes it true at the platform level too.
+      "max_instances": 1
+    }
+  ],
+
+  "durable_objects": {
+    "bindings": [{ "name": "SCANNER", "class_name": "ScannerContainer" }]
+  },
+
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ScannerContainer"] }],
+
+  "observability": { "enabled": true }
+}

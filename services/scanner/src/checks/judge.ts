@@ -278,11 +278,19 @@ export class ClaudeJudge {
       this.cache.set(key, { judgement, model: MODEL });
       return judgement;
     } catch (err) {
+      console.error(`[judge] ${item.id} on ${bundle.url}:`, err instanceof Error ? err.message : String(err));
       return {
         verdict: 'FAIL',
         confidence: 0,
         findings: pending.incomplete,
-        noteHe: `בדיקת שיקול הדעת נכשלה טכנית (${err instanceof Error ? err.message : String(err)}). נדרשת בדיקה ידנית.`,
+        /*
+         * The reader is a site owner, not an operator of this service. A raw
+         * provider error — status code, request id, JSON envelope — tells them
+         * nothing they can act on and reads as the report breaking down. The
+         * detail belongs in the log; the row still says honestly that it was not
+         * checked, which is the part with consequences.
+         */
+        noteHe: 'הבדיקה האוטומטית של קריטריון זה לא הושלמה מסיבה טכנית, ולכן הוא אינו מדווח כתקין. נדרשת בדיקה ידנית.',
       };
     }
   }
@@ -293,12 +301,37 @@ export class ClaudeJudge {
     if (item.engine.evidenceSlice === 'siteConsistency') {
       // Cross-page rows need the comparison set, which only the scan holds.
       const site = this.site;
+
+      /*
+       * 3.2.3 and 3.2.4 are scoped to "a set of Web pages". A translated site is
+       * not one set: comparing "דלג לתוכן הראשי" against "Skip to main content"
+       * reports the translation itself as an inconsistency, which is both wrong
+       * and the kind of wrong that costs an operator a day. Comparison stays
+       * inside the language of the page being judged.
+       */
+      const lang = (site.langs.get(bundle.url) ?? '').split('-')[0].toLowerCase();
+      const sameLanguage = (url: string): boolean =>
+        (site.langs.get(url) ?? '').split('-')[0].toLowerCase() === lang;
+
+      const within = <T>(m: Map<string, T>, limit: number): [string, T][] =>
+        [...m.entries()].filter(([url]) => sameLanguage(url)).slice(0, limit);
+
       return {
+        /*
+         * The page's own evidence, which the site-level rows need as much as any
+         * other row: asked "is there a preferences widget?", a judge given only
+         * titles and navigation sequences answers "not in the evidence" — about
+         * a site whose widget the probe had already found and named. This branch
+         * used to build that slice and then discard it.
+         */
+        ...(base as Record<string, unknown>),
         thisPage: bundle.url,
+        pageLanguage: lang || null,
+        comparisonScope: `עמודים בשפה ${lang || '(לא הוגדרה)'} בלבד`,
         pageCount: site.pageCount,
-        titlesAcrossSite: [...site.titles.entries()].slice(0, 40).map(([url, title]) => ({ url, title })),
-        navigationSequences: [...site.navSequences.entries()].slice(0, 15).map(([url, items]) => ({ url, items })),
-        componentNamesPerPage: [...site.componentNames.entries()].slice(0, 15).map(([url, names]) => ({ url, names: Object.fromEntries(names) })),
+        titlesAcrossSite: within(site.titles, 40).map(([url, title]) => ({ url, title })),
+        navigationSequences: within(site.navSequences, 15).map(([url, items]) => ({ url, items })),
+        componentNamesPerPage: within(site.componentNames, 15).map(([url, names]) => ({ url, names: Object.fromEntries(names) })),
         accessibilityStatement: site.statementContent,
         hasSearch: site.hasSearch,
         hasSitemap: site.hasSitemap,
@@ -365,7 +398,14 @@ export class ClaudeJudge {
           type: 'image',
           source: { type: 'base64', media_type: 'image/png', data: image.toString('base64') },
         });
-        content.push({ type: 'text', text: 'צילום המסך המצורף מציג את העמוד כפי שהוא נראה למשתמש. השתמש בו כדי לאמת את הראיות המבניות.' });
+        content.push({
+          type: 'text',
+          text:
+            'צילום המסך המצורף מציג את העמוד כפי שהוא נראה למשתמש. השתמש בו כדי לאמת את הראיות המבניות.' +
+            (bundle.screenshotTruncated
+              ? ' שים לב: העמוד ארוך מהצילום, והצילום מציג את החלק העליון בלבד. אל תסיק מהיעדרות רכיב מהצילום שהוא נעדר מהעמוד.'
+              : ''),
+        });
       }
     }
 

@@ -364,3 +364,191 @@ a:hover {
     scroll-behavior: auto !important;
   }
 }
+
+/* ── review: progress ────────────────────────────────────────────────────── */
+
+/*
+ * Indeterminate on purpose. The page count is not known until the crawl
+ * finishes, so a bar that filled toward a total would be inventing one — and a
+ * progress bar that lies is worse than none. The numbers beside it carry the
+ * information; the motion only says "still working".
+ */
+.scan-bar {
+  position: relative;
+  block-size: 0.5rem;
+  inline-size: 100%;
+  max-inline-size: 34rem;
+  margin-block: var(--space-s);
+  background: var(--warm);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.scan-bar > span {
+  position: absolute;
+  inset-block: 0;
+  inline-size: 35%;
+  border-radius: 999px;
+  background: var(--copper);
+  animation: scan-sweep 1.6s ease-in-out infinite;
+}
+
+@keyframes scan-sweep {
+  0% { inset-inline-start: -35%; }
+  100% { inset-inline-start: 100%; }
+}
+
+/*
+ * 2.2.2 — motion that repeats for more than five seconds needs a way out, and
+ * a scan runs for minutes. Honouring the system preference is that way out:
+ * the bar becomes a steady fill, and the phase text keeps carrying the state.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .scan-bar > span {
+    animation: none;
+    inset-inline-start: 0;
+    inline-size: 100%;
+    opacity: 0.45;
+  }
+}
+
+.scan-phase {
+  font-weight: 600;
+}
+
+/* ── review: summary ─────────────────────────────────────────────────────── */
+
+.totals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--space-s);
+  margin-block: var(--space-m);
+  padding: 0;
+}
+
+.totals > div {
+  border-inline-start: 3px solid var(--border);
+  padding-inline-start: var(--space-s);
+}
+
+.totals dt {
+  font-size: var(--text-xs);
+  color: var(--sage-dark);
+}
+
+.totals dd {
+  margin: 0;
+  font-family: var(--font-frank), Georgia, serif;
+  font-size: var(--text-h3);
+  line-height: 1.1;
+}
+
+/* ── review: findings ────────────────────────────────────────────────────── */
+
+.findings {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-s);
+}
+
+.finding {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--cream);
+  padding: var(--space-s);
+}
+
+.finding h3 {
+  margin: 0;
+}
+
+.finding-toggle {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  inline-size: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-family: var(--font-frank), Georgia, serif;
+  font-size: var(--text-h4);
+  color: var(--ink);
+  text-align: start;
+  cursor: pointer;
+}
+
+.finding-no {
+  font-family: var(--font-open-sans), Arial, sans-serif;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--copper-dark);
+  /* A criterion number is LTR inside Hebrew; without this, 1.4.3 reorders. */
+  direction: ltr;
+}
+
+/* Every item carries content, so the list survives greyscale and a screen
+   reader — colour and weight are emphasis on top, never the signal. */
+.finding-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin-block: var(--space-2xs) 0;
+  font-size: var(--text-xs);
+  color: var(--sage-dark);
+}
+
+.finding-meta > span + span::before {
+  content: '· ';
+}
+
+.finding-detail {
+  margin-block-start: var(--space-s);
+  padding-block-start: var(--space-s);
+  border-block-start: 1px solid var(--border);
+}
+
+.finding-detail h4 {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: none;
+  margin-block: var(--space-s) var(--space-3xs);
+}
+
+.occurrences {
+  display: grid;
+  gap: var(--space-2xs);
+  padding-inline-start: var(--space-s);
+}
+
+.occurrences code {
+  background: var(--warm);
+  padding: 0.1em 0.35em;
+  border-radius: var(--radius-sm);
+  font-size: 0.9em;
+}
+
+/*
+ * The remediation instruction is written for a developer or a coding agent and
+ * is in English on purpose — it contains selectors and code. Wrapped rather
+ * than scrolled sideways, because a horizontal scrollbar inside a card is how
+ * instructions go unread.
+ */
+.instruction {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--warm);
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+  overflow-x: auto;
+}
+
+.plain-list {
+  display: grid;
+  gap: var(--space-2xs);
+  padding-inline-start: var(--space-s);
+}

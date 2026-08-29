@@ -6,21 +6,22 @@
   "description": "IS 5568 readiness scanner: crawl, deterministic rules, judgement layer and document analysis.",
   "scripts": {
     "test": "node --test \"test/*.test.ts\"",
-    "scan": "node cli/src/index.ts scan",
-    "web": "node web/src/server.ts",
-    "verify:self": "node test/verify-self.ts",
-    "review:self": "node test/review-own-app.ts"
+    "scan": "node --env-file-if-exists=../../.env.local cli/src/index.ts scan",
+    "web": "node --env-file-if-exists=../../.env.local web/src/server.ts",
+    "verify:self": "node --env-file-if-exists=../../.env.local test/verify-self.ts",
+    "review:self": "node --env-file-if-exists=../../.env.local test/review-own-app.ts"
   },
   "dependencies": {
     "@ai5568/criteria": "*",
+    "@ai5568/remediation": "*",
     "@ai5568/report-contract": "*",
+    "@ai5568/scan-policy": "*",
     "@anthropic-ai/sdk": "^0.115.0",
+    "@cloudflare/containers": "^0.3.7",
     "@fastify/static": "^8.0.3",
     "axe-core": "^4.10.2",
     "exceljs": "^4.4.0",
     "fastify": "^5.2.0",
-    "playwright": "^1.49.1",
-    "@ai5568/remediation": "*",
-    "@ai5568/scan-policy": "*"
+    "playwright": "^1.49.1"
   }
 }

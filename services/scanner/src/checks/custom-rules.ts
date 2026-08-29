@@ -30,6 +30,12 @@ export interface SiteContext {
   navSequences: Map<string, string[]>;
   /** Accessible names of repeated components, per page. */
   componentNames: Map<string, Map<string, string>>;
+  /**
+   * Declared language per page. The consistency rows compare a page only
+   * against others in its own language — a translation is a different set of
+   * pages, not an inconsistency in this one.
+   */
+  langs: Map<string, string | null>;
   /** True when at least one page links to a reachable accessibility statement. */
   statementUrl: string | null;
   statementContent: StatementAudit | null;
@@ -73,6 +79,26 @@ function cap(findings: Finding[]): Finding[] {
 
 // Typed views over the loose evidence object.
 type Ev = PageEvidence & Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+/**
+ * Pages that count as "the same set of Web pages" as this one.
+ *
+ * 3.2.3 and 3.2.4 ask whether a repeated component is identified consistently
+ * *within a set of pages*. A translated site is several sets. Without this, the
+ * skip link reads as inconsistent for being called "דלג לתוכן הראשי" on the
+ * Hebrew pages and "Skip to main content" on the English ones — reporting the
+ * translation as the defect, and sending an operator to "fix" the one thing on
+ * the page that was already right.
+ */
+function sameLanguageAs(site: SiteContext, url: string): (other: string) => boolean {
+  const base = (value: string | null | undefined): string => (value ?? '').split('-')[0].toLowerCase();
+  const mine = base(site.langs.get(url));
+  // With no declared language there is nothing to partition on, and dropping
+  // every comparison would silently disable the row. Comparing is the safer
+  // failure: it can over-report, which a reader can see and dismiss.
+  if (!mine) return () => true;
+  return (other) => base(site.langs.get(other)) === mine;
+}
 
 export const CUSTOM_RULES: Record<string, RuleFn> = {
   // ── Israeli additions ─────────────────────────────────────────────────────
@@ -582,9 +608,10 @@ export const CUSTOM_RULES: Record<string, RuleFn> = {
     if (site.pageCount <= 1) return null;
     const mine = site.navSequences.get(bundle.url);
     if (!mine || mine.length === 0) return null;
+    const inMySet = sameLanguageAs(site, bundle.url);
 
     for (const [otherUrl, other] of site.navSequences) {
-      if (otherUrl === bundle.url || other.length === 0) continue;
+      if (otherUrl === bundle.url || other.length === 0 || !inMySet(otherUrl)) continue;
       // Compare only the items both pages share, so a page with extra
       // context-specific items is not reported as inconsistent.
       const shared = mine.filter((m) => other.includes(m));
@@ -609,10 +636,11 @@ export const CUSTOM_RULES: Record<string, RuleFn> = {
     const mine = site.componentNames.get(bundle.url);
     if (!mine) return null;
     const findings: Finding[] = [];
+    const inMySet = sameLanguageAs(site, bundle.url);
 
     for (const [key, name] of mine) {
       for (const [otherUrl, others] of site.componentNames) {
-        if (otherUrl === bundle.url) continue;
+        if (otherUrl === bundle.url || !inMySet(otherUrl)) continue;
         const otherName = others.get(key);
         if (otherName && otherName !== name && findings.length < 5) {
           findings.push({

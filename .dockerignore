@@ -1,0 +1,19 @@
+# The build context is the repo root — everything the image does not need is
+# excluded here rather than copied and discarded, because the context is
+# uploaded before the first instruction runs.
+node_modules
+**/node_modules
+.git
+.env
+.env.local
+.env.*.local
+apps/readiness/.next
+apps/readiness/out
+services/scanner/reports
+.scans
+.self-scan
+sources
+docs
+skills
+supabase
+**/*.log

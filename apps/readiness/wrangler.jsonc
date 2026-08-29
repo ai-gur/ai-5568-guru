@@ -1,0 +1,30 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "ai5568-readiness",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-08-01",
+  // nodejs_compat is required by OpenNext; the second flag lets a Worker be
+  // woken by its own service binding without a public route.
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+
+  /*
+   * The scanner has no route of its own. This binding is the only path to it,
+   * which is what keeps a button that costs several dollars a press off the
+   * public internet.
+   */
+  "services": [{ "binding": "SCANNER", "service": "ai5568-scanner" }],
+
+  /*
+   * The hostname resolves through the zone's proxy today and serves a 403 —
+   * nothing is bound to it — so attaching it here creates the record rather
+   * than replacing a live one.
+   */
+  "routes": [{ "pattern": "readiness.aiguru.co.il", "custom_domain": true }],
+
+  "observability": { "enabled": true }
+}

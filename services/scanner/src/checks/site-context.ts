@@ -39,6 +39,7 @@ export function buildSiteContext(pages: PageBundle[], statement: StatementAudit 
   const titles = new Map<string, string>();
   const navSequences = new Map<string, string[]>();
   const componentNames = new Map<string, Map<string, string>>();
+  const langs = new Map<string, string | null>();
   let hasSearch = false;
   let hasSitemap = false;
   let hasBreadcrumbs = false;
@@ -49,6 +50,7 @@ export function buildSiteContext(pages: PageBundle[], statement: StatementAudit 
     if (!e?.meta) continue;
 
     titles.set(page.url, (e.meta.title ?? '').trim());
+    langs.set(page.url, (e.meta.lang ?? null) as string | null);
 
     const navs = (e.navigation?.navs ?? []) as { items: { text: string }[] }[];
     // The largest nav is the primary one; comparing every nav on the page would
@@ -78,6 +80,7 @@ export function buildSiteContext(pages: PageBundle[], statement: StatementAudit 
     titles,
     navSequences,
     componentNames,
+    langs,
     statementUrl,
     statementContent: statement,
     hasSearch,

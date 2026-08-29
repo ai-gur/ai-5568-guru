@@ -20,3 +20,6 @@ docs/external-resources/*
 apps/readiness/.env.local
 
 .scans/
+
+# OpenNext build output
+apps/readiness/.open-next/

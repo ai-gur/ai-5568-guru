@@ -1,8 +1,7 @@
 import { NextRequest } from 'next/server';
-import { guardUrl, pageLimitFor, SHALLOW_MAX_PAGES } from '@ai5568/scan-policy';
-import { serverEnv } from '@/lib/env';
-import { currentUser } from '@/lib/supabase/server';
-import { domainStanding } from '@/lib/verified-domain';
+import { guardUrl } from '@ai5568/scan-policy';
+import { scannerFetch, ScannerUnavailable } from '@/lib/scanner';
+import { isScannable } from '@/lib/scan-allowlist';
 
 /**
  * POST /api/v1/reviews — request a readiness review.
@@ -51,65 +50,74 @@ export async function POST(request: NextRequest): Promise<Response> {
     return badRequest(guard.reasonHe ?? 'הכתובת נדחתה.', 422);
   }
 
-  // Depth is gated on proof of control, not on payment: a shallow review stays
-  // open to anyone, including an accessibility body looking at a site that is
-  // not theirs. An anonymous caller is simply never verified, which is the safe
-  // direction to be wrong in — it caps depth rather than granting it.
-  const user = await currentUser();
-  const standing = user ? await domainStanding(body.url) : { verified: false };
-  const verified = standing.verified;
-
-  const requested =
-    typeof body.maxPages === 'number' && Number.isInteger(body.maxPages)
-      ? Math.min(Math.max(body.maxPages, 1), 2000)
-      : SHALLOW_MAX_PAGES;
-
-  const { maxPages, cappedHe } = pageLimitFor(verified, requested);
-
-  const scannerUrl = serverEnv('SCANNER_URL');
-  if (!scannerUrl) {
-    return Response.json({ error: 'שירות הסורק טרם הוגדר.' }, { status: 503 });
+  // While the product is being evaluated there are no accounts, so there is
+  // nothing to gate on — and an uncapped scanner open to any URL is something
+  // other people find. The allowlist is what stands in for the ownership gate
+  // until the gate has something to check. See lib/scan-allowlist.ts.
+  const allow = isScannable(body.url);
+  if (!allow.allowed) {
+    return badRequest(allow.reasonHe ?? 'הכתובת אינה נתמכת בשלב זה.', 422);
   }
 
+  // No page ceiling for now: the point of this stage is to see what a full
+  // review of a real site actually produces.
+  const maxPages =
+    typeof body.maxPages === 'number' && Number.isInteger(body.maxPages)
+      ? Math.min(Math.max(body.maxPages, 1), 2000)
+      : 200;
+
   try {
-    const scannerResponse = await fetch(new URL('/api/scan', scannerUrl), {
+    const scannerResponse = await scannerFetch('/api/scan', {
       method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        ...(serverEnv('SCANNER_TOKEN') ? { authorization: `Bearer ${serverEnv('SCANNER_TOKEN')}` } : {}),
-      },
-      body: JSON.stringify({ url: body.url, maxPages, maxDepth: 3, documents: true }),
-      cache: 'no-store',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ url: body.url, maxPages, maxDepth: 4, documents: true }),
       signal: AbortSignal.timeout(15_000),
     });
 
-    const payload = (await scannerResponse.json()) as { id?: string; error?: string };
+    const payload = (await scannerResponse.json()) as {
+      id?: string;
+      error?: string;
+      reused?: boolean;
+      finishedAt?: string;
+    };
+
+    /*
+     * The scanner refuses work for reasons the visitor can act on — another scan
+     * is running, the day's budget is spent. Those are its words, not a
+     * malfunction, so they are passed through with their own status rather than
+     * flattened into "the scanner rejected the request".
+     */
+    if (scannerResponse.status === 429 || scannerResponse.status === 503) {
+      return Response.json({ error: payload.error ?? 'הסורק אינו זמין כרגע.' }, { status: scannerResponse.status });
+    }
+
     if (!scannerResponse.ok || !payload.id) {
       return Response.json({ error: payload.error ?? 'שירות הסורק דחה את הבקשה.' }, { status: 502 });
     }
 
+    /*
+     * A recent scan of the same site is handed back instead of re-run. Said
+     * plainly, because a report that appears instantly with a timestamp from an
+     * hour ago is otherwise indistinguishable from one that just ran.
+     */
     return Response.json(
       {
         id: payload.id,
-        status: 'queued',
+        status: payload.reused ? 'done' : 'queued',
         maxPages,
-        verifiedDomain: standing.matchedDomain ?? null,
-        // Present whenever the request was trimmed. The client is expected to
-        // show it; the API states it either way so it cannot be lost silently.
-        ...(cappedHe ? { notice: cappedHe } : {}),
-        // A proof that has aged out is a different situation from never having
-        // had one, and the person can fix it in one click if we say so.
-        ...(standing.staleSince
+        ...(payload.reused
           ? {
-              notice:
-                `${cappedHe ?? ''} אימות הבעלות על ${standing.matchedDomain} פג. ` +
-                'הריצו אימות מחדש בעמוד הדומיינים כדי לחזור לסריקה מלאה.'.trim(),
+              reused: true,
+              notice: `הוצג דוח קיים מהסריקה שהסתיימה ב-${new Date(payload.finishedAt ?? Date.now()).toLocaleString('he-IL')}. סריקה חוזרת של אותו אתר נפתחת בתום שעה.`,
             }
           : {}),
       },
-      { status: 202 },
+      { status: payload.reused ? 200 : 202 },
     );
-  } catch {
+  } catch (error) {
+    if (error instanceof ScannerUnavailable) {
+      return Response.json({ error: error.message }, { status: 503 });
+    }
     return Response.json({ error: 'לא ניתן להתחבר לשירות הסורק.' }, { status: 503 });
   }
 }

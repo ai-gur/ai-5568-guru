@@ -48,6 +48,9 @@ interface Job {
 
 const jobs = new Map<string, Job>();
 
+/** Set once a stop signal arrives; no new scans are accepted after that. */
+let shuttingDown = false;
+
 const app = Fastify({ logger: false });
 
 // In production the scanner sits on a private network and the API gateway
@@ -64,6 +67,12 @@ app.addHook('onRequest', async (request, reply) => {
 app.get('/', async (_req, reply) => {
   reply.type('text/html; charset=utf-8').send(renderApp());
 });
+
+/**
+ * Liveness. Reports `ok: false` once shutdown has begun, so a load balancer
+ * stops sending work to an instance that is on its way out.
+ */
+app.get('/health', async () => ({ ok: !shuttingDown, jobs: jobs.size }));
 
 app.get('/api/jobs', async () => ({
   jobs: [...jobs.values()]
@@ -84,6 +93,55 @@ app.get('/api/jobs/:id/results', async (req, reply) => {
   return { report: job.report };
 });
 
+
+/*
+ * Spending limits.
+ *
+ * A scan of a real site costs several dollars in judgement calls, and the
+ * service is about to sit behind a public button with no account and no
+ * billing. The target allowlist controls *what* can be scanned; it does not
+ * control how often, and "press the button forty times" is not an attack, just
+ * an ordinary curious visitor.
+ *
+ * These live in the scanner rather than the web app because this is where the
+ * money is actually spent, and the web app is not guaranteed to be the only
+ * caller.
+ */
+const MAX_CONCURRENT_SCANS = Math.max(1, Number(process.env.MAX_CONCURRENT_SCANS ?? 1));
+const DAILY_BUDGET_USD = Number(process.env.DAILY_BUDGET_USD ?? 25);
+const RESCAN_COOLDOWN_MINUTES = Number(process.env.RESCAN_COOLDOWN_MINUTES ?? 60);
+
+function activeScans(): number {
+  return [...jobs.values()].filter((j) => j.status === 'running' || j.status === 'queued').length;
+}
+
+/** Spend since midnight UTC, across every job this instance has held. */
+function spentToday(): number {
+  const midnight = new Date();
+  midnight.setUTCHours(0, 0, 0, 0);
+  return [...jobs.values()]
+    .filter((j) => new Date(j.startedAt) >= midnight)
+    .reduce((total, j) => total + j.costUsd, 0);
+}
+
+/**
+ * A recent finished scan of the same URL, if there is one.
+ *
+ * Re-running an unchanged site inside the hour buys nothing and costs the full
+ * amount again. Handing back the existing report is both cheaper and a better
+ * answer — it is on screen immediately instead of twelve minutes later.
+ */
+function recentScanOf(url: string): Job | null {
+  const cutoff = Date.now() - RESCAN_COOLDOWN_MINUTES * 60_000;
+  let best: Job | null = null;
+  for (const job of jobs.values()) {
+    if (job.url !== url || job.status !== 'done' || !job.finishedAt) continue;
+    if (new Date(job.finishedAt).getTime() < cutoff) continue;
+    if (!best || new Date(job.finishedAt) > new Date(best.finishedAt!)) best = job;
+  }
+  return best;
+}
+
 app.post('/api/scan', async (req, reply) => {
   const body = (req.body ?? {}) as Record<string, unknown>;
   const rawUrl = String(body.url ?? '').trim();
@@ -94,6 +152,30 @@ app.post('/api/scan', async (req, reply) => {
     url = new URL(/^https?:\/\//i.test(rawUrl) ? rawUrl : `https://${rawUrl}`).toString();
   } catch {
     return reply.code(400).send({ error: 'url is not valid' });
+  }
+
+  if (shuttingDown) {
+    return reply.code(503).send({ error: 'השירות מתכבה ואינו מקבל סריקות חדשות. נסו שוב בעוד רגע.' });
+  }
+
+  // Answered before the concurrency check, so a repeat press returns the report
+  // rather than "busy".
+  const recent = recentScanOf(url);
+  if (recent) {
+    return reply.code(200).send({ id: recent.id, reused: true, finishedAt: recent.finishedAt });
+  }
+
+  if (activeScans() >= MAX_CONCURRENT_SCANS) {
+    return reply.code(429).send({
+      error: 'סריקה אחרת פועלת כרגע. סריקה אחת בכל רגע נתון — נסו שוב בעוד כמה דקות.',
+    });
+  }
+
+  const spent = spentToday();
+  if (spent >= DAILY_BUDGET_USD) {
+    return reply.code(429).send({
+      error: 'תקציב הסריקות היומי מוצה. הסריקות ייפתחו מחדש מחר.',
+    });
   }
 
   const noAi = body.noAi === true || !process.env.ANTHROPIC_API_KEY;
@@ -119,7 +201,11 @@ app.post('/api/scan', async (req, reply) => {
     level: body.level === 'A' ? 'A' : 'AA',
     documents: body.documents !== false,
     noAi,
-    budgetUsd: clamp(Number(body.budgetUsd), 0.5, 500, DEFAULT_OPTIONS.budgetUsd),
+    // Never more than the day has left, whatever the caller asks for.
+    budgetUsd: Math.min(
+      clamp(Number(body.budgetUsd), 0.5, 500, DEFAULT_OPTIONS.budgetUsd),
+      Math.max(0.5, DAILY_BUDGET_USD - spent),
+    ),
   });
 
   return reply.code(202).send({ id: job.id, noAi });
@@ -275,3 +361,44 @@ function clamp(value: number, min: number, max: number, fallback: number): numbe
 const started = await app.listen({ port: PORT, host: HOST });
 console.log(`5568 Readiness על ${started}`);
 console.log(process.env.ANTHROPIC_API_KEY ? 'שכבת שיקול הדעת פעילה.' : 'ANTHROPIC_API_KEY לא הוגדר — סריקות ירוצו במצב ללא בינה מלאכותית.');
+
+/*
+ * Shutdown.
+ *
+ * Cloudflare gives no guarantee that a container instance runs for any set
+ * period: a host restart sends SIGTERM, waits fifteen minutes, then SIGKILL.
+ * Fifteen minutes is longer than a scan, so the useful thing to do is stop
+ * accepting new work and let the running scan finish and write its report,
+ * rather than exit at once and lose the judge calls already paid for.
+ *
+ * Reports are on a mounted volume, so a report written here survives the
+ * instance. In-flight jobs still do not — that is the documented behaviour of
+ * the in-memory registry, and this only narrows the window.
+ */
+for (const signal of ['SIGTERM', 'SIGINT'] as const) {
+  process.on(signal, () => {
+    if (shuttingDown) return;
+    shuttingDown = true;
+
+    const running = [...jobs.values()].filter((j) => j.status === 'running' || j.status === 'queued');
+    console.log(`[${signal}] מפסיק לקבל סריקות חדשות. ${running.length} סריקות עדיין רצות.`);
+
+    const finish = (): void => {
+      void app.close().then(() => process.exit(0));
+    };
+
+    if (running.length === 0) return finish();
+
+    // Poll rather than await: the scans are detached background promises, not
+    // something the request lifecycle holds a handle to.
+    const deadline = Date.now() + 13 * 60_000;
+    const timer = setInterval(() => {
+      const stillRunning = [...jobs.values()].some((j) => j.status === 'running' || j.status === 'queued');
+      if (!stillRunning || Date.now() > deadline) {
+        clearInterval(timer);
+        finish();
+      }
+    }, 2_000);
+  });
+}
+

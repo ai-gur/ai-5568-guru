@@ -260,6 +260,36 @@ export function evaluatePage(opts: EvaluateOptions): PageEvaluation {
 }
 
 /** Folds an LLM assessment into a row that the deterministic layer left open. */
+/**
+ * Whether a locator names something on the page that can actually be changed.
+ *
+ * `body` does not — it is where a judgement lands when it has nothing more
+ * specific. Neither does a path into the evidence JSON we handed the model:
+ * `componentNamesPerPage[url="…"].names` looks like a locator and is really the
+ * model citing its own input, which is precisely the shape a finding takes when
+ * it was reasoned from missing evidence rather than from the page.
+ *
+ * A URL is kept: the site-level Israeli rows legitimately point at a page (the
+ * accessibility statement) rather than an element inside one.
+ */
+export function isPageLocator(locator: string | undefined): boolean {
+  if (!locator) return false;
+  const value = locator.trim();
+  if (!value || value === 'body' || value === 'html') return false;
+  /*
+   * Evidence keys are camelCase; a CSS selector's first segment never is. It
+   * opens with `#`, `.`, `[`, or an all-lowercase tag name — so an uppercase
+   * letter before the first `[`, `.` or space marks the value as a path into
+   * the evidence rather than a selector. `a[href="/x"]` and `div.card > p` stay
+   * locators; `componentNamesPerPage[url="…"]` does not.
+   */
+  const head = value.split(/[[.\s>+~]/)[0];
+  if (/^[a-z][A-Za-z0-9]*$/.test(head) && /[A-Z]/.test(value.split(/[[\s>+~]/)[0])) return false;
+  // A bare numeric subscript — `navigation[3]` — is an array index, not CSS.
+  if (/^[a-zA-Z][A-Za-z0-9]*\[\d+\]/.test(value)) return false;
+  return true;
+}
+
 export function mergeJudgement(
   pending: PendingJudgement,
   judgement: { verdict: Verdict; confidence: number; findings: Finding[]; noteHe?: string } | null,
@@ -327,7 +357,7 @@ export function mergeJudgement(
      * A judgement that CAN point at something still fails the row — that is the
      * whole value of the layer, and it is untouched.
      */
-    const locatable = judgement.findings.filter((f) => f.locator && f.locator !== 'body');
+    const locatable = judgement.findings.filter((f) => isPageLocator(f.locator));
     if (ruleSatisfied && locatable.length === 0) {
       return {
         itemId: item.id,

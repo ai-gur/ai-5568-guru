@@ -1,6 +1,7 @@
 'use client';
 
 import { FormEvent, useRef, useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 
 type Tone = 'idle' | 'success' | 'error';
 
@@ -10,6 +11,7 @@ export function ReviewConsole() {
   const [message, setMessage] = useState('');
   const [notice, setNotice] = useState('');
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -32,7 +34,7 @@ export function ReviewConsole() {
         const response = await fetch('/api/v1/reviews', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url, maxPages: 50 }),
+          body: JSON.stringify({ url }),
         });
         const payload = (await response.json()) as {
           id?: string;
@@ -43,7 +45,10 @@ export function ReviewConsole() {
         if (!response.ok) throw new Error(payload.error ?? 'לא ניתן להכניס את הסריקה לתור.');
 
         setTone('success');
-        setMessage(`הסריקה נכנסה לתור. מזהה: ${payload.id}`);
+        setMessage('הסריקה נכנסה לתור. מעבירים אתכם למסך המעקב…');
+        // Straight to the review: a queue id printed on a form is not something
+        // anyone can act on, and the interesting part starts immediately.
+        router.push(`/reviews/${payload.id}`);
         // Surfaced separately from the success message, and never merged into
         // it: "queued, and by the way it covers five pages of your site" is a
         // sentence a reader skims past. This is the fact they most need.
@@ -68,7 +73,7 @@ export function ReviewConsole() {
         type="url"
         inputMode="url"
         autoComplete="url"
-        placeholder="https://example.co.il"
+        placeholder="https://aiguru.co.il"
         ref={inputRef}
         value={url}
         onChange={(event) => setUrl(event.target.value)}
@@ -79,7 +84,7 @@ export function ReviewConsole() {
         required
       />
       <p className="field-hint" id="review-url-hint">
-        סריקה מצומצמת פתוחה לכל כתובת ציבורית. סריקה מלאה תיפתח לאחר אימות בעלות על הדומיין.
+        בשלב זה המערכת סורקת את aiguru.co.il בלבד. סריקת אתרים נוספים תיפתח יחד עם אימות הבעלות.
       </p>
 
       <div className="action-row">
