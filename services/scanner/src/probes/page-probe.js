@@ -212,6 +212,18 @@
         inLink: inLink,
         linkHref: trunc(linkHref, 160),
         linkText: inLink ? trunc((el.closest('a[href]') || {}).textContent || '', 100) : '',
+        /*
+         * The accessible name of the enclosing link, which is what actually
+         * decides this row for an image inside one.
+         *
+         * `alt=""` on an image whose link is named by `aria-label` is the
+         * correct pattern, not a defect — adding alt as well makes a screen
+         * reader announce the link twice. Without this field the evidence shows
+         * an empty alt and a null aria-label *on the image*, and a judge
+         * reasoning from it reports a missing text alternative on markup that
+         * was already right.
+         */
+        linkAccessibleName: inLink ? trunc(accessibleName(el.closest('a[href], button')) || '', 120) : '',
         width: Math.round(rect.width),
         height: Math.round(rect.height),
         visible: isVisible(el),
@@ -315,8 +327,29 @@
       // Hidden from assistive tech: it cannot be a heading a screen reader
       // should have been able to navigate to, so it is not a missing one.
       if (isAriaHidden(el)) return;
+      /*
+       * A list item is not an unmarked heading.
+       *
+       * `<ul><li>` already conveys the grouping this criterion asks for, and
+       * every list item has a following sibling below it — so a styled list
+       * satisfies the geometry test below on every single item. A real scan
+       * reported six findings against three correctly marked-up lists.
+       */
+      var parentTag = el.parentElement ? el.parentElement.tagName : '';
+      if (el.tagName === 'LI' && (parentTag === 'UL' || parentTag === 'OL' || parentTag === 'MENU')) return;
+
       var text = (el.textContent || '').trim();
       if (!text || text.length > 120) return;
+
+      /*
+       * Prose is not a heading either. A heading labels what follows; it does
+       * not end in a full stop and it is not several clauses long. Lead
+       * paragraphs are routinely set larger than body text — that is typography,
+       * and marking one up as a heading would put a sentence in the document
+       * outline.
+       */
+      if (/[.!?。]$/.test(text) && text.length > 45) return;
+      if ((text.match(/[,;:،]/g) || []).length >= 2) return;
       // Icons, badges, tick marks and bare numbers are styled large or bold all
       // the time and are never headings. Require at least two actual letters —
       // without this, every "✔" and "12" in a stat tile is reported.
@@ -434,6 +467,24 @@
     };
   }
 
+  /**
+   * Content deliberately removed from the visual layer but left for screen
+   * readers — the `sr-only` / `visually-hidden` pattern.
+   *
+   * It has no visual position by design, so comparing its DOM position against
+   * a visual one is meaningless: it will always look out of order. A real scan
+   * reported a correctly built <figure> whose sr-only <figcaption> sits before
+   * the image, which is exactly where it belongs.
+   */
+  function isScreenReaderOnly(el) {
+    var r = el.getBoundingClientRect();
+    if (r.width <= 2 || r.height <= 2) return true;
+    var s = getComputedStyle(el);
+    if (s.clipPath && s.clipPath !== 'none') return true;
+    if (s.clip && s.clip !== 'auto') return true;
+    return false;
+  }
+
   function collectReadingOrder() {
     // Compares DOM order against geometric order. In RTL, "first" means the
     // largest x, so the comparison has to know the page direction or every
@@ -444,7 +495,7 @@
       blocks = all('p, li, h1, h2, h3').slice(0, 120);
     }
     var items = blocks
-      .filter(isVisible)
+      .filter(function (el) { return isVisible(el) && !isScreenReaderOnly(el); })
       .map(function (el, domIndex) {
         var r = el.getBoundingClientRect();
         return {
@@ -686,6 +737,21 @@
         context: container ? trunc(container.textContent, 240) : '',
         visible: isVisible(a),
         duplicateKey: key,
+        /*
+         * Which landmark the link sits in.
+         *
+         * 3.2.3 and 3.2.4 are about components *repeated across pages* — a
+         * header, a nav, a footer. Comparing a body link against them treats a
+         * `mailto:` in an accessibility statement as the same component as the
+         * footer's contact link, and reports the statement's own address as an
+         * inconsistent label. That happened on a real site.
+         */
+        region: (function () {
+          if (a.closest('footer, [role="contentinfo"]')) return 'footer';
+          if (a.closest('header, [role="banner"]')) return 'header';
+          if (a.closest('nav, [role="navigation"]')) return 'nav';
+          return 'body';
+        })(),
       });
       seen[key] = (seen[key] || 0) + 1;
     });

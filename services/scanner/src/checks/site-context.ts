@@ -59,8 +59,16 @@ export function buildSiteContext(pages: PageBundle[], statement: StatementAudit 
     navSequences.set(page.url, (primary?.items ?? []).map((i) => i.text).filter(Boolean));
 
     const names = new Map<string, string>();
+    /*
+     * Only links in a repeated region take part in the consistency comparison.
+     * A link in the body of one page is not "the same component" as a footer
+     * link on another, and treating it as one turns ordinary page content into
+     * a reported defect.
+     */
     const candidates = [
-      ...((e.links ?? []) as { accessibleName: string }[]).map((l) => ({ name: l.accessibleName, tag: 'a' })),
+      ...((e.links ?? []) as { accessibleName: string; region?: string }[])
+        .filter((l) => l.region === undefined || l.region !== 'body')
+        .map((l) => ({ name: l.accessibleName, tag: 'a' })),
       ...((e.aria?.widgets ?? []) as { accessibleName: string; role: string }[]).map((w) => ({ name: w.accessibleName, tag: w.role })),
       ...((e.aria?.iconOnlyButtons ?? []) as { accessibleName: string }[]).map((b) => ({ name: b.accessibleName, tag: 'button' })),
     ];

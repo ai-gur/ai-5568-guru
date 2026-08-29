@@ -23,6 +23,13 @@ export interface FocusStop {
   left: number;
   right: number;
   visible: boolean;
+  /**
+   * Whether this element is, or wraps, an embedded frame. Focus that moves into
+   * a cross-origin frame is invisible to the outer document, which reports the
+   * wrapper as holding focus press after press — indistinguishable from a trap
+   * unless the wrapper is checked for a frame inside it.
+   */
+  containsFrame: boolean;
   /** Whether a visible focus indicator appeared. */
   focusIndicator: {
     changed: boolean;
@@ -140,9 +147,13 @@ export async function keyboardWalk(page: Page): Promise<KeyboardWalkResult> {
         const hasOutline = s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0;
         const hasShadow = s.boxShadow !== 'none' && s.boxShadow !== '';
 
+        const containsFrame =
+          el.tagName === 'IFRAME' || el.tagName === 'FRAME' || el.querySelector('iframe, frame') !== null;
+
         return {
           index,
           selector,
+          containsFrame,
           tag: el.tagName.toLowerCase(),
           role: el.getAttribute('role'),
           name: w.__is5568AccName ? w.__is5568AccName(el) : (el.textContent || '').trim().slice(0, 80),
@@ -174,8 +185,19 @@ export async function keyboardWalk(page: Page): Promise<KeyboardWalkResult> {
     seenSelectors.set(stop.selector, repeats);
     const lastTwo = stops.slice(-2);
     if (lastTwo.length === 2 && lastTwo.every((s) => s.selector === stop.selector)) {
-      if (stop.tag === 'iframe' || stop.tag === 'frame') {
-        // Focus moved *into* the frame; the outer document just cannot see it.
+      /*
+       * A wrapper counts as much as the frame itself.
+       *
+       * Cloudflare Turnstile renders `<div><div><iframe>`, and focus entering
+       * that iframe leaves the outer document's `activeElement` sitting on a
+       * div — which then repeats and reads exactly like a trap. A real scan
+       * reported a keyboard trap on a working CAPTCHA because of this, and the
+       * remedy it implied was to remove the site's spam protection.
+       *
+       * Not seeing past a frame is not evidence of a trap behind it, so this
+       * becomes a manual check rather than a finding.
+       */
+      if (stop.containsFrame) {
         frameBoundary = { selector: stop.selector, name: stop.name };
       } else {
         trap = { selector: stop.selector, name: stop.name, repeatedTimes: repeats };
@@ -238,8 +260,18 @@ export async function keyboardWalk(page: Page): Promise<KeyboardWalkResult> {
     })
     .catch(() => [] as { selector: string; text: string; reason: string }[]);
 
+  /*
+   * A frame wrapper is excluded.
+   *
+   * When focus moves into a cross-origin frame the indicator is drawn inside
+   * it, by content the outer document cannot inspect — so the wrapper always
+   * computes as "no style change" and reads as a missing focus indicator. A
+   * real scan reported one against a working CAPTCHA. Same reasoning as the
+   * trap check: not seeing something across a frame boundary is not evidence
+   * that it is absent.
+   */
   const missingFocusIndicator = stops
-    .filter((s) => s.visible && !s.focusIndicator.changed)
+    .filter((s) => s.visible && !s.focusIndicator.changed && !s.containsFrame)
     .map((s) => ({ selector: s.selector, name: s.name, tag: s.tag }));
 
   // Focus order vs visual order, direction-aware.

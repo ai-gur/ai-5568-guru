@@ -885,7 +885,7 @@ export const CUSTOM_RULES: Record<string, RuleFn> = {
     return cap(findings);
   },
 
-  'timeout-detect': ({ evidence }) => {
+  'timeout-detect': ({ evidence, notes }) => {
     const e = evidence as Ev;
     const findings: Finding[] = [];
     for (const m of e.motion.metaRefresh as { content: string }[]) {
@@ -895,18 +895,70 @@ export const CUSTOM_RULES: Record<string, RuleFn> = {
         reasonHe: 'העמוד מרענן או מפנה את עצמו אוטומטית באמצעות meta refresh, ללא אפשרות למשתמש לבטל או להאריך.',
       });
     }
-    for (const t of e.motion.timers as { kind: string; delayMs: number }[]) {
+    /*
+     * Whose timer is it?
+     *
+     * The instrumentation records every setTimeout/setInterval over five
+     * seconds. That catches session expiry and auto-redirects — and equally
+     * catches an analytics library rotating a token, a CAPTCHA refreshing
+     * itself, and a debounced resize handler. The criterion is about a limit
+     * imposed on the *user*, and a vendor bundle's internal scheduling is not
+     * one. A real scan reported a 60-minute time limit on a site that has none;
+     * the timer belonged to a third-party widget.
+     *
+     * The stack tells them apart. A limit on the user is written by the site:
+     * its timer traces back to the page's own origin. Everything else goes to
+     * the manual channel with the count and the longest delay, because a
+     * hypothesis is not a finding — the old wording gave itself away by saying
+     * "if this is a time limit, a control is required".
+     *
+     * A meta refresh above stays a finding either way: that one is provably a
+     * time limit with no control.
+     */
+    const pageOrigin = (() => {
+      try {
+        return new URL(String(e.meta?.url ?? '')).origin;
+      } catch {
+        return '';
+      }
+    })();
+
+    const relevant = (e.motion.timers as { kind: string; delayMs: number; stack?: string }[]).filter(
+      (t) => t.delayMs >= 5000 && t.delayMs < 20 * 60 * 60 * 1000,
+    );
+    // No stack recorded means no reason to attribute it elsewhere: an inline
+    // script in the document produces exactly that, and so does the fixture.
+    const firstParty = relevant.filter((t) => {
+      const stack = t.stack ?? '';
+      if (!stack.trim()) return true;
+      const external = /https?:\/\/[^\s)]+/g;
+      const urls = stack.match(external) ?? [];
+      if (urls.length === 0) return true;
+      return urls.some((u) => !pageOrigin || u.startsWith(pageOrigin));
+    });
+
+    for (const t of firstParty) {
       if (findings.length >= MAX_FINDINGS) break;
       const minutes = Math.round(t.delayMs / 60000);
-      // Under 20 hours the criterion requires a control; above it, it does not.
-      if (t.delayMs >= 5000 && t.delayMs < 20 * 60 * 60 * 1000) {
-        findings.push({
-          locator: 'script',
-          snippet: `${t.kind}(${t.delayMs}ms)`,
-          reasonHe: `זוהה טיימר של ${minutes >= 1 ? `${minutes} דקות` : `${Math.round(t.delayMs / 1000)} שניות`}. אם מדובר בהגבלת זמן לפעולה או בפקיעת התחברות, נדרשת למשתמש אפשרות לבטל, להאריך או להתאים אותה.`,
-        });
-      }
+      findings.push({
+        locator: 'script',
+        snippet: `${t.kind}(${t.delayMs}ms)`,
+        reasonHe:
+          `זוהה טיימר של ${minutes >= 1 ? `${minutes} דקות` : `${Math.round(t.delayMs / 1000)} שניות`} בקוד האתר עצמו. ` +
+          'אם הוא מפקיע פעולה של המשתמש או את ההתחברות, נדרשת אפשרות לבטל, להאריך או להתאים אותו.',
+      });
     }
+
+    const thirdParty = relevant.length - firstParty.length;
+    if (thirdParty > 0) {
+      notes.push(
+        `זוהו ${thirdParty} טיימרים שמקורם בסקריפטים של צד שלישי. טיימר כשלעצמו אינו הגבלת זמן — ` +
+          'יש לבדוק ידנית אם אחד מהם מפקיע פעולה של המשתמש.',
+      );
+    }
+
+    // Nothing provable, but something was seen: not verified either way.
+    if (findings.length === 0 && thirdParty > 0) return null;
     return cap(findings);
   },
 

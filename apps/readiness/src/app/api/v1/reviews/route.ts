@@ -31,7 +31,33 @@ function badRequest(messageHe: string, status = 400): Response {
   return Response.json({ error: messageHe }, { status });
 }
 
+/**
+ * The master switch.
+ *
+ * A scan costs real money in judgement calls, and at this stage the button is
+ * public with no account and no billing behind it. The daily ceiling bounds the
+ * damage; it does not stop it. This stops it.
+ *
+ * Deliberately a positive opt-in rather than a "disabled" flag: an environment
+ * that has lost its configuration should fall closed, not open. Scanning runs
+ * only when something explicitly says it may.
+ */
+function scanningEnabled(): boolean {
+  return (process.env.SCANNING_ENABLED ?? '').toLowerCase() === 'true';
+}
+
 export async function POST(request: NextRequest): Promise<Response> {
+  if (!scanningEnabled()) {
+    return Response.json(
+      {
+        error:
+          'הסריקות מושהות זמנית בזמן שאנחנו בוחנים את עלות ההרצה. ' +
+          'המערכת עצמה פעילה, ואפשר לעיין בדוח לדוגמה.',
+      },
+      { status: 503 },
+    );
+  }
+
   let body: Body;
   try {
     body = (await request.json()) as Body;
