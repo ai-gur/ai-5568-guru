@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { PreferencesControl } from '@/components/preferences-control';
 
 /**
@@ -28,6 +28,35 @@ const NAV = [
 
 export function ProductShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  /*
+   * Escape closes the panel and returns focus to the control that opened it.
+   *
+   * Without the return, focus is left on a link inside a panel that no longer
+   * exists, and the next Tab starts from the top of the document — a keyboard
+   * user is silently moved somewhere they did not ask to be. (2.1.1, 2.4.3.)
+   */
+  useEffect(() => {
+    if (!open) return;
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key !== 'Escape') return;
+      setOpen(false);
+      menuButtonRef.current?.focus();
+    }
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [open]);
+
+  /*
+   * Navigating closes it. The panel is not a dialog and does not trap focus, so
+   * following a link inside it leaves it open over the new page — which reads
+   * as the link having failed.
+   */
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <div className="shell">
@@ -49,7 +78,12 @@ export function ProductShell({ children }: { children: ReactNode }) {
             </span>
           </Link>
 
-          <nav className="primary-navigation" aria-label="ניווט ראשי">
+          <nav
+            id="primary-navigation"
+            className="primary-navigation"
+            data-open={open ? 'true' : 'false'}
+            aria-label="ניווט ראשי"
+          >
             {NAV.map((item) => {
               // aria-current is what the copper rule is drawn from, so the mark
               // and the announcement can never disagree.
@@ -63,6 +97,24 @@ export function ProductShell({ children }: { children: ReactNode }) {
           </nav>
 
           <PreferencesControl />
+
+          {/*
+            Hidden above 72rem, where the navigation is already visible. The
+            label states what activating it will do, so it changes with state;
+            aria-expanded carries the state itself.
+          */}
+          <button
+            ref={menuButtonRef}
+            className="menu-trigger"
+            type="button"
+            aria-expanded={open}
+            aria-controls="primary-navigation"
+            aria-label={open ? 'סגירת התפריט' : 'פתיחת התפריט'}
+            onClick={() => setOpen((value) => !value)}
+          >
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+          </button>
         </div>
       </header>
 
