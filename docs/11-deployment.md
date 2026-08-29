@@ -1,0 +1,105 @@
+# פריסה — readiness.aiguru.co.il
+
+## למה שתי יחידות ולא אחת
+
+הסורק מריץ Chromium אמיתי דרך Playwright ותהליך Python לניתוח PDF ומסמכי Office.
+Workers הוא V8 isolate: הוא לא מריץ בינארי ולא תהליך בן. לכן הסורק הוא **Container**
+ולא Worker. אפליקציית ה-Next היא Worker רגיל.
+
+זו אינה מגבלה של Cloudflare אלא של סוג הריצה. Cloudflare Containers מריצה image
+רגיל, ובמפורש **ללא זמן ריצה מרבי קבוע** — מה שסריקה בת שתים־עשרה דקות דורשת.
+
+| יחידה | סוג | Worker |
+|---|---|---|
+| `services/scanner` | Container ‏(`standard-3`: 2 vCPU, 8 GiB) | `ai5568-scanner` |
+| `apps/readiness` | Worker ‏(OpenNext) | `ai5568-readiness` |
+
+## הסורק אינו נגיש מהאינטרנט
+
+ל-`ai5568-scanner` אין route משלו (`workers_dev: false`, ללא `routes`).
+האפליקציה מגיעה אליו דרך **service binding** בלבד.
+
+זו החלטה ולא נוחות: כל בקשה לסורק עולה כמה דולרים בקריאות שיקול דעת. סוד משותף
+מגן על כתובת שקיימת; service binding אומר שאין כתובת. כל הקריאות עוברות דרך
+[`scanner.ts`](../apps/readiness/src/lib/scanner.ts), שנופל בחזרה ל-`SCANNER_URL`
+בפיתוח מקומי — אותה קריאה בדיוק בשתי הסביבות.
+
+## מעצורי הוצאה
+
+בשלב הזה אין רישום ואין חיוב, כלומר כפתור ציבורי שכל לחיצה עליו עולה כסף.
+רשימת ההיתר קובעת **מה** מותר לסרוק ואינה קובעת **כמה פעמים**. לכן, ב-`server.ts`:
+
+| משתנה | ברירת מחדל | מה הוא מונע |
+|---|---|---|
+| `MAX_CONCURRENT_SCANS` | `1` | שתי סריקות במקביל — עלות כפולה ותחרות על Chromium |
+| `DAILY_BUDGET_USD` | `25` | יום אחד שמנקז את החשבון. תוחם גם את התקציב של סריקה בודדת |
+| `RESCAN_COOLDOWN_MINUTES` | `60` | סריקה חוזרת של אתר שלא השתנה — מוחזר הדוח הקיים |
+
+## כיבוי
+
+Cloudflare אינה מתחייבת שמופע ירוץ פרק זמן כלשהו. restart של מארח שולח SIGTERM,
+ממתין חמש־עשרה דקות ואז SIGKILL. חמש־עשרה דקות ארוכות מסריקה, ולכן השרת מפסיק
+לקבל עבודה חדשה ונותן לסריקה הרצה לסיים ולכתוב את הדוח, במקום לצאת מיד ולאבד
+קריאות שכבר שולמו.
+
+**מה עדיין לא שורד restart:** ג'ובים בתהליך. הרישום הוא בזיכרון — התנהגות מתועדת
+מלכתחילה. הדוחות עצמם נכתבים ל-`/data/reports`.
+
+## דרישה מקדימה
+
+> **Containers דורש את מסלול Workers Paid** (‏$5 לחודש).
+> החשבון `ai@aiguru.co.il` היה על Free בזמן הכתיבה, והפריסה נעצרה על
+> `Unauthorized: You do not have access to Cloudflare Containers`.
+> שדרוג: <https://dash.cloudflare.com/?to=/:account/workers/plans>
+
+התשתית אינה ההוצאה כאן. סריקה של 12 דקות על 2 vCPU היא ~24 vCPU-דקות; המסלול
+כולל 375 vCPU-דקות לחודש, ומעבר לכך זה כשלושה סנט לסריקה — מול ~$7 של קריאות
+שיקול הדעת. הדיון הכלכלי הוא על המודל, לא על מקום הריצה.
+
+## פריסה
+
+הסורק ראשון: ה-binding של האפליקציה מצביע עליו, ופריסה אל Worker שאינו קיים תיכשל.
+
+```bash
+npx wrangler deploy --cwd services/scanner
+```
+
+```bash
+npm run cf:build -w @ai5568/readiness && npm run cf:deploy -w @ai5568/readiness
+```
+
+## סודות
+
+לא בקובץ. `.env.local` אינו מגיע ל-Cloudflare, וה-image אינו מכיל מפתחות.
+
+```bash
+npx wrangler secret put ANTHROPIC_API_KEY --cwd services/scanner
+```
+
+הסורק צריך `ANTHROPIC_API_KEY` בלבד. האפליקציה צריכה את מפתחות Supabase —
+`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
+`SUPABASE_SERVICE_ROLE_KEY`, `OWNERSHIP_TOKEN_SECRET`.
+
+`AUTH_EMAIL_ENABLED` נשאר `false` עד להגדרת SMTP ייעודי. אל תפעילו אותו בלעדיו —
+הודעות שחוזרות הן מה שכמעט הביא להגבלת חשבון ה-Supabase.
+
+## בדיקה אחרי פריסה
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" https://readiness.aiguru.co.il/
+```
+
+ואז סריקה דרך הממשק. הפעלה ראשונה של קונטיינר קרה איטית — התמונה נמשכת פעם אחת.
+
+## מה שנבדק מקומית
+
+- ה-image נבנה (2.31GB) וסורק בתוך Docker: Chromium, שכבת שיקול הדעת, ‏$0.41 לעמוד.
+- ההאזנה על `0.0.0.0:8080` — אומת מול `/proc/net/tcp`.
+- שלושת המעצורים אומתו בקונטיינר: שימוש חוזר בדוח, ‏429 על סריקה מקבילה, חסימת כיבוי.
+- חבילת OpenNext נבנתה נקייה על Next 16.3.3.
+- ‏`readiness.aiguru.co.il` מחזיר היום 403 ואינו משרת דבר — חיבור הדומיין לא ידרוס כלום.
+
+## למה Next 16.3.3
+
+OpenNext מחריג במפורש `>=16 <16.3.3`. הפער מכוון אצלם, ולכן עלינו לגרסה שהם תומכים
+בה במקום לכפות `--legacy-peer-deps` על טווח עמיתים שנכתב כדי למנוע בעיה אמיתית.
