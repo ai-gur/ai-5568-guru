@@ -1,8 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { runCustomRule, type RuleContext, type SiteContext } from '../src/checks/custom-rules.ts';
-import type { PageBundle } from '../src/crawl/browser.ts';
-import type { PageEvidence } from '../src/types.ts';
+import type { PageBundle, PageEvidence } from '../src/crawl/browser.ts';
 
 /*
  * From a real scan of a bilingual site. 3.2.4 was failed on all sixteen pages
@@ -65,8 +64,10 @@ test('an inconsistency inside one language is still reported', () => {
   );
   const findings = runCustomRule('component-identity', ctx(HE, site));
   assert.equal(findings?.length, 1);
-  assert.match(findings![0].reasonHe, /contact@example\.co\.il/);
-  assert.doesNotMatch(findings![0].reasonHe, /Contact us/);
+  const [only] = findings ?? [];
+  assert.ok(only, 'expected a finding');
+  assert.match(only.reasonHe, /contact@example\.co\.il/);
+  assert.doesNotMatch(only.reasonHe, /Contact us/);
 });
 
 test('with no declared language, comparison still happens', () => {

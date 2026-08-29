@@ -283,8 +283,9 @@ export function isPageLocator(locator: string | undefined): boolean {
    * the evidence rather than a selector. `a[href="/x"]` and `div.card > p` stay
    * locators; `componentNamesPerPage[url="…"]` does not.
    */
-  const head = value.split(/[[.\s>+~]/)[0];
-  if (/^[a-z][A-Za-z0-9]*$/.test(head) && /[A-Z]/.test(value.split(/[[\s>+~]/)[0])) return false;
+  const head = value.split(/[[.\s>+~]/)[0] ?? '';
+  const beforeBracket = value.split(/[[\s>+~]/)[0] ?? '';
+  if (/^[a-z][A-Za-z0-9]*$/.test(head) && /[A-Z]/.test(beforeBracket)) return false;
   // A bare numeric subscript — `navigation[3]` — is an array index, not CSS.
   if (/^[a-zA-Z][A-Za-z0-9]*\[\d+\]/.test(value)) return false;
   return true;

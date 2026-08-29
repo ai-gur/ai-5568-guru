@@ -27,6 +27,7 @@
     "node_modules",
     "**/dist",
     "**/.next",
-    "apps/**"
+    "apps/**",
+    "services/scanner/worker/**"
   ]
 }

@@ -309,9 +309,10 @@ export class ClaudeJudge {
        * and the kind of wrong that costs an operator a day. Comparison stays
        * inside the language of the page being judged.
        */
-      const lang = (site.langs.get(bundle.url) ?? '').split('-')[0].toLowerCase();
-      const sameLanguage = (url: string): boolean =>
-        (site.langs.get(url) ?? '').split('-')[0].toLowerCase() === lang;
+      const baseLang = (value: string | null | undefined): string =>
+        (value ?? '').split('-')[0]?.toLowerCase() ?? '';
+      const lang = baseLang(site.langs.get(bundle.url));
+      const sameLanguage = (url: string): boolean => baseLang(site.langs.get(url)) === lang;
 
       const within = <T>(m: Map<string, T>, limit: number): [string, T][] =>
         [...m.entries()].filter(([url]) => sameLanguage(url)).slice(0, limit);

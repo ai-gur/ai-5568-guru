@@ -10,7 +10,15 @@ import { Container, getContainer } from '@cloudflare/containers';
  * than not being addressable at all.
  */
 
-export class ScannerContainer extends Container {
+interface Env {
+  SCANNER: DurableObjectNamespace<ScannerContainer>;
+  ANTHROPIC_API_KEY?: string;
+  DAILY_BUDGET_USD?: string;
+  MAX_CONCURRENT_SCANS?: string;
+  RESCAN_COOLDOWN_MINUTES?: string;
+}
+
+export class ScannerContainer extends Container<Env> {
   defaultPort = 8080;
 
   /*
@@ -21,10 +29,21 @@ export class ScannerContainer extends Container {
    */
   sleepAfter = '10m';
 
+  /*
+   * Worker secrets do not reach the container on their own — the container is a
+   * separate process with its own environment, and `this.env` is the only thing
+   * that bridges them. Without this the scanner starts, serves, and silently
+   * scans with no judgement layer at all: a working service producing a much
+   * weaker report, which is worse than a crash because nothing looks wrong.
+   */
   envVars = {
     HOST: '0.0.0.0',
     PORT: '8080',
     REPORTS_DIR: '/data/reports',
+    ANTHROPIC_API_KEY: this.env.ANTHROPIC_API_KEY ?? '',
+    DAILY_BUDGET_USD: this.env.DAILY_BUDGET_USD ?? '25',
+    MAX_CONCURRENT_SCANS: this.env.MAX_CONCURRENT_SCANS ?? '1',
+    RESCAN_COOLDOWN_MINUTES: this.env.RESCAN_COOLDOWN_MINUTES ?? '60',
   };
 
   override onStart(): void {
@@ -38,10 +57,6 @@ export class ScannerContainer extends Container {
   override onError(error: unknown): void {
     console.error('scanner container error:', error);
   }
-}
-
-interface Env {
-  SCANNER: DurableObjectNamespace<ScannerContainer>;
 }
 
 export default {

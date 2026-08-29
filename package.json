@@ -15,7 +15,7 @@
     "apps/readiness"
   ],
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p services/scanner/worker/tsconfig.json",
     "test": "npm run test -w @ai5568/delta && npm run test -w @ai5568/scan-policy && npm run test -w @ai5568/readiness && npm run test -w @ai5568/scanner",
     "scan": "npm run scan -w @ai5568/scanner",
     "web": "npm run web -w @ai5568/scanner",

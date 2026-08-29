@@ -91,7 +91,7 @@ type Ev = PageEvidence & Record<string, any>; // eslint-disable-line @typescript
  * the page that was already right.
  */
 function sameLanguageAs(site: SiteContext, url: string): (other: string) => boolean {
-  const base = (value: string | null | undefined): string => (value ?? '').split('-')[0].toLowerCase();
+  const base = (value: string | null | undefined): string => (value ?? '').split('-')[0]?.toLowerCase() ?? '';
   const mine = base(site.langs.get(url));
   // With no declared language there is nothing to partition on, and dropping
   // every comparison would silently disable the row. Comparing is the safer

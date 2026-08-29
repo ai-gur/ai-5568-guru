@@ -1,0 +1,13 @@
+{
+  // The Worker runs on workerd, not Node. Its globals are a different set, so
+  // it is checked separately rather than by widening the Node config and losing
+  // the errors that config exists to catch.
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2023"],
+    "types": ["@cloudflare/workers-types"]
+  },
+  // `extends` inherits the root exclude, which excludes this very directory.
+  "exclude": [],
+  "include": ["./**/*.ts"]
+}
