@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { PageHero } from '@/components/page-components';
 import { ProductShell } from '@/components/product-shell';
 import { sendSignInLink } from './actions';
 
@@ -47,7 +48,7 @@ export default async function SignIn({
   return (
     <ProductShell>
       <main className="page" id="main" tabIndex={-1}>
-        <h1>כניסה</h1>
+        <PageHero title="כניסה" descriptor="ללא סיסמה" />
         <p>
           כניסה נדרשת כדי לאמת בעלות על דומיין ולהריץ סריקה מלאה. סריקה מצומצמת פתוחה לכל כתובת ציבורית
           ואינה דורשת חשבון.

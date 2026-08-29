@@ -1,6 +1,7 @@
 'use client';
 
 import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { PageHero } from '@/components/page-components';
 import { ProductShell } from '@/components/product-shell';
 
 interface Domain {
@@ -69,7 +70,7 @@ export default function Domains() {
   return (
     <ProductShell>
       <main className="page" id="main" tabIndex={-1}>
-        <h1>דומיינים</h1>
+        <PageHero title="דומיינים" descriptor="הוכחת בעלות לפני סריקה מלאה" />
         <p>
           סריקה מצומצמת פתוחה לכל כתובת ציבורית. סריקה מלאה — שעוברת על מאות עמודים ומורידה כל מסמך מקושר —
           דורשת הוכחה שהדומיין בשליטתכם. זה מגן גם עליכם וגם על בעלי אתרים אחרים.

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { EditorialSection, PageHero } from '@/components/page-components';
 import { ProductShell } from '@/components/product-shell';
 
 export const metadata: Metadata = { title: 'הצהרת נגישות' };
@@ -23,12 +24,12 @@ export default function AccessibilityStatement() {
   return (
     <ProductShell>
       <main className="page" id="main" tabIndex={-1}>
-        <h1>הצהרת נגישות</h1>
-
-        <p>
-          אתר זה נבנה כך שיעמוד בדרישות ת&quot;י 5568 חלק 1 ברמה AA, בהתאם לתקנות שוויון זכויות לאנשים עם
-          מוגבלות (התאמות נגישות לשירות), התשע&quot;ג-2013.
-        </p>
+        <PageHero
+          title="הצהרת נגישות"
+          descriptor="שימוש ברור ועצמאי"
+          lead={'אתר זה נבנה כך שיעמוד בדרישות ת"י 5568 חלק 1 ברמה AA, בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג-2013.'}
+        />
+        <EditorialSection tone="cream">
 
         <h2>רמת הנגישות שאליה מכוון האתר</h2>
         <p>רמה AA לפי ת&quot;י 5568 חלק 1 (ספטמבר 2023), המאמץ את WCAG 2.0 עם שינויים לאומיים.</p>
@@ -87,6 +88,7 @@ export default function AccessibilityStatement() {
           <br />
           תאריך עדכון ההצהרה: <time dateTime="2026-08-28">28 באוגוסט 2026</time>
         </p>
+        </EditorialSection>
       </main>
     </ProductShell>
   );
