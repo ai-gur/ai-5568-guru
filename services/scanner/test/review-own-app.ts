@@ -6,7 +6,7 @@
  * fails its own is answered before it opens its mouth. This is the gate for
  * that, run by hand against a locally running app:
  *
- *     npm run web -w @ai5568/readiness      # or `next start` on 3568
+ *     npm run dev -w @ai5568/readiness      # or `npm run dev` from the repo root
  *     npm run review:self -w @ai5568/scanner
  *
  * It found five real defects the first time it ran, three of them introduced
